@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div>
-      <b-button v-on:click="openwindow" variant="primary" class="btn btn-lg btn-selection">Whistleblower</b-button>
+      <b-button v-on:click="openwindow" variant="primary" class="btn btn-lg btn-selection">Vissla</b-button>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   ,
   methods: {
     openwindow: function(){
-      window.open("http://localhost:8080/whistle", "Safe window", "height=400,width=400")
+      window.open("http://localhost:8080/vissla", "Safe window", "height=400,width=400")
     }
   }
 }
