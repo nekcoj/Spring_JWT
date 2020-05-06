@@ -1,7 +1,9 @@
 <template>
   <div class="home">
-    <b-button v-on:click="openwindow" class="btn btn-primary">Whistleblower</b-button>
+    <div>
+      <b-button v-on:click="openwindow" variant="primary" class="btn btn-lg btn-selection">Whistleblower</b-button>
     </div>
+  </div>
 </template>
 
 <script>
@@ -19,3 +21,19 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.home{
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+.btn-selection{
+margin-bottom: 20px;
+margin-top: 20px;
+}
+
+</style>
