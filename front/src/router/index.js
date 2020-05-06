@@ -19,12 +19,12 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue')
   },
   {
-    path: '/nyttarende',
+    path: '/vissla/nyttarende',
     name: 'Nytt ärende',
     component: () => import('../views/blower/NewIssue.vue')
   },
   {
-    path: '/sakerinloggning',
+    path: '/vissla/sakerinloggning',
     name: 'Logga in',
     component: () => import ('../views/blower/Login.vue')
   }
