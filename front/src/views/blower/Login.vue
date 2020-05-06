@@ -12,7 +12,7 @@
                 ></b-form-input>
             </div>
             <div class="form-group">
-                <span>Ange det tillfälliga ID du blev tilldelad när du skapade ärendet(*):</span>
+                <span>Ange det tillfälliga lösenord du blev tilldelad när du skapade ärendet(*):</span>
                 <b-form-input
                     id="vissla-PW"
                     type="password"
