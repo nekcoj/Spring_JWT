@@ -67,7 +67,7 @@
         </b-row>
         <b-row>
           <b-col>
-            <b-button to="./forhandsgranska" variant="primary" class="btn" id="btn-preview">Förhandsgranska</b-button>
+            <b-button to="./confirmation" variant="primary" class="btn" id="btn-preview">Skicka</b-button>
           </b-col>
         </b-row>
 
@@ -80,10 +80,7 @@
 export default {
   data() {
     return {
-      formdata: {},
-      categories: ["Mutor, korruption & förfalskning", "Dataskydd & brott mot IT-säkerhet", 
-      "Diskriminering, trakasserier & andra arbetsrelaterade lagproblem", "Bedrägeri, missbruk & stöld",
-      "Hälsa, säkerhet & miljö", "Penningtvätt", "Personal", "Annat"]
+      formdata: {}
     };
   }
 };
@@ -96,19 +93,10 @@ export default {
 #main-form{
   padding-top:10px;
 }
-#btn-preview{
-  margin-top:15px;
-  margin-bottom:15px;
-}
 #row-attachment{
   padding-top: 8px;
   justify-content: left;
   align-items:baseline;
-}
-#btn-attachment{
-  background-color:white;
-  color: rgb(46, 46, 46);
-  border-radius: 10%;
 }
 #lbl-attachment{
   padding-left:10px;

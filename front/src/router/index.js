@@ -27,6 +27,11 @@ Vue.use(VueRouter)
     path: '/vissla/sakerinloggning',
     name: 'Logga in',
     component: () => import ('../views/blower/Login.vue')
+  },
+  {
+    path: '/vissla/forhandsgranska',
+    name: 'Förhandsgranska',
+    component: () => import ('../views/blower/PreviewIssue.vue')
   }
 ]
 
