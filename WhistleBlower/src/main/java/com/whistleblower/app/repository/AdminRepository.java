@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
 
-    Admin findByUserNameIgnoreCase(String userName);
+    Admin findByUsernameIgnoreCase(String userName);
 }

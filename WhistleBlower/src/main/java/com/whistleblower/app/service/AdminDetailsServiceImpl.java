@@ -25,10 +25,10 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
 
     @PostConstruct
     private void addDefaultUser(){
-        var adminUser = adminRepository.findByUserNameIgnoreCase("Admin");
+        var adminUser = adminRepository.findByUsernameIgnoreCase("Admin");
         if(adminUser == null){
             adminUser = new Admin();
-            adminUser.setUserName("Admin");
+            adminUser.setUsername("Admin");
             adminUser.setPassword(bCryptPasswordEncoder.encode("password"));
             adminRepository.save(adminUser);
         }
@@ -37,11 +37,11 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Admin applicationUser = adminRepository.findByUserNameIgnoreCase(username);
+        Admin applicationUser = adminRepository.findByUsernameIgnoreCase(username);
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new User(applicationUser.getUserName(), applicationUser.getPassword(), emptyList());
+        return new User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
     }
 
 }

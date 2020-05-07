@@ -11,18 +11,18 @@ public class User {
 
     private @Id @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)  long id;
 
-    private String userName;
+    private String username;
     private String password;
     private Date lastLogin;
-    private String tokenID;
+    private String tokenId;
 
 
-    public String getTokenID() {
-        return tokenID;
+    public String getTokenId() {
+        return tokenId;
     }
 
-    public void setTokenID(String tokenID) {
-        this.tokenID = tokenID;
+    public void setTokenId(String tokenID) {
+        this.tokenId = tokenID;
     }
 
     public long getId() {
@@ -33,12 +33,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     @JsonIgnore

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/WhistleBlower/app.iml" filepath="$PROJECT_DIR$/WhistleBlower/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/whistle.iml" filepath="$PROJECT_DIR$/.idea/whistle.iml" />
     </modules>
   </component>

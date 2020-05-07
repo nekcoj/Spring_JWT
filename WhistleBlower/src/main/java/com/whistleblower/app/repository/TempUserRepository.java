@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface TempUserRepository extends JpaRepository<TempUser, Long> {
 
 
+    boolean existsTempUserByUsername(String username);
+
 }

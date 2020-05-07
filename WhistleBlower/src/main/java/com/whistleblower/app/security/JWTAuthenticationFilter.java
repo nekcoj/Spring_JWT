@@ -47,7 +47,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getUserName(),
+                            creds.getUsername(),
                             creds.getPassword(),
                             new ArrayList<>())
             );
@@ -78,8 +78,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .claim("rol", roles)
                 .compact();
-        var admin = adminRepository.findByUserNameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
-        admin.setTokenID(token);
+        var admin = adminRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
+        admin.setTokenId(token);
         adminRepository.save(admin);
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
         response.setContentType("application/json");
