@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.whistleblower.app.security.SecurityConstants.SEND_ISSUE_URL;
+
 @RestController
-@RequestMapping("/rest")
+@RequestMapping(SEND_ISSUE_URL)
 public class NewIssueController {
 
 @Autowired

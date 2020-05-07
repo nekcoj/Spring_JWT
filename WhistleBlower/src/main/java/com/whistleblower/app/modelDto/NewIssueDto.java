@@ -1,36 +1,38 @@
 package com.whistleblower.app.modelDto;
 
-import com.whistleblower.app.entity.Issue;
-
 public class NewIssueDto  {
     private String category;
-    private String when;
-    private String where;
+    private String whenIssue;
+    private String whereIssue;
     private String details;
     private String employeeAwareness;
+    private  String attachment;
+
+
 
     public String getCategory() {
         return category;
     }
 
+
     public void setCategory(String category) {
         this.category = category;
     }
 
-    public String getWhen() {
-        return when;
+    public String getWhenIssue() {
+        return whenIssue;
     }
 
-    public void setWhen(String when) {
-        this.when = when;
+    public void setWhenIssue(String whenIssue) {
+        this.whenIssue = whenIssue;
     }
 
-    public String getWhere() {
-        return where;
+    public String getWhereIssue() {
+        return whereIssue;
     }
 
-    public void setWhere(String where) {
-        this.where = where;
+    public void setWhereIssue(String whereIssue) {
+        this.whereIssue = whereIssue;
     }
 
     public String getDetails() {
@@ -57,6 +59,5 @@ public class NewIssueDto  {
         this.attachment = attachment;
     }
 
-    private String attachment;
 
 }

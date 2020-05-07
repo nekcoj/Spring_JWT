@@ -4,12 +4,12 @@ import com.whistleblower.app.entity.NewIssue;
 import com.whistleblower.app.entity.TempUser;
 import com.whistleblower.app.modelDto.NewIssueDto;
 import com.whistleblower.app.modelDto.TempUserDto;
-import com.whistleblower.app.repository.AdminRepository;
 import com.whistleblower.app.repository.NewIssueRepository;
 import com.whistleblower.app.repository.TempUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class NewIssueService {
@@ -30,12 +30,13 @@ public class NewIssueService {
     private void createNewIssue(TempUser tempUser, NewIssueDto newIssueDto) {
         NewIssue newIssue = new NewIssue();
                 newIssue.setCategory(newIssueDto.getCategory());
-                newIssue.setWhen(newIssueDto.getWhen());
-                newIssue.setWhere(newIssueDto.getWhere());
+                newIssue.setWhenIssue(newIssueDto.getWhenIssue());
+                newIssue.setWhereIssue(newIssueDto.getWhereIssue());
                 newIssue.setDetails(newIssueDto.getDetails());
                 newIssue.setEmployeeAwareness(newIssueDto.getEmployeeAwareness());
                 newIssue.setAttachment(newIssueDto.getAttachment());
                 newIssue.setTempUser(tempUser);
+                newIssue.setCreated(Date.from(new Date().toInstant()));
                 newIssue.setIssueStatus("UNASSIGNED");
                 newIssueRepository.save(newIssue);
     }
@@ -48,7 +49,7 @@ public class NewIssueService {
             if(!tempUserRepository.existsTempUserByUsername(newUsername)){
                 username = newUsername;
                 tempUser.setUsername(username);
-                tempUser.setPassword(randomNumberGenerator());
+                tempUser.setPassword( randomNumberGenerator());
             }
         }
        return tempUserRepository.save(tempUser);

@@ -14,9 +14,9 @@ public class Issue {
 
     private String category;
 
-    private String when;
+    private String whenIssue;
 
-    private String where;
+    private String whereIssue;
 
     private String details;
 
@@ -24,7 +24,8 @@ public class Issue {
 
     private String attachment;
 
-    @OneToOne
+    @OneToOne()
+    @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
     private TempUser tempUser;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -48,20 +49,20 @@ public class Issue {
         this.category = category;
     }
 
-    public String getWhen() {
-        return when;
+    public String getWhenIssue() {
+        return whenIssue;
     }
 
-    public void setWhen(String when) {
-        this.when = when;
+    public void setWhenIssue(String when) {
+        this.whenIssue = when;
     }
 
-    public String getWhere() {
-        return where;
+    public String getWhereIssue() {
+        return whereIssue;
     }
 
-    public void setWhere(String where) {
-        this.where = where;
+    public void setWhereIssue(String where) {
+        this.whereIssue = where;
     }
 
     public String getDetails() {
