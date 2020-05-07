@@ -1,16 +1,16 @@
 package com.whistleblower.app.rest;
 
-import com.whistleblower.app.service.LawyerService;
+import com.whistleblower.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping
-public class LawyerController {
+public class UserController {
 
 @Autowired
-    LawyerService lawyerService;
+UserService userService;
 
 
 }

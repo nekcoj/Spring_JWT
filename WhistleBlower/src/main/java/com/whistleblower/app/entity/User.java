@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.Date;
 
-@MappedSuperclass
+@Entity
 public class User {
 
 
@@ -15,8 +15,25 @@ public class User {
     private String password;
     private Date lastLogin;
     private String tokenId;
+    private String role;
+    private Date created;
 
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
 
     public String getTokenId() {
         return tokenId;

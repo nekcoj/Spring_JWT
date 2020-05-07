@@ -1,8 +1,7 @@
 package com.whistleblower.app.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.whistleblower.app.entity.Admin;
-import com.whistleblower.app.repository.AdminRepository;
+import com.whistleblower.app.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,11 +25,11 @@ import java.util.stream.Collectors;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AdminRepository adminRepository;
+    private UserRepository userRepository;
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(AdminRepository adminRepository, AuthenticationManager authenticationManager) {
-        this.adminRepository = adminRepository;
+    public JWTAuthenticationFilter(UserRepository userRepository, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
     }
 
@@ -42,8 +41,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            Admin creds = new ObjectMapper()
-                    .readValue(request.getInputStream(), Admin.class);
+            User creds = new ObjectMapper()
+                    .readValue(request.getInputStream(), User.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -78,9 +77,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .claim("rol", roles)
                 .compact();
-        var admin = adminRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
+        var admin = userRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
         admin.setTokenId(token);
-        adminRepository.save(admin);
+        userRepository.save(admin);
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

@@ -26,12 +26,21 @@ public class Issue {
 
     @OneToOne()
     @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
-    private TempUser tempUser;
+    private User user;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date created;
 
     private String issueStatus;
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public long getId() {
         return id;
@@ -89,13 +98,7 @@ public class Issue {
         this.attachment = attachment;
     }
 
-    public User getTempUser() {
-        return tempUser;
-    }
 
-    public void setTempUser(TempUser tempUser) {
-        this.tempUser = tempUser;
-    }
 
     public Date getCreated() {
         return created;

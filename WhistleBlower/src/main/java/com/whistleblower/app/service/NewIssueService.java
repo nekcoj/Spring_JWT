@@ -1,16 +1,17 @@
 package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.NewIssue;
-import com.whistleblower.app.entity.TempUser;
+import com.whistleblower.app.entity.User;
 import com.whistleblower.app.modelDto.NewIssueDto;
 import com.whistleblower.app.modelDto.TempUserDto;
 import com.whistleblower.app.repository.NewIssueRepository;
-import com.whistleblower.app.repository.TempUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.whistleblower.app.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+
+import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
 
 @Service
 public class NewIssueService {
@@ -18,13 +19,13 @@ public class NewIssueService {
 
    private NewIssueRepository newIssueRepository;
     
-   private   TempUserRepository tempUserRepository;
+   private UserRepository userRepository;
 
    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public NewIssueService(NewIssueRepository newIssueRepository, TempUserRepository tempUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public NewIssueService(NewIssueRepository newIssueRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.newIssueRepository = newIssueRepository;
-        this.tempUserRepository = tempUserRepository;
+        this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -42,24 +43,25 @@ public class NewIssueService {
                 newIssue.setDetails(newIssueDto.getDetails());
                 newIssue.setEmployeeAwareness(newIssueDto.getEmployeeAwareness());
                 newIssue.setAttachment(newIssueDto.getAttachment());
-                newIssue.setTempUser(tempUserRepository.getOne(tempUser.getId()));
+                newIssue.setUser(userRepository.getOne(tempUser.getId()));
                 newIssue.setCreated(Date.from(new Date().toInstant()));
                 newIssue.setIssueStatus("UNASSIGNED");
                 newIssueRepository.save(newIssue);
     }
 
     private TempUserDto createTempUser() {
-        TempUser tempUser = new TempUser();
+        User tempUser = new User();
+        tempUser.setRole(ROLE_USER);
         String username = null;
         String password = null;
         while (username == null){
             String newUsername =  randomNumberGenerator();
-            if(!tempUserRepository.existsTempUserByUsername(newUsername)){
+            if(!userRepository.existsTempUserByUsername(newUsername)){
                 username = newUsername;
                 tempUser.setUsername(username);
                 password = randomNumberGenerator();
                 tempUser.setPassword(bCryptPasswordEncoder.encode(password));
-                tempUserRepository.save(tempUser);
+                userRepository.save(tempUser);
             }
         }
        return new TempUserDto(tempUser.getId(),username,password);

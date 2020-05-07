@@ -1,7 +1,7 @@
 package com.whistleblower.app.security;
 
-import com.whistleblower.app.repository.AdminRepository;
-import com.whistleblower.app.service.AdminDetailsServiceImpl;
+import com.whistleblower.app.repository.UserRepository;
+import com.whistleblower.app.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -19,13 +19,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    private AdminDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private UserRepository userRepository;
 
-    public WebSecurity(AdminDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -36,8 +36,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, SecurityConstants.SEND_ISSUE_URL).permitAll()
                 .anyRequest().permitAll()
                // .anyRequest().authenticated()
+
                 .and()
-                .addFilter(new JWTAuthenticationFilter(adminRepository, authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(userRepository, authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
