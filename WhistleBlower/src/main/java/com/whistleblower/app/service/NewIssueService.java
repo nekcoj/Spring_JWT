@@ -7,6 +7,7 @@ import com.whistleblower.app.modelDto.TempUserDto;
 import com.whistleblower.app.repository.NewIssueRepository;
 import com.whistleblower.app.repository.TempUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -14,20 +15,26 @@ import java.util.Date;
 @Service
 public class NewIssueService {
 
-    @Autowired
-    NewIssueRepository newIssueRepository;
+
+   private NewIssueRepository newIssueRepository;
     
-    @Autowired
-    TempUserRepository tempUserRepository;
+   private   TempUserRepository tempUserRepository;
 
+   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public TempUserDto createIssueAndUser(NewIssueDto newIssueDto) {
-        TempUser tempUser = createTempUser();
-         createNewIssue(tempUser, newIssueDto);
-         return new TempUserDto(tempUser.getUsername(), tempUser.getPassword());
+    public NewIssueService(NewIssueRepository newIssueRepository, TempUserRepository tempUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.newIssueRepository = newIssueRepository;
+        this.tempUserRepository = tempUserRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    private void createNewIssue(TempUser tempUser, NewIssueDto newIssueDto) {
+    public TempUserDto createIssueAndUser(NewIssueDto newIssueDto) {
+         TempUserDto tempUser = createTempUser();
+         createNewIssue(tempUser, newIssueDto);
+         return tempUser;
+    }
+
+    private void createNewIssue(TempUserDto tempUser, NewIssueDto newIssueDto) {
         NewIssue newIssue = new NewIssue();
                 newIssue.setCategory(newIssueDto.getCategory());
                 newIssue.setWhenIssue(newIssueDto.getWhenIssue());
@@ -35,24 +42,27 @@ public class NewIssueService {
                 newIssue.setDetails(newIssueDto.getDetails());
                 newIssue.setEmployeeAwareness(newIssueDto.getEmployeeAwareness());
                 newIssue.setAttachment(newIssueDto.getAttachment());
-                newIssue.setTempUser(tempUser);
+                newIssue.setTempUser(tempUserRepository.getOne(tempUser.getId()));
                 newIssue.setCreated(Date.from(new Date().toInstant()));
                 newIssue.setIssueStatus("UNASSIGNED");
                 newIssueRepository.save(newIssue);
     }
 
-    private TempUser createTempUser() {
+    private TempUserDto createTempUser() {
         TempUser tempUser = new TempUser();
         String username = null;
+        String password = null;
         while (username == null){
             String newUsername =  randomNumberGenerator();
             if(!tempUserRepository.existsTempUserByUsername(newUsername)){
                 username = newUsername;
                 tempUser.setUsername(username);
-                tempUser.setPassword( randomNumberGenerator());
+                password = randomNumberGenerator();
+                tempUser.setPassword(bCryptPasswordEncoder.encode(password));
+                tempUserRepository.save(tempUser);
             }
         }
-       return tempUserRepository.save(tempUser);
+       return new TempUserDto(tempUser.getId(),username,password);
     }
 
 
