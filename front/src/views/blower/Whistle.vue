@@ -1,12 +1,12 @@
 <template>
   <div class="whistle">
     <div>
-      <router-link to="vissla/nyttarende">
+      <router-link to="./nyttarende">
         <b-button variant="primary" class="btn-selection btn-lg" id="btn-new-issue">Skapa nytt ärende</b-button>
       </router-link>
     </div>
     <div>
-      <router-link to="vissla/sakerinloggning">
+      <router-link to="./sakerinloggning">
         <b-button variant="primary" class="btn-selection btn-lg" id="btn-followup">Följ upp ärende</b-button>
       </router-link>
     </div>

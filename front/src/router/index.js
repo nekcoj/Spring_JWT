@@ -19,14 +19,24 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue')
   },
   {
-    path: '/vissla/nyttarende',
+    path: '/nyttarende',
     name: 'Nytt ärende',
     component: () => import('../views/blower/NewIssue.vue')
   },
   {
-    path: '/vissla/sakerinloggning',
+    path: '/sakerinloggning',
     name: 'Logga in',
     component: () => import ('../views/blower/Login.vue')
+  },
+  {
+    path: '/forhandsgranska',
+    name: 'Förhandsgranska',
+    component: () => import ('../views/blower/PreviewIssue.vue')
+  },
+  {
+    path: '/bekraftelse',
+    name: 'Bekräftelse',
+    component: () => import ('../views/blower/Confirmation.vue')
   }
 ]
 
