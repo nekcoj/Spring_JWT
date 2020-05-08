@@ -1,7 +1,7 @@
 package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.NewIssue;
-import com.whistleblower.app.entity.User;
+import com.whistleblower.app.entity.UserEntity;
 import com.whistleblower.app.modelDto.NewIssueDto;
 import com.whistleblower.app.modelDto.TempUserDto;
 import com.whistleblower.app.repository.NewIssueRepository;
@@ -43,28 +43,30 @@ public class NewIssueService {
                 newIssue.setDetails(newIssueDto.getDetails());
                 newIssue.setEmployeeAwareness(newIssueDto.getEmployeeAwareness());
                 newIssue.setAttachment(newIssueDto.getAttachment());
-                newIssue.setUser(userRepository.getOne(tempUser.getId()));
+                newIssue.setUserEntity(userRepository.getOne(tempUser.getId()));
                 newIssue.setCreated(Date.from(new Date().toInstant()));
                 newIssue.setIssueStatus("UNASSIGNED");
                 newIssueRepository.save(newIssue);
     }
 
     private TempUserDto createTempUser() {
-        User tempUser = new User();
-        tempUser.setRole(ROLE_USER);
+        UserEntity tempUserEntity = new UserEntity();
+
         String username = null;
         String password = null;
         while (username == null){
             String newUsername =  randomNumberGenerator();
             if(!userRepository.existsTempUserByUsername(newUsername)){
                 username = newUsername;
-                tempUser.setUsername(username);
+                tempUserEntity.setUsername(username);
                 password = randomNumberGenerator();
-                tempUser.setPassword(bCryptPasswordEncoder.encode(password));
-                userRepository.save(tempUser);
+                tempUserEntity.setRole(ROLE_USER);
+                tempUserEntity.setCreated(Date.from(new Date().toInstant()));
+                tempUserEntity.setPassword(bCryptPasswordEncoder.encode(password));
+                userRepository.save(tempUserEntity);
             }
         }
-       return new TempUserDto(tempUser.getId(),username,password);
+       return new TempUserDto(tempUserEntity.getId(),username,password);
     }
 
 

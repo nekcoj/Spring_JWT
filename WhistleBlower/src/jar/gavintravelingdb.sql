@@ -298,7 +298,7 @@ INSERT INTO `customers` (`id`, `first_name`, `last_name`, `phone_number`, `e_mai
 (18, 'Terence', 'Hilpert', '582-659-6359', 'Lisette_Jacobi34@gmail.com', '9ogqBLhxJHPI9sd', '1990722602', NULL),
 (19, 'Percival', 'Lemke', '627-229-9042', 'Armand.Harber59@gmail.com', 'W4b2VURpet2PB3G', '1994593304', NULL),
 (20, 'Lowell', 'Kertzmann', '895-834-1459', 'Carmelo12@hotmail.com', '0moEId2XzL75kJd', '1997885198', NULL),
-(24, 'test', 'test', '0739990855', 'user@mail.com', '$2a$10$gHxlOi1INZyTCg2lc5xJqOKom45T5fzvwvAb4LeK/HerVAAUwRDEK', '9999999', NULL),
+(24, 'test', 'test', '0739990855', 'userEntity@mail.com', '$2a$10$gHxlOi1INZyTCg2lc5xJqOKom45T5fzvwvAb4LeK/HerVAAUwRDEK', '9999999', NULL),
 (32, 'Joacim', 'Norbeck', '1727272772', 'aaaabbbb@mail.com', '$2a$10$QIBAJmR5bSQsuCb2D59y0uCLr7lbVEy/QbgCKGmQ0JCYvC5ZgFCS2', '1727272772', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6ImFhYWFiYmJiQG1haWwuY29tIiwiZXhwIjoxNTg5MjAzMTY4LCJyb2wiOltdfQ.t5FO0cM0o-aAHfKpY4sDi59yrZVZ9wmu2lCxtsVDDmAP5TyYr6ZFxNj9KToEjMZ5Qeanjx3BrFGsRND4G-mFqg'),
 (35, 'Gabe', 'Roberts', '170-869-6147', 'Ora_Wilkinson59@hotmail.com', 'BvDLuFSgnLsNWRq', '375-501-8844', NULL),
 (37, 'Lessie', 'Pouros', '264-407-9645', 'Winnifred.Lesch@gmail.com', '7NeN6rGJx7EkhBg', '505-488-7323', NULL),

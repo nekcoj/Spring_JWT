@@ -1,6 +1,6 @@
 package com.whistleblower.app.service;
 
-import com.whistleblower.app.entity.User;
+import com.whistleblower.app.entity.UserEntity;
 import com.whistleblower.app.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private void addDefaultUser(){
         var adminUser = userRepository.findByUsernameIgnoreCase("Admin");
         if(adminUser == null){
-            adminUser = new User();
+            adminUser = new UserEntity();
             adminUser.setRole(ROLE_ADMIN);
             adminUser.setCreated(Date.from(new Date().toInstant()));
             adminUser.setUsername("Admin");
@@ -41,11 +41,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User applicationUser = userRepository.findByUsernameIgnoreCase(username);
-        if (applicationUser == null) {
+        UserEntity applicationUserEntity = userRepository.findByUsernameIgnoreCase(username);
+        if (applicationUserEntity == null) {
             throw new UsernameNotFoundException(username);
         }
-        return new org.springframework.security.core.userdetails.User(applicationUser.getUsername(), applicationUser.getPassword(), emptyList());
+        return new org.springframework.security.core.userdetails.User(applicationUserEntity.getUsername(), applicationUserEntity.getPassword(), emptyList());
     }
 
 }

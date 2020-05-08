@@ -8,5 +8,5 @@ public class AssignedIssue extends Issue{
 
     @ManyToOne()
     @JoinColumn(name = "lawyer_id", referencedColumnName = "id", nullable = false)
-    private User user;
+    private UserEntity userEntity;
 }

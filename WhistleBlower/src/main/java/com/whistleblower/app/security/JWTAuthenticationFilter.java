@@ -1,6 +1,7 @@
 package com.whistleblower.app.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.whistleblower.app.entity.UserEntity;
 import com.whistleblower.app.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -41,8 +42,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            User creds = new ObjectMapper()
-                    .readValue(request.getInputStream(), User.class);
+            UserEntity creds = new ObjectMapper()
+                    .readValue(request.getInputStream(), UserEntity.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -60,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication authentication) throws IOException {
         var user = ((User) authentication.getPrincipal());
-
+        var entityUser = userRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
         var roles = user.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
@@ -77,14 +78,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .claim("rol", roles)
                 .compact();
-        var admin = userRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
-        admin.setTokenId(token);
-        userRepository.save(admin);
+        entityUser.setLastLogin(Date.from(new Date().toInstant()));
+        entityUser.setTokenId(token);
+        userRepository.save(entityUser);
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        response.getWriter().write(mapper.writeValueAsString(admin));
+        response.getWriter().write(mapper.writeValueAsString(entityUser));
     }
 
 

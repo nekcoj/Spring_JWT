@@ -1,5 +1,6 @@
 package com.whistleblower.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -26,20 +27,19 @@ public class Issue {
 
     @OneToOne()
     @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+    private UserEntity userEntity;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date created;
 
     private String issueStatus;
 
 
-    public User getUser() {
-        return user;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     public long getId() {
@@ -99,7 +99,7 @@ public class Issue {
     }
 
 
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getCreated() {
         return created;
     }
