@@ -32,6 +32,11 @@ Vue.use(VueRouter)
     path: '/forhandsgranska',
     name: 'Förhandsgranska',
     component: () => import ('../views/blower/PreviewIssue.vue')
+  },
+  {
+    path: '/bekraftelse',
+    name: 'Bekräftelse',
+    component: () => import ('../views/blower/Confirmation.vue')
   }
 ]
 
