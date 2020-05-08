@@ -11,9 +11,9 @@
     <div id="id-and-pw">
       <span>
         <p class="h5">Tillfälligt ID:</p>
-        <p>aoeusnth</p>
+        <p>{{user.username}}</p>
         <p class="h5">Tillfälligt lösenord:</p>
-        <p>iueodnth</p>
+        <p>{{user.password}}</p>
         </span>
     </div>
     <div id="id-and-pw-info">
@@ -31,6 +31,19 @@
   </div>
 </template>
 
+<script>
+export default {
+  methods: {},
+  computed:{
+    user:{
+      get() {
+        return this.$store.state.temporaryUser;
+      }
+    }
+  }
+}
+</script>
+
 <style scoped>
 #confirmation{
   height: 80vh;
@@ -44,8 +57,3 @@
   margin-top:50px;
 }
 </style>
-<script>
-export default {
-  methods: {}
-}
-</script>

@@ -6,31 +6,31 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="select-what">Vad gäller ärendet?(*)</label>
+            <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-text class="inputbox" id="select-what">Mutor, korruption & förfalskning
+            <b-form-text class="inputbox" id="select-category">{{category}}
             </b-form-text>
           </b-col>
         </b-row>
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-when">När inträffade händelsen?(*)</label>
+            <label class="lbl" for="textarea-whenIssue">När inträffade händelsen?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-text class="inputbox" id="textarea-when">I förrgår.
+            <b-form-text class="inputbox" id="textarea-whenIssue">{{whenIssue}}
             </b-form-text>
           </b-col>
         </b-row>
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-where">Var inträffade händelsen?(*)
+            <label class="lbl" for="textarea-whereIssue">Var inträffade händelsen?(*)
             </label>
           </b-col>
           <b-col sm="12">
-            <b-form-text class="inputbox" id="textarea-where">På kontoret.
+            <b-form-text class="inputbox" id="textarea-whereIssue">{{whereIssue}}
             </b-form-text>
           </b-col>
         </b-row>
@@ -41,18 +41,18 @@
             </label>
           </b-col>
           <b-col sm="12">
-            <b-form-text class="inputbox" id="textarea-details">Jag fick 100000000 kr för att göra en grej. Sen kom jag på att det kanske var en olaglig grej. Ooops, liksom. Sånt som händer. No harm no foul.
+            <b-form-text class="inputbox" id="textarea-details">{{details}}
             </b-form-text>
           </b-col>
         </b-row>
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-knowledge">Är andra anställda medvetna om detta?(*)
+            <label class="lbl" for="textarea-employeeAwareness">Är andra anställda medvetna om detta?(*)
             </label>
           </b-col>
           <b-col sm="12">
-            <b-form-text class="inputbox" id="textarea-knowledge">Nej.
+            <b-form-text class="inputbox" id="textarea-employeeAwareness">{{employeeAwareness}}
             </b-form-text>
           </b-col>
         </b-row>
@@ -61,7 +61,7 @@
           
           <b-col ><span id="col-attachment-text" >Bilaga:</span>
           </b-col>
-          <b-col id="col-attachment-filename"><label id="lbl-attachment">Bilaga.txt</label>
+          <b-col id="col-attachment-filename"><label id="lbl-attachment">{{attachment}}</label>
           </b-col>
 
         </b-row>
@@ -72,8 +72,8 @@
             <b-button to="./nyttarende" variant="primary" class="btn" id="btn-back">
               Tillbaka
             </b-button></b-col>
-          <b-col >
-            <b-button to="./bekraftelse" variant="primary" class="btn" id="btn-verify">
+          <b-col>
+            <b-button to="./bekraftelse" variant="primary" class="btn" v-on:click="sendNewIssue">
               Skicka
             </b-button>
           </b-col>
@@ -90,8 +90,54 @@
 export default {
   data() {
     return {
-      formdata: {}
+      formdata: {},
+      clicked: false
     };
+  },
+  methods:{
+    sendNewIssue: async function(){
+      if(this.clicked){
+        return;
+      }
+      this.clicked = true;
+      await this.$store.dispatch("newIssue", this.formdata);
+      setTimeout(() => {
+        this.clicked = false;
+      }, 500);
+
+    }
+  },
+  computed:{
+    category:{
+      get() {
+        return this.$store.state.formdata.category;
+      }
+    },
+    whenIssue:{
+      get(){
+        return this.$store.state.formdata.whenIssue;
+      }
+    },
+    whereIssue:{
+      get(){
+        return this.$store.state.formdata.whereIssue;
+      }
+    },
+    details:{
+      get(){
+        return this.$store.state.formdata.details;
+      }
+    },
+    employeeAwareness:{
+      get(){
+        return this.$store.state.formdata.employeeAwareness;
+      }
+    },
+    attachment:{
+      get(){
+        return this.$store.state.formdata.attachment;
+      }
+    },
   }
 };
 </script>

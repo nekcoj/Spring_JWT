@@ -5,10 +5,10 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="select-what">Vad gäller ärendet?(*)</label>
+            <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-select class="inputbox" id="select-what" v-model="formdata.what"
+            <b-form-select class="inputbox" id="select-category" v-model="category"
               :options="categories" required>
             </b-form-select>
           </b-col>
@@ -19,7 +19,7 @@
             <label class="lbl" for="textarea-when">När inträffade händelsen?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-when" required v-model="formdata.when">
+            <b-form-textarea class="inputbox" id="textarea-when" required v-model="whenIssue">
             </b-form-textarea>
           </b-col>
         </b-row>
@@ -30,7 +30,7 @@
             </label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-where" required v-model="formdata.where">
+            <b-form-textarea class="inputbox" id="textarea-where" required v-model="whereIssue">
             </b-form-textarea>
           </b-col>
         </b-row>
@@ -41,7 +41,7 @@
             </label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-details" required v-model="formdata.details">
+            <b-form-textarea class="inputbox" id="textarea-details" required v-model="details">
             </b-form-textarea>
           </b-col>
         </b-row>
@@ -52,7 +52,7 @@
             </label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-knowledge" required v-model="formdata.knowledge">
+            <b-form-textarea class="inputbox" id="textarea-knowledge" required v-model="employeeAwareness">
             </b-form-textarea>
           </b-col>
         </b-row>
@@ -85,6 +85,56 @@ export default {
       "Diskriminering, trakasserier & andra arbetsrelaterade lagproblem", "Bedrägeri, missbruk & stöld",
       "Hälsa, säkerhet & miljö", "Penningtvätt", "Personal", "Annat"]
     };
+  },
+  computed:{
+    category:{
+      get() {
+        return this.$store.state.formdata.category;
+      },
+      set(value){
+        this.$store.state.formdata.category = value;
+      }
+    },
+    whenIssue:{
+      get(){
+        return this.$store.state.formdata.whenIssue;
+      },
+      set(value){
+        this.$store.state.formdata.whenIssue = value;
+      }
+    },
+    whereIssue:{
+      get(){
+        return this.$store.state.formdata.whereIssue;
+      },
+      set(value){
+        this.$store.state.formdata.whereIssue = value;
+      }
+    },
+    details:{
+      get(){
+        return this.$store.state.formdata.details;
+      },
+      set(value){
+        this.$store.state.formdata.details = value;
+      }
+    },
+    employeeAwareness:{
+      get(){
+        return this.$store.state.formdata.employeeAwareness;
+      },
+      set(value){
+        this.$store.state.formdata.employeeAwareness = value;
+      }
+    },
+    attachment:{
+      get(){
+        return this.$store.state.formdata.attachment;
+      },
+      set(value){
+        this.$store.state.formdata.attachment = value;
+      }
+    },
   }
 };
 </script>
