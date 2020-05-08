@@ -16,33 +16,12 @@
 CREATE DATABASE IF NOT EXISTS `whistleblower` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `whistleblower`;
 
--- Dumping structure for table whistleblower.admin
-CREATE TABLE IF NOT EXISTS `admin` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `password` varchar(50) NOT NULL DEFAULT '',
-  `latest_login` datetime DEFAULT current_timestamp(),
-  `username` varchar(50) NOT NULL,
-  `token_id` varchar(255) DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `tokenid` varchar(255) DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
-
--- Dumping data for table whistleblower.admin: ~1 rows (approximately)
-DELETE FROM `admin`;
-/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` (`id`, `password`, `latest_login`, `username`, `token_id`, `last_login`, `tokenid`, `user_name`) VALUES
-	(2, 'asd', '2020-05-06 10:48:13', 'asdad', NULL, NULL, NULL, NULL),
-	(3, 'asdd', '2010-05-06 11:04:42', 'ba', NULL, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
-
 -- Dumping structure for table whistleblower.assigned_issue
 CREATE TABLE IF NOT EXISTS `assigned_issue` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(1024) NOT NULL DEFAULT 'Annat',
-  `when` varchar(1024) NOT NULL,
-  `where` varchar(1024) NOT NULL,
+  `when_issue` varchar(1024) NOT NULL,
+  `where_issue` varchar(1024) NOT NULL,
   `details` varchar(1024) NOT NULL,
   `employee_awareness` varchar(1024) NOT NULL,
   `attachment` varchar(1024) NOT NULL,
@@ -52,9 +31,9 @@ CREATE TABLE IF NOT EXISTS `assigned_issue` (
   `issue_status` char(15) DEFAULT 'ASSIGNED',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `temp_user_id` (`temp_user_id`) USING BTREE,
-  KEY `fk_lawyer_id` (`lawyer_id`),
-  CONSTRAINT `fk_lawyer_id` FOREIGN KEY (`lawyer_id`) REFERENCES `lawyer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_temp_user_id` FOREIGN KEY (`temp_user_id`) REFERENCES `temp_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `assigned_issue_user_id_fk` (`lawyer_id`),
+  CONSTRAINT `FKkbbg50l7cewo3wo6737ioh54d` FOREIGN KEY (`temp_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `assigned_issue_user_id_fk` FOREIGN KEY (`lawyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `status_contraint` CHECK (`issue_status` in ('ASSIGNED','OPEN'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
@@ -72,73 +51,54 @@ DELIMITER ;
 CREATE TABLE IF NOT EXISTS `closed_issue` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(1024) NOT NULL DEFAULT 'Annat',
-  `when` varchar(1024) NOT NULL,
-  `where` varchar(1024) NOT NULL,
+  `when_issue` varchar(1024) NOT NULL,
+  `where_issue` varchar(1024) NOT NULL,
   `details` varchar(1024) NOT NULL,
   `employee_awareness` varchar(1024) NOT NULL,
   `attachment` varchar(1024) NOT NULL,
   `temp_user_id` int(10) unsigned NOT NULL,
-  `lawyer_id` int(10) unsigned NOT NULL,
+  `lawyer_id` int(10) unsigned DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `issue_status` char(15) DEFAULT 'CLOSED',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `temp_user_id` (`temp_user_id`) USING BTREE,
   KEY `fk_lawyer_id` (`lawyer_id`) USING BTREE,
-  CONSTRAINT `closed_issue_ibfk_1` FOREIGN KEY (`lawyer_id`) REFERENCES `lawyer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `closed_issue_ibfk_2` FOREIGN KEY (`temp_user_id`) REFERENCES `temp_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_closed_issue_user` FOREIGN KEY (`temp_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_closed_issue_user_2` FOREIGN KEY (`lawyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `status_contraint` CHECK (`issue_status` = 'CLOSED')
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table whistleblower.closed_issue: ~2 rows (approximately)
+-- Dumping data for table whistleblower.closed_issue: ~0 rows (approximately)
 DELETE FROM `closed_issue`;
 /*!40000 ALTER TABLE `closed_issue` DISABLE KEYS */;
-INSERT INTO `closed_issue` (`id`, `category`, `when`, `where`, `details`, `employee_awareness`, `attachment`, `temp_user_id`, `lawyer_id`, `created`, `issue_status`) VALUES
-	(1, 'Annat', '', '', '', '', '', 3, 22, '2020-05-06 11:06:05', 'CLOSED'),
-	(2, 'Annat', '', '', '', '', '', 1, 22, '2009-09-12 11:45:05', 'CLOSED');
 /*!40000 ALTER TABLE `closed_issue` ENABLE KEYS */;
-
--- Dumping structure for table whistleblower.lawyer
-CREATE TABLE IF NOT EXISTS `lawyer` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `password` varchar(50) NOT NULL DEFAULT '',
-  `latest_login` datetime DEFAULT current_timestamp(),
-  `username` varchar(50) NOT NULL,
-  `token_id` varchar(255) DEFAULT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `tokenid` varchar(255) DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
-
--- Dumping data for table whistleblower.lawyer: ~1 rows (approximately)
-DELETE FROM `lawyer`;
-/*!40000 ALTER TABLE `lawyer` DISABLE KEYS */;
-INSERT INTO `lawyer` (`id`, `password`, `latest_login`, `username`, `token_id`, `last_login`, `tokenid`, `user_name`) VALUES
-	(1, 'asdasd', '2020-05-06 10:49:40', 'asdasd', NULL, NULL, NULL, NULL),
-	(22, 'asdad', '2010-05-06 11:05:05', 'asdasd', NULL, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `lawyer` ENABLE KEYS */;
 
 -- Dumping structure for table whistleblower.new_issue
 CREATE TABLE IF NOT EXISTS `new_issue` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(1024) NOT NULL DEFAULT 'Annat',
-  `when` varchar(1024) NOT NULL,
-  `where` varchar(1024) NOT NULL,
+  `when_issue` varchar(1024) NOT NULL,
+  `where_issue` varchar(1024) NOT NULL,
   `details` varchar(1024) NOT NULL,
   `employee_awareness` varchar(1024) NOT NULL,
   `attachment` varchar(1024) NOT NULL,
   `temp_user_id` int(10) unsigned NOT NULL,
-  `created` datetime NOT NULL,
+  `created` datetime NOT NULL DEFAULT current_timestamp(),
   `issue_status` char(15) NOT NULL DEFAULT 'UNASSIGNED',
   PRIMARY KEY (`id`),
-  KEY `temp_user_id` (`temp_user_id`),
-  CONSTRAINT `temp_user_id` FOREIGN KEY (`temp_user_id`) REFERENCES `temp_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `FK_new_issue_user` (`temp_user_id`),
+  CONSTRAINT `FK_new_issue_user` FOREIGN KEY (`temp_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `status_contraint` CHECK (`issue_status` = 'UNASSIGNED')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table whistleblower.new_issue: ~0 rows (approximately)
 DELETE FROM `new_issue`;
 /*!40000 ALTER TABLE `new_issue` DISABLE KEYS */;
+INSERT INTO `new_issue` (`id`, `category`, `when_issue`, `where_issue`, `details`, `employee_awareness`, `attachment`, `temp_user_id`, `created`, `issue_status`) VALUES
+	(16, 'hoppsan', 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 16, '2020-05-08 11:05:43', 'UNASSIGNED'),
+	(17, 'hoppsan', 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 17, '2020-05-08 11:11:57', 'UNASSIGNED'),
+	(18, 'hoppsan', 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 18, '2020-05-08 11:14:44', 'UNASSIGNED'),
+	(19, 'hoppsan', 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 19, '2020-05-08 11:22:06', 'UNASSIGNED');
 /*!40000 ALTER TABLE `new_issue` ENABLE KEYS */;
 
 -- Dumping structure for table whistleblower.postbox_post
@@ -149,10 +109,10 @@ CREATE TABLE IF NOT EXISTS `postbox_post` (
   `lawyer_id` int(10) unsigned NOT NULL DEFAULT 0,
   `message` varchar(2048) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_temp_user_id2` (`temp_user_id`),
-  KEY `fk_lawyer_id2` (`lawyer_id`),
-  CONSTRAINT `fk_lawyer_id2` FOREIGN KEY (`lawyer_id`) REFERENCES `lawyer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_temp_user_id2` FOREIGN KEY (`temp_user_id`) REFERENCES `temp_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `FK_postbox_post_user` (`temp_user_id`),
+  KEY `FK_postbox_post_user_2` (`lawyer_id`),
+  CONSTRAINT `FK_postbox_post_user` FOREIGN KEY (`temp_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_postbox_post_user_2` FOREIGN KEY (`lawyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table whistleblower.postbox_post: ~0 rows (approximately)
@@ -160,26 +120,28 @@ DELETE FROM `postbox_post`;
 /*!40000 ALTER TABLE `postbox_post` DISABLE KEYS */;
 /*!40000 ALTER TABLE `postbox_post` ENABLE KEYS */;
 
--- Dumping structure for table whistleblower.temp_user
-CREATE TABLE IF NOT EXISTS `temp_user` (
+-- Dumping structure for table whistleblower.user
+CREATE TABLE IF NOT EXISTS `user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `password` varchar(50) NOT NULL DEFAULT '',
-  `latest_login` datetime DEFAULT current_timestamp(),
-  `username` varchar(50) NOT NULL,
-  `token_id` varchar(255) DEFAULT NULL,
+  `username` varchar(50) NOT NULL DEFAULT '',
+  `password` varchar(512) NOT NULL DEFAULT '',
+  `role` varchar(10) NOT NULL DEFAULT '',
   `last_login` datetime DEFAULT NULL,
-  `tokenid` varchar(255) DEFAULT NULL,
-  `user_name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+  `created` datetime NOT NULL DEFAULT current_timestamp(),
+  `token_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table whistleblower.temp_user: ~1 rows (approximately)
-DELETE FROM `temp_user`;
-/*!40000 ALTER TABLE `temp_user` DISABLE KEYS */;
-INSERT INTO `temp_user` (`id`, `password`, `latest_login`, `username`, `token_id`, `last_login`, `tokenid`, `user_name`) VALUES
-	(1, 'qweqwe', '2020-05-06 10:50:48', 'hththh', NULL, NULL, NULL, NULL),
-	(3, 'asddd', '2000-05-06 11:05:28', 'asdasd', NULL, NULL, NULL, NULL);
-/*!40000 ALTER TABLE `temp_user` ENABLE KEYS */;
+-- Dumping data for table whistleblower.user: ~3 rows (approximately)
+DELETE FROM `user`;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `username`, `password`, `role`, `last_login`, `created`, `token_id`) VALUES
+	(15, 'Admin', '$2a$10$n1BkMSLK6cZ3RjFYkMZwJO/eZ.Sgx2Z5ehPdE607U/h4o20CZpE6G', 'ADMIN', NULL, '2020-05-08 11:03:05', NULL),
+	(16, '12575043', '$2a$10$2R8V1RLq8lyo7op2/Wv6f.9H/jyPbUxrwXAtDB9//MrPUnl9iUjZC', 'USER', NULL, '2020-05-08 11:05:43', NULL),
+	(17, '33764026', '$2a$10$W0vH5FINxU0L5bBzoM1DxOf3aU6Rq8Z67/nt9gTdi5b/P/qJGLmFi', 'USER', '2020-05-08 11:20:57', '2020-05-08 11:11:57', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6IjMzNzY0MDI2IiwiZXhwIjoxNTg5ODAwODU3LCJyb2wiOltdfQ.gDv0Jy9YAJfEwnlSizALTfWhuvmSNGdnMQTP--fcUDdh9os6s9VNj8eZrrdus7n8IAyLnNFTw5abod_GATEXOw'),
+	(18, '88088744', '$2a$10$Fu90jJdXShJx7pS0c/U1G.LsCJrbpTsnTam2FPNnJTgCKtAsa7IZ6', 'USER', '2020-05-08 11:14:59', '2020-05-08 11:14:44', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6Ijg4MDg4NzQ0IiwiZXhwIjoxNTg5ODAwNDk5LCJyb2wiOltdfQ.tGQ8foRrZ7EPwZ9F_gImUSH89K4TWJxGNqpC1O1fgKhGdpvf2OT0r0_pOAj2LH5XczRxsNMDzzVY35PbrvFXFw'),
+	(19, '92997063', '$2a$10$N1aiSoN7HgIiQcAvCnn9f.P/r5omEqvYt4kQpd/keWw0zDhvx/V3e', 'USER', NULL, '2020-05-08 11:22:06', NULL);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
