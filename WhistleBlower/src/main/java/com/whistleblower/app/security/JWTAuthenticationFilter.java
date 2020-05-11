@@ -61,6 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication authentication) throws IOException {
         var user = ((User) authentication.getPrincipal());
+
         var entityUser = userRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
         var roles = user.getAuthorities()
                 .stream()
