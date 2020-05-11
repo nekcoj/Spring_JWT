@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     formdata: {},
-    temporaryUser:{}
+    temporaryUser: {}
   },
   mutations: {
     setTempUser(state, value){
@@ -24,8 +24,7 @@ export default new Vuex.Store({
         body: JSON.stringify(value.state.formdata)
       })    
       const result = await response.json();
-      
-      this.temporaryUser = result;
+      this.state.temporaryUser = Object.assign({}, result);      
     }
   },
   modules: {
