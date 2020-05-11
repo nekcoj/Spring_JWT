@@ -4,6 +4,7 @@ import com.whistleblower.app.entity.PostboxPost;
 import com.whistleblower.app.exceptionHandling.exeption.ResourceNotFoundException;
 import com.whistleblower.app.exceptionHandling.exeption.ResourceNotMappable;
 import com.whistleblower.app.modelDto.NewIssueDto;
+import com.whistleblower.app.modelDto.PostDto;
 import com.whistleblower.app.modelDto.TempUserDto;
 import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.service.PostBoxService;
@@ -32,5 +33,15 @@ public class PostBoxController {
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error While Mapping Object"));
         return ResponseEntity.ok(postBoxService.getUnRepliedMessages(tokenId.getTokenId()));
     }
+
+    @PostMapping("send-messages")
+    ResponseEntity<?> insertMessage(@Valid @RequestBody PostDto postDto,
+                                    BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error While Mapping Object"));
+        postBoxService.insertMessage(postDto);
+
+        return ResponseEntity.ok("Message received!");
+    }
+
 
 }

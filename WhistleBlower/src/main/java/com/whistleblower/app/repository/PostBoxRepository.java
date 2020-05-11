@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PostBoxRepository extends JpaRepository<PostboxPost, Long>{
-    List<PostboxPost> findAllByTempUserIdAndRepliedFalse(long tempUserId);
+    List<PostboxPost> findAllByTempUserIdAndRepliedFalseAndSentBy(long tempUserId, String sentBy);
 }
