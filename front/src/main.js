@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
 import { DropdownPlugin, TablePlugin, FormPlugin, FormInputPlugin, FormSelectPlugin,
   FormCheckboxPlugin, FormDatepickerPlugin, FormGroupPlugin, FormTextareaPlugin, InputGroupPlugin , ButtonPlugin, 
   CalendarPlugin} from 'bootstrap-vue'
@@ -19,7 +20,20 @@ import BootstrapVue from 'bootstrap-vue'
   Vue.use(CalendarPlugin)
   Vue.use(FormTextareaPlugin)
   Vue.use(BootstrapVue)
-Vue.config.productionTip = false
+
+  import { library } from "@fortawesome/fontawesome-svg-core";
+  import {
+    faUserSecret,
+    faSearch,
+    faTrashAlt,
+  } from "@fortawesome/free-solid-svg-icons";
+  import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+  
+  library.add(faUserSecret, faSearch, faTrashAlt);
+  
+  Vue.component("font-awesome-icon", FontAwesomeIcon);
+
+// Vue.config.productionTip = false
 
 new Vue({
   router,

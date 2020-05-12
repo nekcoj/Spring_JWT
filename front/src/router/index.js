@@ -40,10 +40,18 @@ Vue.use(VueRouter)
   },
   {
     path: '/admin',
-    component: () => import ('../views/blower/AdminDashboard.vue'),
+    component: () => import ('../views/admin/Dashboard-base.vue'),
     children: [
-      {path: '', name: 'AdminDash' ,component: () => import ('../views/blower/Dashboard.vue')},
-      {path: 'arenden', component: () => import ('../views/blower/NyaArenden.vue')}
+      {path: '', name: 'AdminDash' ,component: () => import ('../views/admin/Dashboard.vue')},
+      {path: 'arenden', component: () => import ('../views/admin/NewPosts.vue')}
+    ]
+  },
+  {
+    path: '/jurist',
+    component: () => import ('../views/lawyer/Dashboard-base.vue'),
+    children: [
+      {path: '', name: 'AdminDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
+      {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
     ]
   }
 ]
