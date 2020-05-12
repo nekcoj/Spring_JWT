@@ -59,7 +59,15 @@ Vue.use(VueRouter)
       path: '/loginJurist',
       name: 'Logga in jurist',
       component: () => import ('../views/lawyer/LoginLawyer.vue')
-    }
+    },
+
+    {
+    
+      path: '/loginAdmin',
+      name: 'Logga in admin',
+      component: () => import ('../views/admin/LoginAdmin.vue')
+    },
+
 
 
 ]
