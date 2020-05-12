@@ -37,6 +37,12 @@ Vue.use(VueRouter)
     path: '/bekraftelse',
     name: 'Bekräftelse',
     component: () => import ('../views/blower/Confirmation.vue')
+  },
+
+  {
+    path: '/loginJurist',
+    name: 'Logga in jurist',
+    component: () => import ('../views/lawyer/LoginLawyer.vue')
   }
 ]
 
