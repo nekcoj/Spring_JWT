@@ -63,13 +63,7 @@ methods:{
 </script>
 
 <style>
-#login-admin * {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 80vw;
-  align-self: center;
-}
+
 
 #admin-login-button{
     margin-top: 2%;
