@@ -1,10 +1,12 @@
 package com.whistleblower.app.service;
 
-import com.whistleblower.app.entity.NewIssue;
+import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.entity.UserEntity;
+import com.whistleblower.app.modelDto.MoveDto;
 import com.whistleblower.app.modelDto.NewIssueDto;
 import com.whistleblower.app.modelDto.TempUserDto;
-import com.whistleblower.app.repository.NewIssueRepository;
+import com.whistleblower.app.repository.IssueRepository;
+import com.whistleblower.app.repository.IssueStatusRepository;
 import com.whistleblower.app.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,15 +20,19 @@ import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
 public class NewIssueService {
 
 
-   private NewIssueRepository newIssueRepository;
+   private IssueRepository issueRepository;
     
    private UserRepository userRepository;
 
+   private IssueStatusRepository issueStatusRepository;
+
    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public NewIssueService(NewIssueRepository newIssueRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.newIssueRepository = newIssueRepository;
+    public NewIssueService( IssueRepository issueRepository, UserRepository userRepository,
+                            BCryptPasswordEncoder bCryptPasswordEncoder, IssueStatusRepository issueStatusRepository) {
+        this.issueRepository = issueRepository;
         this.userRepository = userRepository;
+        this.issueStatusRepository = issueStatusRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -37,17 +43,17 @@ public class NewIssueService {
     }
 
     private void createNewIssue(TempUserDto tempUser, NewIssueDto newIssueDto) {
-        NewIssue newIssue = new NewIssue();
+        var newIssue = new Issue();
                 newIssue.setCategory(newIssueDto.getCategory());
                 newIssue.setWhenIssue(newIssueDto.getWhenIssue());
                 newIssue.setWhereIssue(newIssueDto.getWhereIssue());
                 newIssue.setDetails(newIssueDto.getDetails());
                 newIssue.setEmployeeAwareness(newIssueDto.getEmployeeAwareness());
                 newIssue.setAttachment(newIssueDto.getAttachment());
-                newIssue.setUserEntity(userRepository.getOne(tempUser.getId()));
+                newIssue.setTempUser(userRepository.getOne(tempUser.getId()));
                 newIssue.setCreated(Date.from(new Date().toInstant()));
-                newIssue.setIssueStatus("UNASSIGNED");
-                newIssueRepository.save(newIssue);
+                newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
+                issueRepository.save(newIssue);
     }
 
     private TempUserDto createTempUser() {
@@ -75,7 +81,18 @@ public class NewIssueService {
         return  String.valueOf(Math.random()).replace("0.","").substring(0,8);
     }
 
-    public List<NewIssue> getAll() {
-        return newIssueRepository.findAll();
+    public List<Issue> getAll() {
+        return issueRepository.findAll();
+    }
+
+    public boolean assignIssue(MoveDto moveDto) {
+        var issueToMove = issueRepository.findById(moveDto.getIssueId());
+        var assignedLawyer = userRepository.findById(moveDto.getLawyerId());
+
+        if(issueToMove.isPresent() && assignedLawyer.isPresent()){
+            var issue = issueToMove.get();
+
+        }
+        return false;
     }
 }

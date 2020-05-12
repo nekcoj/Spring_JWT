@@ -5,7 +5,12 @@ public class SecurityConstants {
     public static final String NEW_ISSUE_URL_ROOT = "/issue";
     public static final String SEND_NEW_ISSUE_URL = "/send";
     public static final String GET_NEW_ISSUE_URL = "/get-all";
+    public static final String MOVE_NEW_ISSUE_URL = "/move";
 
+
+    //UserController
+    public static final String USER_URL_ROOT = "/user";
+    public static final String GET_ALL_LAWYERS = "/lawyers";
 
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys

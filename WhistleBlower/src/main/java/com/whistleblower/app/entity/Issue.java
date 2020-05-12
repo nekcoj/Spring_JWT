@@ -1,12 +1,12 @@
 package com.whistleblower.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@MappedSuperclass
+@Entity
+@Table
 public class Issue {
 
     @Id
@@ -25,21 +25,28 @@ public class Issue {
 
     private String attachment;
 
-    @OneToOne()
-    @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity userEntity;
-
     private Date created;
 
-    private String issueStatus;
 
 
-    public UserEntity getUserEntity() {
-        return userEntity;
+    @OneToOne()
+    @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
+    private UserEntity tempUser;
+
+    @ManyToOne
+    @JoinColumn(name = "lawyer_id", referencedColumnName = "id")
+    private UserEntity lawyer;
+
+   @ManyToOne
+   @JoinColumn(name = "issue_status_id", referencedColumnName = "id")
+    private IssueStatus issueStatus;
+
+    public UserEntity getTempUser() {
+        return tempUser;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setTempUser(UserEntity userEntity) {
+        this.tempUser = userEntity;
     }
 
     public long getId() {
@@ -108,11 +115,19 @@ public class Issue {
         this.created = created;
     }
 
-    public String getIssueStatus() {
+    public UserEntity getLawyer() {
+        return lawyer;
+    }
+
+    public void setLawyer(UserEntity lawyer) {
+        this.lawyer = lawyer;
+    }
+
+    public IssueStatus getIssueStatus() {
         return issueStatus;
     }
 
-    public void setIssueStatus(String issueStatus) {
+    public void setIssueStatus(IssueStatus issueStatus) {
         this.issueStatus = issueStatus;
     }
 }
