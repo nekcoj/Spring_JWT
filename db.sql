@@ -133,7 +133,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `token_id` varchar(255) DEFAULT NULL,
   `first_name` varchar(20) DEFAULT NULL,
   `surname` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_username_uindex` (`username`),
+  UNIQUE KEY `user_token_id_uindex` (`token_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table whistleblower.user: ~7 rows (approximately)
