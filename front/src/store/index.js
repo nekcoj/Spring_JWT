@@ -1,10 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUserSecret, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserSecret,
+  faSearch,
+  faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
-library.add(faUserSecret, faSearch);
+library.add(faUserSecret, faSearch, faTrashAlt);
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 

@@ -30,10 +30,10 @@
     </div>
 
     <div role="tablist">
-      <b-card no-body class="mb-1">
+      <b-card no-body class="mb-1" id="issueContainer">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle.accordion-1 variant="secondary">
-            <span>Ärendenummer(1) {{ selectedCategory }}</span>
+            <span>Ärendenummer(1)</span>
           </b-button>
         </b-card-header>
         <b-collapse
@@ -42,8 +42,13 @@
           accordion="my-accordion"
           role="tabpanel"
         >
-          <b-card-body>
-            <h6>Status på ärendet: {{ status }}</h6>
+          <b-card-body id="issueBody">
+            <font-awesome-icon
+              icon="trash-alt"
+              class="trash-icon"
+            ></font-awesome-icon>
+            <!-- Status toLowerCase() -->
+            <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category">
                 <b-form-select-option
@@ -79,7 +84,7 @@
             >
             <b-card-text id="awarenessIssue">100%</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
-            <b-card-text id="attachmentIssue">Hemma</b-card-text>
+            <b-card-text id="attachmentIssue">bild.jpg</b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -123,7 +128,7 @@
           </b-form-select>
         </b-form-group>
       </div>
-      <div class="col-8 p-0">
+      <div class="col-8 p-0 mx-auto">
         <b-form-input
           placeholder="Lägg till/Ta bort Kategori"
           v-model="addRemoveText"
@@ -209,5 +214,18 @@ export default {
 }
 label {
   font-weight: bold;
+}
+#issueBody {
+  position: relative;
+}
+.trash-icon {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+}
+#issueC {
+  font-weight: normal;
+  text-align: left;
 }
 </style>
