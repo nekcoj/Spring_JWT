@@ -54,28 +54,7 @@
             ></font-awesome-icon>
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
-            <b-form-group label="Ändra kategori" label-for="change-category">
-              <b-form-select id="change-category">
-                <b-form-select-option
-                  class=""
-                  v-for="category in categories"
-                  :key="category"
-                  :value="category"
-                  >{{ category }}</b-form-select-option
-                >
-              </b-form-select>
-            </b-form-group>
-            <b-form-group label="Tilldela ärendet" label-for="change-assigned">
-              <b-form-select id="change-assigned">
-                <b-form-select-option
-                  class=""
-                  v-for="lawyer in lawyers"
-                  :key="lawyer"
-                  :value="lawyer"
-                  >{{ lawyer }}</b-form-select-option
-                >
-              </b-form-select>
-            </b-form-group>
+            
             <label for="whenIssue">När inträffade händelsen?</label>
             <b-card-text id="whenIssue">2020-05-14</b-card-text>
             <label for="whereIssue">När inträffade händelsen?</label>
@@ -90,6 +69,7 @@
             <b-card-text id="awarenessIssue">100%</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
             <b-card-text id="attachmentIssue">bild.jpg</b-card-text>
+            <b-button variant="primary" class="btn-lg">Safe postbox</b-button>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -138,30 +118,6 @@
         </b-collapse>
       </b-card>
     </div>
-    <div class="row">
-      <div class="col-4">
-        <b-form-group>
-          <b-form-select v-model="addRemoveOption">
-            <b-form-select-option value="1">
-              Lägg till
-            </b-form-select-option>
-            <b-form-select-option value="2">
-              Ta bort
-            </b-form-select-option>
-          </b-form-select>
-        </b-form-group>
-      </div>
-      <div class="col-7 p-0 mx-auto">
-        <b-form-input
-          placeholder="Lägg till/Ta bort Kategori"
-          v-model="addRemoveText"
-        ></b-form-input>
-      </div>
-      <div class="col-6"></div>
-      <div class="col-6 p-0">
-        <b-button v-on:click="addRemoveCategory">Utför</b-button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -169,22 +125,6 @@
 export default {
   data() {
     return {
-      lawyers: [
-        "Joacim Norbeck",
-        "Ralf Tjärnlund",
-        "Sofia Fredman",
-        "Magnus Pettersson",
-      ],
-      categories: [
-        "Mutor, korruption & förfalskning",
-        "Dataskydd och brott mot IT-säkerhet",
-        "Diskriminering, trakasserier och andra arbetsrelaterade lagproblem",
-        "Bedrägeri, missbruk och stöld",
-        "Hälsa, säkerhet & miljö",
-        "Penningtvätt",
-        "Personal",
-        "Annat",
-      ],
       months: [
         "Januari",
         "Februari",
