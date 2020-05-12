@@ -19,9 +19,6 @@ public class UserEntity {
     private String username;
     private String password;
 
-    private String firstName;
-    private String surname;
-
 
     private Date lastLogin;
     private String tokenId;
@@ -88,21 +85,5 @@ public class UserEntity {
 
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 }
