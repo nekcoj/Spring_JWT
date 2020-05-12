@@ -53,6 +53,11 @@ Vue.use(VueRouter)
       {path: '', name: 'AdminDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
       {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
     ]
+
+  {
+    path: '/loginJurist',
+    name: 'Logga in jurist',
+    component: () => import ('../views/lawyer/LoginLawyer.vue')
   }
 ]
 
