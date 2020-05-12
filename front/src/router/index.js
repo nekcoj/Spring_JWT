@@ -37,6 +37,14 @@ Vue.use(VueRouter)
     path: '/bekraftelse',
     name: 'Bekräftelse',
     component: () => import ('../views/blower/Confirmation.vue')
+  },
+  {
+    path: '/admin',
+    component: () => import ('../views/blower/AdminDashboard.vue'),
+    children: [
+      {path: '', name: 'AdminDash' ,component: () => import ('../views/blower/Dashboard.vue')},
+      {path: 'arenden', component: () => import ('../views/blower/NyaArenden.vue')}
+    ]
   }
 ]
 
