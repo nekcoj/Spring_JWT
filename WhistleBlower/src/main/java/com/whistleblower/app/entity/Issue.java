@@ -27,7 +27,7 @@ public class Issue {
 
     private Date created;
 
-
+    private Date assigned;
 
     @OneToOne()
     @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
@@ -40,6 +40,14 @@ public class Issue {
    @ManyToOne
    @JoinColumn(name = "issue_status_id", referencedColumnName = "id")
     private IssueStatus issueStatus;
+
+    public Date getAssigned() {
+        return assigned;
+    }
+
+    public void setAssigned(Date assigned) {
+        this.assigned = assigned;
+    }
 
     public UserEntity getTempUser() {
         return tempUser;

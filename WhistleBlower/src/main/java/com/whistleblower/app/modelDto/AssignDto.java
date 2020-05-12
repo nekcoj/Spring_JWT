@@ -1,6 +1,6 @@
 package com.whistleblower.app.modelDto;
 
-public class MoveDto {
+public class AssignDto {
     private long lawyerId;
     private long issueId;
 

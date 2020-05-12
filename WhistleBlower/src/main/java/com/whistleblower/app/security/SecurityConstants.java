@@ -1,11 +1,12 @@
 package com.whistleblower.app.security;
 
 public class SecurityConstants {
-    //NewIssueController
+    //IssueController
     public static final String NEW_ISSUE_URL_ROOT = "/issue";
-    public static final String SEND_NEW_ISSUE_URL = "/send";
-    public static final String GET_NEW_ISSUE_URL = "/get-all";
-    public static final String MOVE_NEW_ISSUE_URL = "/move";
+    public static final String CREATE_NEW_ISSUE = "/create";
+    public static final String GET_ALL_ISSUES = "/get-all";
+    public static final String ASSIGN_ISSUE = "/assign";
+    public static final String CHANGE_ISSUE_STATUS = "/change-status";
 
 
     //UserController

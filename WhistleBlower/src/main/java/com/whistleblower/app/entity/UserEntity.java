@@ -3,7 +3,6 @@ package com.whistleblower.app.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,8 +19,7 @@ public class UserEntity {
     private String password;
 
     private String firstName;
-    private String surname;
-
+    private String lastName;
 
     private Date lastLogin;
     private String tokenId;
@@ -98,11 +96,11 @@ public class UserEntity {
         this.firstName = firstName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setLastName(String surname) {
+        this.lastName = surname;
     }
 }

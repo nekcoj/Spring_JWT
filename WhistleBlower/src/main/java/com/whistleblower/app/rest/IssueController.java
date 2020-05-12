@@ -1,9 +1,10 @@
 package com.whistleblower.app.rest;
 
 import com.whistleblower.app.entity.Issue;
-import com.whistleblower.app.modelDto.MoveDto;
+import com.whistleblower.app.modelDto.AssignDto;
 import com.whistleblower.app.modelDto.NewIssueDto;
-import com.whistleblower.app.service.NewIssueService;
+import com.whistleblower.app.modelDto.StatusDto;
+import com.whistleblower.app.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,34 +22,48 @@ import static com.whistleblower.app.security.SecurityConstants.*;
 public class IssueController {
 
 @Autowired
-    NewIssueService newIssueService;
+  private IssueService issueService;
 
 
-@PostMapping(SEND_NEW_ISSUE_URL)
+@PostMapping(CREATE_NEW_ISSUE)
  ResponseEntity<?> createIssueAndUser(@Valid @RequestBody NewIssueDto newIssueDto,
                                                 BindingResult bindingResult){
     if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(newIssueDto);
-    var newUser = newIssueService.createIssueAndUser(newIssueDto);
+    var newUser = issueService.createIssueAndUser(newIssueDto);
     return ResponseEntity.ok(newUser);
 }
 
-@GetMapping(GET_NEW_ISSUE_URL)
+@GetMapping(GET_ALL_ISSUES)
 ResponseEntity<List<Issue>> getNewIssues(){
-    return ResponseEntity.ok(newIssueService.getAll());
+    return ResponseEntity.ok(issueService.getAllNewIssues());
 }
 
-@PostMapping
-ResponseEntity<?> assignIssue(@Valid @RequestBody MoveDto moveDto,
+
+
+@PostMapping(ASSIGN_ISSUE)
+ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
                               BindingResult bindingResult){
-    if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(moveDto);
-    boolean moved  = newIssueService.assignIssue(moveDto);
-    if(moved){
-        return ResponseEntity.ok(moveDto);
+    if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(assignDto);
+    boolean assigned = issueService.assignIssue(assignDto);
+    if(assigned){
+        return ResponseEntity.ok(assignDto);
     }else {
-        return ResponseEntity.badRequest().body(moveDto);
+        return ResponseEntity.badRequest().body(assignDto);
     }
-
 }
+
+    @PostMapping(CHANGE_ISSUE_STATUS)
+    ResponseEntity<?> changeStatus(@Valid @RequestBody StatusDto statusDto,
+                                  BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(statusDto);
+
+         boolean changed = issueService.changeIssueStatus(statusDto);
+
+         if(changed){
+             return ResponseEntity.ok(statusDto);
+         }
+         return  ResponseEntity.badRequest().body(statusDto);
+    }
 
 
 }
