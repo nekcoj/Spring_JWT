@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-left">
     <b-form-group label="Filtrera på kategori" label-for="select-category">
       <b-form-select class="" id="select-category" v-model="selectedCategory">
         <b-form-select-option
@@ -30,9 +30,14 @@
     </div>
 
     <div role="tablist">
-      <b-card no-body class="mb-1" id="issueContainer">
+      <b-card no-body class="mb-1 text-left" id="issueContainer">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-1 variant="secondary">
+          <b-button
+            block
+            v-b-toggle.accordion-1
+            variant="secondary"
+            class="text-left"
+          >
             <span>Ärendenummer(1)</span>
           </b-button>
         </b-card-header>
@@ -89,13 +94,22 @@
         </b-collapse>
       </b-card>
 
-      <b-card no-body class="mb-1">
+      <b-card no-body class="mb-1 text-left">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-2 variant="secondary"
+          <b-button
+            block
+            v-b-toggle.accordion-2
+            variant="secondary"
+            class="text-left"
             ><span>Ärendenummer(2)</span></b-button
           >
         </b-card-header>
-        <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel">
+        <b-collapse
+          id="accordion-2"
+          accordion="my-accordion"
+          role="tabpanel"
+          class="text-left"
+        >
           <b-card-body>
             <b-card-text>{{ text }}</b-card-text>
           </b-card-body>
@@ -104,11 +118,20 @@
 
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle.accordion-3 variant="secondary"
+          <b-button
+            block
+            v-b-toggle.accordion-3
+            variant="secondary"
+            class="text-left"
             ><span>Ärendenummer(3)</span></b-button
           >
         </b-card-header>
-        <b-collapse id="accordion-3" accordion="my-accordion" role="tabpanel">
+        <b-collapse
+          id="accordion-3"
+          accordion="my-accordion"
+          role="tabpanel"
+          class="text-left"
+        >
           <b-card-body>
             <b-card-text>{{ text }}</b-card-text>
           </b-card-body>
@@ -128,7 +151,7 @@
           </b-form-select>
         </b-form-group>
       </div>
-      <div class="col-8 p-0 mx-auto">
+      <div class="col-7 p-0 mx-auto">
         <b-form-input
           placeholder="Lägg till/Ta bort Kategori"
           v-model="addRemoveText"
