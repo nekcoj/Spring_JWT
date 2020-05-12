@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
 
@@ -72,5 +73,9 @@ public class NewIssueService {
 
     private String randomNumberGenerator(){
         return  String.valueOf(Math.random()).replace("0.","").substring(0,8);
+    }
+
+    public List<NewIssue> getAll() {
+        return newIssueRepository.findAll();
     }
 }
