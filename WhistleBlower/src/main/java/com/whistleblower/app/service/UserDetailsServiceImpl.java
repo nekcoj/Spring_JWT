@@ -2,9 +2,6 @@ package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.UserEntity;
 import com.whistleblower.app.repository.UserRepository;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-import java.util.Collection;
 import java.util.Date;
 
 import static com.whistleblower.app.security.SecurityConstants.ROLE_ADMIN;
@@ -45,18 +41,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity = userRepository.findByUsernameIgnoreCase(username);
-        if (userEntity == null) {
+        UserEntity applicationUserEntity = userRepository.findByUsernameIgnoreCase(username);
+        if (applicationUserEntity == null) {
             throw new UsernameNotFoundException(username);
         }
-
-        return new org.springframework.security.core.userdetails.User(userEntity.getUsername(), userEntity.getPassword(), getAuthorities(userEntity));
+        return new org.springframework.security.core.userdetails.User(applicationUserEntity.getUsername(), applicationUserEntity.getPassword(), emptyList());
     }
-
-    private static Collection<? extends GrantedAuthority> getAuthorities(UserEntity user) {
-        String[] userRoles = {user.getRole()};
-        return AuthorityUtils.createAuthorityList(userRoles);
-    }
-
 
 }
