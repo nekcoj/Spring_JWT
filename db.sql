@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `new_issue` (
   `where_issue` varchar(1024) NOT NULL,
   `details` varchar(1024) NOT NULL,
   `employee_awareness` varchar(1024) NOT NULL,
-  `attachment` varchar(1024) NOT NULL,
+  `attachment` varchar(1024) DEFAULT NULL,
   `temp_user_id` int(10) unsigned NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `issue_status` char(15) NOT NULL DEFAULT 'UNASSIGNED',
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `new_issue` (
   CONSTRAINT `status_contraint` CHECK (`issue_status` = 'UNASSIGNED')
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table whistleblower.new_issue: ~0 rows (approximately)
+-- Dumping data for table whistleblower.new_issue: ~4 rows (approximately)
 DELETE FROM `new_issue`;
 /*!40000 ALTER TABLE `new_issue` DISABLE KEYS */;
 INSERT INTO `new_issue` (`id`, `category`, `when_issue`, `where_issue`, `details`, `employee_awareness`, `attachment`, `temp_user_id`, `created`, `issue_status`) VALUES
@@ -108,6 +108,8 @@ CREATE TABLE IF NOT EXISTS `postbox_post` (
   `temp_user_id` int(10) unsigned NOT NULL DEFAULT 0,
   `lawyer_id` int(10) unsigned NOT NULL DEFAULT 0,
   `message` varchar(2048) DEFAULT NULL,
+  `sent_by` varchar(20) NOT NULL,
+  `replied` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`),
   KEY `FK_postbox_post_user` (`temp_user_id`),
   KEY `FK_postbox_post_user_2` (`lawyer_id`),
@@ -129,18 +131,24 @@ CREATE TABLE IF NOT EXISTS `user` (
   `last_login` datetime DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp(),
   `token_id` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
+  `first_name` varchar(20) DEFAULT NULL,
+  `surname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_username_uindex` (`username`),
+  UNIQUE KEY `user_token_id_uindex` (`token_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table whistleblower.user: ~3 rows (approximately)
+-- Dumping data for table whistleblower.user: ~7 rows (approximately)
 DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `username`, `password`, `role`, `last_login`, `created`, `token_id`) VALUES
-	(15, 'Admin', '$2a$10$n1BkMSLK6cZ3RjFYkMZwJO/eZ.Sgx2Z5ehPdE607U/h4o20CZpE6G', 'ADMIN', NULL, '2020-05-08 11:03:05', NULL),
-	(16, '12575043', '$2a$10$2R8V1RLq8lyo7op2/Wv6f.9H/jyPbUxrwXAtDB9//MrPUnl9iUjZC', 'USER', NULL, '2020-05-08 11:05:43', NULL),
-	(17, '33764026', '$2a$10$W0vH5FINxU0L5bBzoM1DxOf3aU6Rq8Z67/nt9gTdi5b/P/qJGLmFi', 'USER', '2020-05-08 11:20:57', '2020-05-08 11:11:57', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6IjMzNzY0MDI2IiwiZXhwIjoxNTg5ODAwODU3LCJyb2wiOltdfQ.gDv0Jy9YAJfEwnlSizALTfWhuvmSNGdnMQTP--fcUDdh9os6s9VNj8eZrrdus7n8IAyLnNFTw5abod_GATEXOw'),
-	(18, '88088744', '$2a$10$Fu90jJdXShJx7pS0c/U1G.LsCJrbpTsnTam2FPNnJTgCKtAsa7IZ6', 'USER', '2020-05-08 11:14:59', '2020-05-08 11:14:44', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6Ijg4MDg4NzQ0IiwiZXhwIjoxNTg5ODAwNDk5LCJyb2wiOltdfQ.tGQ8foRrZ7EPwZ9F_gImUSH89K4TWJxGNqpC1O1fgKhGdpvf2OT0r0_pOAj2LH5XczRxsNMDzzVY35PbrvFXFw'),
-	(19, '92997063', '$2a$10$N1aiSoN7HgIiQcAvCnn9f.P/r5omEqvYt4kQpd/keWw0zDhvx/V3e', 'USER', NULL, '2020-05-08 11:22:06', NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `role`, `last_login`, `created`, `token_id`, `first_name`, `surname`) VALUES
+	(15, 'Admin', '$2a$10$n1BkMSLK6cZ3RjFYkMZwJO/eZ.Sgx2Z5ehPdE607U/h4o20CZpE6G', 'ADMIN', NULL, '2020-05-08 11:03:05', NULL, NULL, NULL),
+	(16, '12575043', '$2a$10$2R8V1RLq8lyo7op2/Wv6f.9H/jyPbUxrwXAtDB9//MrPUnl9iUjZC', 'USER', NULL, '2020-05-08 11:05:43', NULL, NULL, NULL),
+	(17, '33764026', '$2a$10$W0vH5FINxU0L5bBzoM1DxOf3aU6Rq8Z67/nt9gTdi5b/P/qJGLmFi', 'USER', '2020-05-08 11:20:57', '2020-05-08 11:11:57', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6IjMzNzY0MDI2IiwiZXhwIjoxNTg5ODAwODU3LCJyb2wiOltdfQ.gDv0Jy9YAJfEwnlSizALTfWhuvmSNGdnMQTP--fcUDdh9os6s9VNj8eZrrdus7n8IAyLnNFTw5abod_GATEXOw', NULL, NULL),
+	(18, '88088744', '$2a$10$Fu90jJdXShJx7pS0c/U1G.LsCJrbpTsnTam2FPNnJTgCKtAsa7IZ6', 'USER', '2020-05-08 11:14:59', '2020-05-08 11:14:44', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJzZWN1cmUtYXBpIiwiYXVkIjoic2VjdXJlLWFwcCIsInN1YiI6Ijg4MDg4NzQ0IiwiZXhwIjoxNTg5ODAwNDk5LCJyb2wiOltdfQ.tGQ8foRrZ7EPwZ9F_gImUSH89K4TWJxGNqpC1O1fgKhGdpvf2OT0r0_pOAj2LH5XczRxsNMDzzVY35PbrvFXFw', NULL, NULL),
+	(19, '92997063', '$2a$10$N1aiSoN7HgIiQcAvCnn9f.P/r5omEqvYt4kQpd/keWw0zDhvx/V3e', 'USER', NULL, '2020-05-08 11:22:06', NULL, NULL, NULL),
+	(20, '29999097', '$2a$10$3uqN8APnhogGoyUiYniyC.MzjJhnzoQrz12d6s5rCcKxluxLrTvgu', 'USER', NULL, '2020-05-11 07:29:43', NULL, NULL, NULL),
+	(21, '20191330', '$2a$10$ioIRhfwwBJBIzo/ia49Om.58GMvMP1RIRauDDZq/AQHMHnU0GEtpO', 'USER', NULL, '2020-05-11 07:31:51', NULL, NULL, NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
