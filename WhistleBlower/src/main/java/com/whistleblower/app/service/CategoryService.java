@@ -7,6 +7,8 @@ import com.whistleblower.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.whistleblower.app.security.SecurityConstants.ROLE_ADMIN;
 
 @Service
@@ -40,5 +42,9 @@ public class CategoryService {
          }
         }
         return false;
+    }
+
+    public List<Category> getAll() {
+       return categoryRepository.findAll();
     }
 }

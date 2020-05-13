@@ -4,10 +4,10 @@ public class SecurityConstants {
     //IssueController
     public static final String ISSUE_URL_ROOT = "/issue";
     public static final String CREATE_NEW_ISSUE = "/create";
-    public static final String GET_ALL_ISSUES = "/get-all";
+    public static final String GET_ALL_ISSUES_FOR_ADMIN = "/get-all";
+    public static final String GET_ALL_ISSUES_FOR_LAWYER = "/get-all-lawyer";
     public static final String ASSIGN_ISSUE = "/assign";
     public static final String CHANGE_ISSUE_STATUS = "/change-status";
-
 
     //UserController
     public static final String USER_URL_ROOT = "/user";
@@ -17,6 +17,10 @@ public class SecurityConstants {
     public static final String CATEGORY_URL_ROOT = "/category";
     public static final String REMOVE_CATEGORY = "/remove";
     public static final String ADD_CATEGORY = "/add";
+    public static final String GET_CATEGORIES = "/get-all";
+
+    //PostBox
+    public static final  String POSTBOX_URL_ROOT = "/post";
 
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys

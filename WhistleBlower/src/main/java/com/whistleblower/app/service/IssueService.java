@@ -2,10 +2,7 @@ package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.entity.UserEntity;
-import com.whistleblower.app.modelDto.AssignDto;
-import com.whistleblower.app.modelDto.NewIssueDto;
-import com.whistleblower.app.modelDto.StatusDto;
-import com.whistleblower.app.modelDto.TempUserDto;
+import com.whistleblower.app.modelDto.*;
 import com.whistleblower.app.repository.CategoryRepository;
 import com.whistleblower.app.repository.IssueRepository;
 import com.whistleblower.app.repository.IssueStatusRepository;
@@ -13,6 +10,7 @@ import com.whistleblower.app.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -126,4 +124,14 @@ public class IssueService {
         }
         return false;
     }
+
+
+   public List<Issue> getIssuesForLawyer(TokenId tokenId){
+        var lawyer  = userRepository.findByTokenId(tokenId.getTokenId());
+        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
+            return  issueRepository.findByLawyer_Id(lawyer.getId());
+        }
+        return Collections.emptyList();
+    }
+
 }

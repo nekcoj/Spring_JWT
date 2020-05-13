@@ -4,6 +4,7 @@ import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.modelDto.AssignDto;
 import com.whistleblower.app.modelDto.NewIssueDto;
 import com.whistleblower.app.modelDto.StatusDto;
+import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class IssueController {
     return ResponseEntity.ok(newUser);
 }
 
-@GetMapping(GET_ALL_ISSUES)
+@GetMapping(GET_ALL_ISSUES_FOR_ADMIN)
 ResponseEntity<List<Issue>> getNewIssues(){
     return ResponseEntity.ok(issueService.getAllNewIssues());
 }
@@ -63,6 +64,16 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
              return ResponseEntity.ok(statusDto);
          }
          return  ResponseEntity.badRequest().body(statusDto);
+    }
+
+    @PostMapping(GET_ALL_ISSUES_FOR_LAWYER)
+    ResponseEntity<?> getIssues(@Valid @RequestBody TokenId tokenId,
+                                          BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(tokenId);
+
+          var issues = issueService.getIssuesForLawyer(tokenId);
+
+          return ResponseEntity.ok(issues);
     }
 
 
