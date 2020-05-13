@@ -113,7 +113,8 @@ public class IssueService {
     public boolean changeIssueStatus(StatusDto statusDto) {
         var user = userRepository.findByTokenId(statusDto.getTokenId());
         var issue = issueRepository.findById(statusDto.getIssueId());
-        if (issue.isPresent() && user != null && user.getId() == issue.get().getLawyer().getId()) {
+        if (issue.isPresent() && user != null && user.getId() == issue.get().getLawyer().getId()
+        && user.getRole().equals(ROLE_LAWYER)) {
             var issueToChange = issue.get();
             var issueStatus = issueStatusRepository.findById(statusDto.getStatusId());
 
