@@ -19,6 +19,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue')
   },
   {
+    path: '/valj',
+    name: 'Vad göra?',
+    component: () => import('../views/blower/Dash.vue')
+  },
+  {
     path: '/nyttarende',
     name: 'Nytt ärende',
     component: () => import('../views/blower/NewIssue.vue')
@@ -67,6 +72,14 @@ Vue.use(VueRouter)
       name: 'Logga in admin',
       component: () => import ('../views/admin/LoginAdmin.vue')
     },
+
+    {
+    
+      path: '/safepostbox',
+      name: 'Safepostbox anmälare',
+      component: () => import ('../views/blower/Safepostbox.vue')
+    },
+
 
 
 
