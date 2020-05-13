@@ -125,6 +125,16 @@
 export default {
   data() {
     return {
+      categories: [
+        "Mutor, korruption & förfalskning",
+        "Dataskydd och brott mot IT-säkerhet",
+        "Diskriminering, trakasserier och andra arbetsrelaterade lagproblem",
+        "Bedrägeri, missbruk och stöld",
+        "Hälsa, säkerhet & miljö",
+        "Penningtvätt",
+        "Personal",
+        "Annat",
+      ],
       months: [
         "Januari",
         "Februari",
