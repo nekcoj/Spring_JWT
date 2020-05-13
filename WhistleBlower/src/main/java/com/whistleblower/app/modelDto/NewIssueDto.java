@@ -1,7 +1,7 @@
 package com.whistleblower.app.modelDto;
 
 public class NewIssueDto  {
-    private String category;
+    private long categoryId;
     private String whenIssue;
     private String whereIssue;
     private String details;
@@ -10,13 +10,13 @@ public class NewIssueDto  {
 
 
 
-    public String getCategory() {
-        return category;
+    public long getCategoryId() {
+        return categoryId;
     }
 
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryId(long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getWhenIssue() {

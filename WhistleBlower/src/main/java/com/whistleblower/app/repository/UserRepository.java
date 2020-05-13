@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+    UserEntity findByTokenId(String tokenId);
 
     boolean existsTempUserByUsername(String username);
 

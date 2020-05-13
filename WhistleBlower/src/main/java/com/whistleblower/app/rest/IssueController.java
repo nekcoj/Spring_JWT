@@ -18,7 +18,7 @@ import java.util.List;
 import static com.whistleblower.app.security.SecurityConstants.*;
 
 @RestController
-@RequestMapping(NEW_ISSUE_URL_ROOT)
+@RequestMapping(ISSUE_URL_ROOT)
 public class IssueController {
 
 @Autowired

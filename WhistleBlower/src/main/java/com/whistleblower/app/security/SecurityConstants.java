@@ -2,7 +2,7 @@ package com.whistleblower.app.security;
 
 public class SecurityConstants {
     //IssueController
-    public static final String NEW_ISSUE_URL_ROOT = "/issue";
+    public static final String ISSUE_URL_ROOT = "/issue";
     public static final String CREATE_NEW_ISSUE = "/create";
     public static final String GET_ALL_ISSUES = "/get-all";
     public static final String ASSIGN_ISSUE = "/assign";

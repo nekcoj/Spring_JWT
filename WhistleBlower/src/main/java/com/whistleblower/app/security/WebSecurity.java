@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import static com.whistleblower.app.security.SecurityConstants.ROLE_ADMIN;
+
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
@@ -34,7 +36,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.CREATE_NEW_ISSUE).permitAll()
-                .anyRequest().permitAll()
+                .antMatchers(HttpMethod.POST, SecurityConstants.ISSUE_URL_ROOT + SecurityConstants.ASSIGN_ISSUE)
+                .hasAuthority(ROLE_ADMIN)
+              //  .anyRequest().permitAll()
                // .anyRequest().authenticated()
 
                 .and()

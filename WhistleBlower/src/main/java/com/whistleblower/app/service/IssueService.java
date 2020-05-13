@@ -6,6 +6,7 @@ import com.whistleblower.app.modelDto.AssignDto;
 import com.whistleblower.app.modelDto.NewIssueDto;
 import com.whistleblower.app.modelDto.StatusDto;
 import com.whistleblower.app.modelDto.TempUserDto;
+import com.whistleblower.app.repository.CategoryRepository;
 import com.whistleblower.app.repository.IssueRepository;
 import com.whistleblower.app.repository.IssueStatusRepository;
 import com.whistleblower.app.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
 import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
 
 @Service
@@ -25,16 +27,19 @@ public class IssueService {
 
     private UserRepository userRepository;
 
+    private CategoryRepository categoryRepository;
+
     private IssueStatusRepository issueStatusRepository;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public IssueService(IssueRepository issueRepository, UserRepository userRepository,
-                        BCryptPasswordEncoder bCryptPasswordEncoder, IssueStatusRepository issueStatusRepository) {
+                        BCryptPasswordEncoder bCryptPasswordEncoder, IssueStatusRepository issueStatusRepository, CategoryRepository categoryRepository) {
         this.issueRepository = issueRepository;
         this.userRepository = userRepository;
         this.issueStatusRepository = issueStatusRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.categoryRepository = categoryRepository;
     }
 
     public TempUserDto createIssueAndUser(NewIssueDto newIssueDto) {
@@ -45,7 +50,8 @@ public class IssueService {
 
     private void createNewIssue(TempUserDto tempUser, NewIssueDto newIssueDto) {
         var newIssue = new Issue();
-        newIssue.setCategory(newIssueDto.getCategory());
+        var category = categoryRepository.findById(newIssueDto.getCategoryId()).orElse(null);
+        newIssue.setCategory(category);
         newIssue.setWhenIssue(newIssueDto.getWhenIssue());
         newIssue.setWhereIssue(newIssueDto.getWhereIssue());
         newIssue.setDetails(newIssueDto.getDetails());
@@ -86,11 +92,12 @@ public class IssueService {
         return issueRepository.findAll();
     }
 
+    //Admin
     public boolean assignIssue(AssignDto assignDto) {
         var issueToAssign = issueRepository.findById(assignDto.getIssueId());
         var assignedLawyer = userRepository.findById(assignDto.getLawyerId());
 
-        if (issueToAssign.isPresent() && assignedLawyer.isPresent()) {
+        if (issueToAssign.isPresent() && assignedLawyer.isPresent() && assignedLawyer.get().getRole().equals(ROLE_LAWYER)) {
             var issue = issueToAssign.get();
             var lawyer = assignedLawyer.get();
             var status = issueStatusRepository.findById(2L);
@@ -102,6 +109,7 @@ public class IssueService {
         return false;
     }
 
+    //Lawyer
     public boolean changeIssueStatus(StatusDto statusDto) {
         var user = userRepository.findByTokenId(statusDto.getTokenId());
         var issue = issueRepository.findById(statusDto.getIssueId());

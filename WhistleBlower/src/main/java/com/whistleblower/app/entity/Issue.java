@@ -13,7 +13,7 @@ public class Issue {
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     private long id;
 
-    private String category;
+
 
     private String whenIssue;
 
@@ -29,6 +29,10 @@ public class Issue {
 
     private Date assigned;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private Category category;
+
     @OneToOne()
     @JoinColumn(name = "temp_user_id", referencedColumnName = "id", nullable = false)
     private UserEntity tempUser;
@@ -40,6 +44,14 @@ public class Issue {
    @ManyToOne
    @JoinColumn(name = "issue_status_id", referencedColumnName = "id")
     private IssueStatus issueStatus;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public Date getAssigned() {
         return assigned;
@@ -65,13 +77,6 @@ public class Issue {
         this.id = id;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public String getWhenIssue() {
         return whenIssue;
