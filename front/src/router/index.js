@@ -68,6 +68,14 @@ Vue.use(VueRouter)
       component: () => import ('../views/admin/LoginAdmin.vue')
     },
 
+    {
+    
+      path: '/safepostbox',
+      name: 'Safepostbox anmälare',
+      component: () => import ('../views/blower/Safepostbox.vue')
+    },
+
+
 
 
 ]
