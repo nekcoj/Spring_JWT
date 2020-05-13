@@ -1,7 +1,17 @@
 package com.whistleblower.app.security;
 
 public class SecurityConstants {
-    public static final String SEND_ISSUE_URL = "/send";
+    //IssueController
+    public static final String NEW_ISSUE_URL_ROOT = "/issue";
+    public static final String CREATE_NEW_ISSUE = "/create";
+    public static final String GET_ALL_ISSUES = "/get-all";
+    public static final String ASSIGN_ISSUE = "/assign";
+    public static final String CHANGE_ISSUE_STATUS = "/change-status";
+
+
+    //UserController
+    public static final String USER_URL_ROOT = "/user";
+    public static final String GET_ALL_LAWYERS = "/lawyers";
 
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
