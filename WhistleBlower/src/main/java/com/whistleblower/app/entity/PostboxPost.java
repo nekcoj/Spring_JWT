@@ -12,12 +12,14 @@ public class PostboxPost {
     private @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)  long id;
 
-    private Date sent;
+    private Date sentDate;
+    private Date repliedDate;
     private long tempUserId;
     private long lawyerId;
     private String message;
-    private String sentBy;
-    private boolean replied;
+    private String reply;
+
+
 
     public long getId() {
         return id;
@@ -27,12 +29,12 @@ public class PostboxPost {
         this.id = id;
     }
 
-    public Date getSent() {
-        return sent;
+    public Date getSentDate() {
+        return sentDate;
     }
 
-    public void setSent(Date sent) {
-        this.sent = sent;
+    public void setSentDate(Date sent) {
+        this.sentDate = sent;
     }
 
     public long getTempUserId() {
@@ -59,19 +61,19 @@ public class PostboxPost {
         this.message = message;
     }
 
-    public String getSentBy() {
-        return sentBy;
+    public Date getRepliedDate() {
+        return repliedDate;
     }
 
-    public void setSentBy(String sentBy) {
-        this.sentBy = sentBy;
+    public void setRepliedDate(Date repliedDate) {
+        this.repliedDate = repliedDate;
     }
 
-    public boolean isReplied() {
-        return replied;
+    public String getReply() {
+        return reply;
     }
 
-    public void setReplied(boolean replied) {
-        this.replied = replied;
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 }

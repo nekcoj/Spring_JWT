@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.whistleblower.app.security.SecurityConstants.POSTBOX_URL_ROOT;
+
 @RestController
-@RequestMapping("/post")
+@RequestMapping(POSTBOX_URL_ROOT)
 public class PostBoxController {
 
     @Autowired
@@ -26,14 +28,15 @@ public class PostBoxController {
     ResponseEntity<?> getMessages(@Valid @RequestBody TokenId tokenId,
                                                  BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error While Mapping Object"));
-        return ResponseEntity.ok(postBoxService.getUnRepliedMessages(tokenId.getTokenId()));
+
+        return ResponseEntity.ok("");
     }
 
     @PostMapping("send-message-user")
     ResponseEntity<?> insertMessage(@Valid @RequestBody PostDto postDto,
                                     BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error While Mapping Object"));
-        postBoxService.insertReplyFromTempUser(postDto);
+
 
         return ResponseEntity.ok("Message received!");
     }
