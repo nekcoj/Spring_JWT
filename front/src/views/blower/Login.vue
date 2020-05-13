@@ -6,7 +6,7 @@
                 <b-form-input
                     id="vissla-ID"
                     type="text"
-                    v-model="form.username"
+                    v-model="username"
                     required
                     placeholder="ID"
                 ></b-form-input>
@@ -16,7 +16,7 @@
                 <b-form-input
                     id="vissla-PW"
                     type="password"
-                    v-model="form.password"
+                    v-model="password"
                     required
                     placeholder="Lösenord"
                 ></b-form-input>
@@ -62,12 +62,17 @@ span.liten-text{
 export default {
   data() {
     return {
-      form: {
-        username: '',
-        password: '',
-      }
+      username: '',
+      password: ''
     }
-  }, 
+  },
+  methods:{
+    onSubmit(evt){
+      evt.preventDefault();
+      const { username, password } = this;
+      this.$store.dispatch('login', {username, password});
+    }
+  }
     //detta är gammalt bös jag klippt från förra projektet
     /*methods: {
         async springLogin() {

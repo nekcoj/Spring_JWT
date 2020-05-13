@@ -73,7 +73,7 @@
               Tillbaka
             </b-button></b-col>
           <b-col>
-            <b-button to="./bekraftelse" variant="primary" class="btn" v-on:click="sendNewIssue">
+            <b-button variant="primary" class="btn" v-on:click="sendNewIssue">
               Skicka
             </b-button>
           </b-col>
@@ -104,7 +104,7 @@ export default {
       setTimeout(() => {
         this.clicked = false;
       }, 500);
-
+      this.$router.push({path: '/bekraftelse'})
     }
   },
   computed:{

@@ -9,12 +9,12 @@
 
     </div>
     <div id="id-and-pw">
-      <span>
+ 
         <p class="h5">Tillfälligt ID:</p>
-        <p>{{user.username}}</p>
+        <p>{{this.$store.state.temporaryUser.username}}</p>
         <p class="h5">Tillfälligt lösenord:</p>
-        <p>{{user.password}}</p>
-        </span>
+        <p>{{this.$store.state.temporaryUser.password}}</p>
+        
     </div>
     <div id="id-and-pw-info">
       <span>
@@ -25,7 +25,7 @@
       </span>
     </div>
     <div id="all-done">
-    <b-btn variant="success" id="btn-all-done" class="btn">Stäng fönstret</b-btn>
+    <input type="button" onclick="window.opener=null; window.close(); return false;" value="Stäng fönstret" class="btn btn-primary">
     </div>
         
   </div>
@@ -33,14 +33,13 @@
 
 <script>
 export default {
-  methods: {},
-  computed:{
-    user:{
-      get() {
-        return this.$store.state.temporaryUser;
-      }
+  data() {
+    return {
+      temporaryUser:{}
     }
-  }
+  },
+  methods: {},
+  computed:{},
 }
 </script>
 
