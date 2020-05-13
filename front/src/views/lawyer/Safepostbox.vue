@@ -72,9 +72,6 @@ export default {
 </script>
 
 <style>
-.p-small{
-  font-size:
-}
 
 #safepost-blower-button{
 margin-top: 1.5em;
