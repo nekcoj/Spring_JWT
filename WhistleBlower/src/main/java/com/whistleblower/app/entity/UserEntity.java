@@ -25,9 +25,18 @@ public class UserEntity {
     private Date lastLogin;
     private String tokenId;
     private String role;
+    private boolean enabled;
 
     private Date created;
 
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getRole() {
         return role;

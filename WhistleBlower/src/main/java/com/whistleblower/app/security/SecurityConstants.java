@@ -13,6 +13,11 @@ public class SecurityConstants {
     public static final String USER_URL_ROOT = "/user";
     public static final String GET_ALL_LAWYERS = "/lawyers";
 
+    //CategoryController
+    public static final String CATEGORY_URL_ROOT = "/category";
+    public static final String REMOVE_CATEGORY = "/remove";
+    public static final String ADD_CATEGORY = "/add";
+
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
     public static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";

@@ -14,7 +14,6 @@ public class Issue {
     private long id;
 
 
-
     private String whenIssue;
 
     private String whereIssue;
@@ -28,6 +27,8 @@ public class Issue {
     private Date created;
 
     private Date assigned;
+
+    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -47,6 +48,14 @@ public class Issue {
 
     public Category getCategory() {
         return category;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setCategory(Category category) {
