@@ -101,7 +101,7 @@ public class UserEntity {
         return lastName;
     }
 
-    public void setLastName(String surname) {
-        this.lastName = surname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
