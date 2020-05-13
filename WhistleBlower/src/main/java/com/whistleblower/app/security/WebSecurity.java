@@ -41,6 +41,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAuthority(ROLE_ADMIN)
                 .antMatchers(HttpMethod.POST, SecurityConstants.ISSUE_URL_ROOT + SecurityConstants.CHANGE_ISSUE_STATUS)
                 .hasAuthority(ROLE_LAWYER)
+                .antMatchers(HttpMethod.POST, SecurityConstants.CATEGORY_URL_ROOT + "/**")
+                .hasAuthority(ROLE_ADMIN)
+
               //  .anyRequest().permitAll()
                // .anyRequest().authenticated()
 

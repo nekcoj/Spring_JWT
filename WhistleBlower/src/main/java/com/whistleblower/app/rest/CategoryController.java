@@ -37,4 +37,18 @@ ResponseEntity<?> addCategory(@Valid @RequestBody CategoryDto categoryDto,
     }
 }
 
+    @PostMapping(REMOVE_CATEGORY)
+    ResponseEntity<?> removeCategory(@Valid @RequestBody CategoryDto categoryDto,
+                                  BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(categoryDto);
+        }
+        boolean removed = categoryService.removeCategory(categoryDto);
+        if(removed){
+            return  ResponseEntity.ok("Category Removed!");
+        }else {
+            return ResponseEntity.badRequest().body(categoryDto);
+        }
+    }
+
 }

@@ -1,17 +1,13 @@
 package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.Category;
-import com.whistleblower.app.entity.UserEntity;
 import com.whistleblower.app.modelDto.CategoryDto;
 import com.whistleblower.app.repository.CategoryRepository;
 import com.whistleblower.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.whistleblower.app.security.SecurityConstants.ROLE_ADMIN;
-import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
 
 @Service
 public class CategoryService {
@@ -32,5 +28,17 @@ public class CategoryService {
              return  true;
          }
          return false;
+    }
+
+    public boolean removeCategory(CategoryDto categoryDto) {
+        var user = userRepository.findByTokenId(categoryDto.getTokenId());
+        if(user != null && user.getRole().equals(ROLE_ADMIN)){
+         var category =  categoryRepository.findByCategoryName(categoryDto.getCategoryName());
+         if(category != null){
+             categoryRepository.deleteById(category.getId());
+             return true;
+         }
+        }
+        return false;
     }
 }
