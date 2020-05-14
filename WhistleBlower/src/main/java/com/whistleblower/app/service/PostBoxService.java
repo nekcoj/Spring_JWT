@@ -10,10 +10,8 @@ import com.whistleblower.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
 import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
@@ -69,26 +67,24 @@ public class PostBoxService {
         return Collections.emptyList();
     }
 
-    public HashMap<Long,IssueAndPostDto> getMessagesForLawyer(TokenId tokenId) {
-//        var lawyer = userRepository.findByTokenId(tokenId.getTokenId());
-//        HashMap<Long, List<IssueAndPostDto>> mappedLists = new HashMap<>();
-//        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
-//            var issues = issueRepository.findByLawyer_Id(lawyer.getId())
-//                    .stream()
-//                    .map(issue -> {
-//               IssueAndPostDto issueAndPostDto = new IssueAndPostDto();
-//               issueAndPostDto.setIssue(issue);
-//               var messages = postBoxRepository.getAllByLawyerIdAndTempUserId(lawyer.getId(), issue.getTempUser().getId());
-//               issueAndPostDto.setMessages(messages);
-//               return issueAndPostDto;
-//           }).collect(Collectors.groupingBy(IssueAndPostDto::getIssue ,
-//                            Collectors.mapping(e -> {
-//
-//                            } ));
-//
-//
-//        }
-return  null;
+    public Map<Long, List<IssueAndPostDto>> getMessagesForLawyer(TokenId tokenId) {
+        var lawyer = userRepository.findByTokenId(tokenId.getTokenId());
+        HashMap<Long, List<IssueAndPostDto>> mappedLists = new HashMap<>();
+        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
 
+            return issueRepository.findByLawyer_Id(lawyer.getId())
+                    .stream()
+                    .map(issue -> {
+               IssueAndPostDto issueAndPostDto = new IssueAndPostDto();
+               issueAndPostDto.setIssue(issue);
+               var messages = postBoxRepository.getAllByLawyerIdAndTempUserId(lawyer.getId(), issue.getTempUser().getId());
+               issueAndPostDto.setMessages(messages);
+               return issueAndPostDto;
+           }).collect(Collectors.groupingBy(e -> e.getIssue().getTempUser().getId() ,
+                            Collectors.toList()));
+        }
+
+
+        return null;
     }
 }
