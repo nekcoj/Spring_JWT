@@ -1,7 +1,7 @@
 <template>
-<div>
+   <div class="safepostbox container">
     <div role="tablist">
-    <b-card no-body class="mb-1" v-for="item in items" :key="item.id">
+    <b-card no-body class="mb-1 text-left" v-for="item in items" :key="item.id">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button 
         block 
@@ -39,8 +39,7 @@
     <b-button id="safepost-blower-button-back" variant="primary">Tillbaka</b-button>
     </router-link>
   </div>
-</div>
-  
+</div>  
 </template>
 
 <script>

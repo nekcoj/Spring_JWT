@@ -1,6 +1,7 @@
 <template>
+<div  class="dashboard container">
 <b-card>
-    <b-card-header class="dashboard container">
+    <b-card-header>
         <b-nav pills fill type="light" variant="light">
             <b-nav-item :to="{ path: '/jurist/'}" exact-active-class="active">
                 Panel
@@ -19,6 +20,7 @@
         </router-view>
     </b-card-body>
 </b-card>
+</div>
 </template>
 <script>
 
