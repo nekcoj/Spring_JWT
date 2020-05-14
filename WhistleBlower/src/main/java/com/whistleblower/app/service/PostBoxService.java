@@ -1,6 +1,7 @@
 package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.PostboxPost;
+import com.whistleblower.app.modelDto.IssueAndPostDto;
 import com.whistleblower.app.modelDto.PostDto;
 import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.repository.IssueRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
@@ -65,5 +67,28 @@ public class PostBoxService {
             return postBoxRepository.getAllByTempUserIdAndReplyIsNull(user.getId());
         }
         return Collections.emptyList();
+    }
+
+    public HashMap<Long,IssueAndPostDto> getMessagesForLawyer(TokenId tokenId) {
+//        var lawyer = userRepository.findByTokenId(tokenId.getTokenId());
+//        HashMap<Long, List<IssueAndPostDto>> mappedLists = new HashMap<>();
+//        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
+//            var issues = issueRepository.findByLawyer_Id(lawyer.getId())
+//                    .stream()
+//                    .map(issue -> {
+//               IssueAndPostDto issueAndPostDto = new IssueAndPostDto();
+//               issueAndPostDto.setIssue(issue);
+//               var messages = postBoxRepository.getAllByLawyerIdAndTempUserId(lawyer.getId(), issue.getTempUser().getId());
+//               issueAndPostDto.setMessages(messages);
+//               return issueAndPostDto;
+//           }).collect(Collectors.groupingBy(IssueAndPostDto::getIssue ,
+//                            Collectors.mapping(e -> {
+//
+//                            } ));
+//
+//
+//        }
+return  null;
+
     }
 }

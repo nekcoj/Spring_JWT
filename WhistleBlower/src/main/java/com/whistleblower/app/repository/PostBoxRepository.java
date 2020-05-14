@@ -11,4 +11,7 @@ public interface PostBoxRepository extends JpaRepository<PostboxPost, Long>{
 
 
     List<PostboxPost> getAllByTempUserIdAndReplyIsNull(long tempUserId);
+
+
+    List<PostboxPost> getAllByLawyerIdAndTempUserId(long lawyerId, long tempUserId);
 }

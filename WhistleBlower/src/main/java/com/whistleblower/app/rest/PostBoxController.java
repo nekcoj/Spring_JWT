@@ -58,9 +58,16 @@ public class PostBoxController {
         var inboxMessages = postBoxService.getMessagesForTempUser(tokenId);
         return ResponseEntity.ok(inboxMessages);
     }
-   
 
 
+    @PostMapping(POSTBOX_GET_ALL_LAWYER)
+    ResponseEntity<?> getMessagesForLawyer(@Valid @RequestBody TokenId tokenId,
+                                             BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
+
+        var inboxMessages = postBoxService.getMessagesForLawyer(tokenId);
+        return ResponseEntity.ok(inboxMessages);
+    }
 
 
 }
