@@ -69,9 +69,8 @@ public class PostBoxService {
 
     public Map<Long, List<IssueAndPostDto>> getMessagesForLawyer(TokenId tokenId) {
         var lawyer = userRepository.findByTokenId(tokenId.getTokenId());
-        HashMap<Long, List<IssueAndPostDto>> mappedLists = new HashMap<>();
-        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
 
+        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
             return issueRepository.findByLawyer_Id(lawyer.getId())
                     .stream()
                     .map(issue -> {
@@ -80,11 +79,11 @@ public class PostBoxService {
                var messages = postBoxRepository.getAllByLawyerIdAndTempUserId(lawyer.getId(), issue.getTempUser().getId());
                issueAndPostDto.setMessages(messages);
                return issueAndPostDto;
-           }).collect(Collectors.groupingBy(e -> e.getIssue().getTempUser().getId() ,
+           }).collect(Collectors.groupingBy(e -> e.getIssue().getId(),
                             Collectors.toList()));
         }
 
 
-        return null;
+        return Collections.emptyMap();
     }
 }
