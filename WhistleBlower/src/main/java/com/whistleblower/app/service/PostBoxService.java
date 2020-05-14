@@ -2,6 +2,7 @@ package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.PostboxPost;
 import com.whistleblower.app.modelDto.IssueAndPostDto;
+import com.whistleblower.app.modelDto.IssueDto;
 import com.whistleblower.app.modelDto.PostDto;
 import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.repository.IssueRepository;
@@ -37,7 +38,7 @@ public class PostBoxService {
             var postMessage = new PostboxPost();
             postMessage.setMessage(postDto.getMessage());
             postMessage.setLawyerId(lawyer.getId());
-            postMessage.setSentDate(Date.from(new Date().toInstant()));
+            postMessage.setSentDate(new Date());
             postMessage.setTempUserId(postDto.getTempUserId());
             postBoxRepository.save(postMessage);
             return true;
@@ -67,19 +68,20 @@ public class PostBoxService {
         return Collections.emptyList();
     }
 
-    public Map<Long, List<IssueAndPostDto>> getMessagesForLawyer(TokenId tokenId) {
+    public Map<String, List<IssueAndPostDto>> getMessagesForLawyer(TokenId tokenId) {
         var lawyer = userRepository.findByTokenId(tokenId.getTokenId());
 
         if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
             return issueRepository.findByLawyer_Id(lawyer.getId())
                     .stream()
                     .map(issue -> {
+                        IssueDto issueDto = new IssueDto(issue);
                IssueAndPostDto issueAndPostDto = new IssueAndPostDto();
-               issueAndPostDto.setIssue(issue);
+               issueAndPostDto.setIssue(issueDto);
                var messages = postBoxRepository.getAllByLawyerIdAndTempUserId(lawyer.getId(), issue.getTempUser().getId());
                issueAndPostDto.setMessages(messages);
                return issueAndPostDto;
-           }).collect(Collectors.groupingBy(e -> e.getIssue().getId(),
+           }).collect(Collectors.groupingBy(e -> "issue" + e.getIssue().getIssueId(),
                             Collectors.toList()));
         }
         return Collections.emptyMap();

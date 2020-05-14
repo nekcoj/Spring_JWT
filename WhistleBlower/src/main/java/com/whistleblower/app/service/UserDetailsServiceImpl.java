@@ -35,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(adminUser == null){
             adminUser = new UserEntity();
             adminUser.setRole(ROLE_ADMIN);
-            adminUser.setCreated(Date.from(new Date().toInstant()));
+            adminUser.setCreated(new Date());
             adminUser.setUsername("Admin");
             adminUser.setPassword(bCryptPasswordEncoder.encode("password"));
             userRepository.save(adminUser);
@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if(lawyerUser == null){
             lawyerUser = new UserEntity();
             lawyerUser.setRole(ROLE_LAWYER);
-            lawyerUser.setCreated(Date.from(new Date().toInstant()));
+            lawyerUser.setCreated(new Date());
             lawyerUser.setUsername("Lawyer");
             lawyerUser.setPassword(bCryptPasswordEncoder.encode("password"));
             userRepository.save(lawyerUser);

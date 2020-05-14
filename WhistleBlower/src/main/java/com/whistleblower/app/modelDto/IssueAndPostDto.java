@@ -1,13 +1,12 @@
 package com.whistleblower.app.modelDto;
 
-import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.entity.PostboxPost;
 
 import java.util.List;
 
 public class IssueAndPostDto {
 
-    private Issue issue;
+    private IssueDto issue;
     private  List<PostboxPost> messages;
 
 
@@ -15,11 +14,11 @@ public class IssueAndPostDto {
         return messages;
     }
 
-    public Issue getIssue() {
+    public IssueDto getIssue() {
         return issue;
     }
 
-    public void setIssue(Issue issue) {
+    public void setIssue(IssueDto issue) {
         this.issue = issue;
     }
 
