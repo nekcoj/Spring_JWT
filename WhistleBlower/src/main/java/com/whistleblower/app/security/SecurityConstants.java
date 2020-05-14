@@ -21,6 +21,11 @@ public class SecurityConstants {
 
     //PostBox
     public static final  String POSTBOX_URL_ROOT = "/post";
+    public static final  String POSTBOX_SEND_BY_LAWYER = "/send";
+    public static final  String POSTBOX_REPLY_USER = "/reply";
+    public static final  String POSTBOX_GET_ALL_LAWYER = "/get-lawyer";
+    public static final  String POSTBOX_GET_ALL_USER = "/get-user";
+
 
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys

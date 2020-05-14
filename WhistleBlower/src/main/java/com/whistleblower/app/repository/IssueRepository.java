@@ -11,4 +11,8 @@ import java.util.List;
 public interface IssueRepository extends JpaRepository<Issue, Long> {
 
   List<Issue> findByLawyer_Id(long lawyer_id);
+
+  boolean existsByLawyer_IdAndTempUser_Id(long lawyer_id, long tempUser_id);
+
+
 }
