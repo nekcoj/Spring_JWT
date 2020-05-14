@@ -1,8 +1,7 @@
 package com.whistleblower.app.rest;
 
-import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.modelDto.AssignDto;
-import com.whistleblower.app.modelDto.NewIssueDto;
+import com.whistleblower.app.modelDto.IssueDto;
 import com.whistleblower.app.modelDto.StatusDto;
 import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.service.IssueService;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-
-import java.util.List;
 
 import static com.whistleblower.app.security.SecurityConstants.*;
 
@@ -27,16 +24,16 @@ public class IssueController {
 
 
 @PostMapping(CREATE_NEW_ISSUE)
- ResponseEntity<?> createIssueAndUser(@Valid @RequestBody NewIssueDto newIssueDto,
+ ResponseEntity<?> createIssueAndUser(@Valid @RequestBody IssueDto issueDto,
                                                 BindingResult bindingResult){
-    if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(newIssueDto);
-    var newUser = issueService.createIssueAndUser(newIssueDto);
+    if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(issueDto);
+    var newUser = issueService.createIssueAndUser(issueDto);
     return ResponseEntity.ok(newUser);
 }
 
 @GetMapping(GET_ALL_ISSUES_FOR_ADMIN)
-ResponseEntity<List<Issue>> getNewIssues(){
-    return ResponseEntity.ok(issueService.getAllNewIssues());
+ResponseEntity<?> getAllIssuesAdmin(){
+    return ResponseEntity.ok(issueService.getAllIssuesForAdmin());
 }
 
 
@@ -49,7 +46,7 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
     if(assigned){
         return ResponseEntity.ok(assignDto);
     }else {
-        return ResponseEntity.badRequest().body(assignDto);
+        return ResponseEntity.badRequest().body("400: Bad request(User is not a lawyer)");
     }
 }
 

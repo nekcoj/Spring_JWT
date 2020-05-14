@@ -1,5 +1,8 @@
 package com.whistleblower.app.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,8 +15,12 @@ public class PostboxPost {
     private @Id
     @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)  long id;
 
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date sentDate;
+
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date repliedDate;
+
     private long tempUserId;
     private long lawyerId;
     private String message;
@@ -29,6 +36,7 @@ public class PostboxPost {
         this.id = id;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getSentDate() {
         return sentDate;
     }
@@ -61,6 +69,7 @@ public class PostboxPost {
         this.message = message;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getRepliedDate() {
         return repliedDate;
     }

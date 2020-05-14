@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.whistleblower.app.security.SecurityConstants.POSTBOX_URL_ROOT;
+import static com.whistleblower.app.security.SecurityConstants.*;
 
 @RestController
 @RequestMapping(POSTBOX_URL_ROOT)
@@ -24,21 +24,49 @@ public class PostBoxController {
     private PostBoxService postBoxService;
 
 
-    @PostMapping("new-messages-user")
-    ResponseEntity<?> getMessages(@Valid @RequestBody TokenId tokenId,
-                                                 BindingResult bindingResult){
-        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error While Mapping Object"));
+    @PostMapping(POSTBOX_SEND_BY_LAWYER)
+    ResponseEntity<?> sendMessageByLawyer(@Valid @RequestBody PostDto postDto,
+                                          BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
+         boolean sent =   postBoxService.sendMessageByLawyer(postDto);
 
-        return ResponseEntity.ok("");
+         if(sent) return ResponseEntity.ok("Message sent");
+         else  return ResponseEntity.badRequest().body("Bad request");
     }
 
-    @PostMapping("send-message-user")
-    ResponseEntity<?> insertMessage(@Valid @RequestBody PostDto postDto,
-                                    BindingResult bindingResult){
-        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error While Mapping Object"));
 
 
-        return ResponseEntity.ok("Message received!");
+
+    @PostMapping(POSTBOX_REPLY_USER)
+    ResponseEntity<?> replyMessageByLawyer(@Valid @RequestBody PostDto postDto,
+                                           BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
+
+        boolean replied = postBoxService.replyByTempUser(postDto);
+
+        if(replied) return ResponseEntity.ok("Message received!");
+        else return ResponseEntity.badRequest().body("Bad request");
+    }
+
+
+
+    @PostMapping(POSTBOX_GET_ALL_FOR_USER)
+    ResponseEntity<?> getMessagesForTempUser(@Valid @RequestBody TokenId tokenId,
+                                                BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
+
+        var inboxMessages = postBoxService.getMessagesForTempUser(tokenId);
+        return ResponseEntity.ok(inboxMessages);
+    }
+
+
+    @PostMapping(POSTBOX_GET_ALL_FOR_LAWYER)
+    ResponseEntity<?> getMessagesForLawyer(@Valid @RequestBody TokenId tokenId,
+                                             BindingResult bindingResult){
+        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
+
+        var inboxMessages = postBoxService.getMessagesForLawyer(tokenId);
+        return ResponseEntity.ok(inboxMessages);
     }
 
 
