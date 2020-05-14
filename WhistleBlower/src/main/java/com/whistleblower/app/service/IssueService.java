@@ -58,6 +58,7 @@ public class IssueService {
         newIssue.setTempUser(userRepository.getOne(tempUser.getId()));
         newIssue.setCreated(Date.from(new Date().toInstant()));
         newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
+        newIssue.setActive(true);
         issueRepository.save(newIssue);
     }
 
@@ -72,6 +73,7 @@ public class IssueService {
                 username = newUsername;
                 tempUserEntity.setUsername(username);
                 password = randomNumberGenerator();
+                tempUserEntity.setEnabled(true);
                 tempUserEntity.setRole(ROLE_USER);
                 tempUserEntity.setCreated(Date.from(new Date().toInstant()));
                 tempUserEntity.setPassword(bCryptPasswordEncoder.encode(password));
@@ -101,6 +103,7 @@ public class IssueService {
             var status = issueStatusRepository.findById(2L);
             status.ifPresent(issue::setIssueStatus);
             issue.setLawyer(lawyer);
+            issue.setAssigned(new Date());
             issueRepository.save(issue);
             return true;
         }

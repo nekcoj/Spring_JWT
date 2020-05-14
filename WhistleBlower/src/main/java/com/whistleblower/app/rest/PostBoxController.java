@@ -50,7 +50,7 @@ public class PostBoxController {
 
 
 
-    @PostMapping(POSTBOX_GET_ALL_USER)
+    @PostMapping(POSTBOX_GET_ALL_FOR_USER)
     ResponseEntity<?> getMessagesForTempUser(@Valid @RequestBody TokenId tokenId,
                                                 BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
@@ -60,7 +60,7 @@ public class PostBoxController {
     }
 
 
-    @PostMapping(POSTBOX_GET_ALL_LAWYER)
+    @PostMapping(POSTBOX_GET_ALL_FOR_LAWYER)
     ResponseEntity<?> getMessagesForLawyer(@Valid @RequestBody TokenId tokenId,
                                              BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));

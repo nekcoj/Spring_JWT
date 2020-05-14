@@ -4,6 +4,8 @@ public class PostDto {
     private String message;
     private String tokenId;
     private long postboxId;
+    private long tempUserId;
+
 
     public long getTempUserId() {
         return tempUserId;
@@ -12,8 +14,6 @@ public class PostDto {
     public void setTempUserId(long tempUserId) {
         this.tempUserId = tempUserId;
     }
-
-    private long tempUserId;
 
     public long getPostboxId() {
         return postboxId;

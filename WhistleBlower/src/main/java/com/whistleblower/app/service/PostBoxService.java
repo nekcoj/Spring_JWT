@@ -82,8 +82,6 @@ public class PostBoxService {
            }).collect(Collectors.groupingBy(e -> e.getIssue().getId(),
                             Collectors.toList()));
         }
-
-
         return Collections.emptyMap();
     }
 }
