@@ -45,7 +45,7 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
     if(assigned){
         return ResponseEntity.ok(assignDto);
     }else {
-        return ResponseEntity.badRequest().body(assignDto);
+        return ResponseEntity.badRequest().body("Bad request: Not assigned!");
     }
 }
 

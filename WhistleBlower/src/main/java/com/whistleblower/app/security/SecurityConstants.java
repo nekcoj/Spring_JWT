@@ -6,8 +6,13 @@ public class SecurityConstants {
     public static final String CREATE_NEW_ISSUE = "/create";
     public static final String GET_ALL_ISSUES_FOR_ADMIN = "/get-all";
     public static final String GET_ALL_ISSUES_FOR_LAWYER = "/get-all-lawyer";
-    public static final String ASSIGN_ISSUE = "/assign";
+    public static final String ASSIGN_ISSUE = "/assign"; // (Admin)
     public static final String CHANGE_ISSUE_STATUS = "/change-status";
+
+    //issueStatusController
+    public static final String ISSUE_STATUS_URL_ROOT = "/issue-status";
+    public static final String GET_ALL_ISSUE_STATUS = "/get-all";
+
 
     //UserController
     public static final String USER_URL_ROOT = "/user";
