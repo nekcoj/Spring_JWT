@@ -8,9 +8,9 @@
             <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-select class="inputbox" id="select-category" v-model="selectedCategory">
-              <options v-for="category in $store.state.catagories" :key="category.id" {{category.category_name}}></options>
-            </b-form-select>
+            <b-form-select class="inputbox" id="select-category" v-model="setselectedCategory" required>
+              <b-form-select-option v-for="category in this.$store.state.categories" :key="category.id" :value="category"> {{category.categoryName}} </b-form-select-option>
+            </b-form-select> 
           </b-col>
         </b-row>
 
@@ -86,6 +86,7 @@ export default {
     //   "Hälsa, säkerhet & miljö", "Penningtvätt", "Personal", "Annat"]
     // };
     }
+  
   },
   computed:{
     category:{
@@ -136,6 +137,19 @@ export default {
         this.$store.state.formdata.attachment = value;
       }
     },
+    setselectedCategory:{
+      get(){
+        return this.$store.state.selectedCategory;
+      },
+      set(value){
+        this.$store.state.selectedCategory = value;
+      }
+    }
+    
+  },
+  created: async function() {
+    await this.$store.dispatch("getCategories")
+    
   }
 };
 </script>

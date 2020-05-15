@@ -9,29 +9,26 @@ export default new Vuex.Store({
   state: {
     formdata: {},
     temporaryUser: {},
-    catagories:[],
-    selectedCategory: 0
+    categories:[],
+    selectedCategory: {}
+    
   },
   mutations: {
     setTempUser(state, value) {
       this.$store.state.temporaryUser = value;
     },
 
-    setCategory(state, value) {
-      this.$store.state.catagory = value;
-    },
-
     setCategories(state, value) {
-      this.$store.state.catagories = value;
+      this.$store.state.categories = value;
     },
 
-    setselectedCetagory(state, value) {
-      state.selectedCatagory = value;
+    setselectedCategory(state, value) {
+      this.$store.state.selectedCategory = value;
     },
   },
   actions: {
     newIssue: async function(value) {
-      let url = "http://localhost:9090/send";
+      let url = "http://localhost:9090/issue/create";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,10 +47,12 @@ export default new Vuex.Store({
       return await fetch(url, requestOptions);
     },
 
-    async getCategories({ commit }) {
-      let response = await fetch("localhost:9090/category");
+    async getCategories() {
+      let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
-      commit("setCategory", response);
+      this.state.categories = Object.assign({}, response);
+      
+      
     },
   },
   modules: {},
