@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `issue` (
   `where_issue` varchar(1024) NOT NULL,
   `details` varchar(1024) NOT NULL,
   `employee_awareness` varchar(1024) NOT NULL,
-  `attachment` varchar(1024) NOT NULL,
+  `attachment` varchar(1024) DEFAULT NULL,
   `temp_user_id` int(10) unsigned NOT NULL,
   `lawyer_id` int(10) unsigned DEFAULT NULL,
   `created` datetime NOT NULL,
