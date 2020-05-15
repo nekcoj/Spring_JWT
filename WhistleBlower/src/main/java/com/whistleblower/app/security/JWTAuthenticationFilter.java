@@ -2,6 +2,7 @@ package com.whistleblower.app.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.whistleblower.app.entity.UserEntity;
+import com.whistleblower.app.modelDto.LoginResponse;
 import com.whistleblower.app.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -84,7 +85,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        response.getWriter().write(mapper.writeValueAsString(token));
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setToken(token);
+        loginResponse.setPath("/" + entityUser.getRole().toLowerCase());
+        response.getWriter().write(mapper.writeValueAsString(loginResponse));
     }
 
 

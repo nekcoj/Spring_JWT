@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,6 +28,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserRepository userRepository;
 
+
     public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -34,7 +36,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors().and().csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("**/login"))
+        .and()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.CREATE_NEW_ISSUE).permitAll()
                 .antMatchers(HttpMethod.POST, SecurityConstants.ISSUE_URL_ROOT + SecurityConstants.ASSIGN_ISSUE)
                 .hasAuthority(ROLE_ADMIN)
@@ -52,7 +56,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
               //  .anyRequest().permitAll()
                // .anyRequest().authenticated()
-
                 .and()
                 .addFilter(new JWTAuthenticationFilter(userRepository, authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
