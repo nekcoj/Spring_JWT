@@ -6,14 +6,14 @@
       </b-card-header>
       <b-collapse id="accordion-1" visible accordion="my-accordion" role="tabpanel" >
         <b-card-body>
-          <b-card-text>{{ item.answer }}</b-card-text>
+          <b-card-text>{{ items.answer }}</b-card-text>
                     <div>
                         <span id="answer-blower"> Svara: </span>
             <b-form-textarea v-model="message"
                 id="textarea-rows"
                 rows="5"
                
-            ></b-form-textarea>
+            >{{message}}</b-form-textarea>
             </div>
              <b-button id="safepost-blower-button" variant="primary">Skicka svar</b-button>
         </b-card-body>
@@ -29,7 +29,8 @@ export default {
     data(){
         return{
             items:{
-                  answer: 'Halloj, jag har lite frågor angående...',
+                  answer: `Halloj, jag har lite frågor angående det där som du sa om den där grejen... 
+                  Hade du verkligen inte borstat tänderna på morgonen?`,
             },
             message: ''  
         }
