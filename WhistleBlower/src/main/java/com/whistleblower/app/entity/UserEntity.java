@@ -24,7 +24,6 @@ public class UserEntity {
 
     @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date lastLogin;
-    private String tokenId;
     private String role;
     private boolean enabled;
 
@@ -56,13 +55,6 @@ public class UserEntity {
         this.created = created;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenID) {
-        this.tokenId = tokenID;
-    }
 
     public long getId() {
         return id;

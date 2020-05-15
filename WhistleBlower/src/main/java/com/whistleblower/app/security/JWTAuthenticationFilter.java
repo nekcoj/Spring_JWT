@@ -79,13 +79,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .claim("rol", roles)
                 .compact();
         entityUser.setLastLogin(Date.from(new Date().toInstant()));
-        entityUser.setTokenId(token);
         userRepository.save(entityUser);
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        response.getWriter().write(mapper.writeValueAsString(entityUser));
+        response.getWriter().write(mapper.writeValueAsString(token));
     }
 
 
