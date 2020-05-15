@@ -4,7 +4,6 @@ import com.whistleblower.app.entity.PostboxPost;
 import com.whistleblower.app.modelDto.IssueAndPostDto;
 import com.whistleblower.app.modelDto.IssueDto;
 import com.whistleblower.app.modelDto.PostDto;
-import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.repository.IssueRepository;
 import com.whistleblower.app.repository.PostBoxRepository;
 import com.whistleblower.app.repository.UserRepository;
@@ -30,8 +29,8 @@ public class PostBoxService {
     IssueRepository issueRepository;
 
 
-    public boolean sendMessageByLawyer(PostDto postDto) {
-        var lawyer = userRepository.findByTokenId(postDto.getTokenId());
+    public boolean sendMessageByLawyer(PostDto postDto, String name) {
+        var lawyer = userRepository.findByUsername(name);
         boolean matchedIssue = issueRepository.existsByLawyer_IdAndTempUser_Id(lawyer.getId(),postDto.getTempUserId());
         //noinspection ConstantConditions
         if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER) && matchedIssue){
@@ -47,8 +46,8 @@ public class PostBoxService {
 
     }
 
-    public boolean replyByTempUser(PostDto postDto) {
-        var tempUser = userRepository.findByTokenId(postDto.getTokenId());
+    public boolean replyByTempUser(PostDto postDto, String name) {
+        var tempUser = userRepository.findByUsername(name);
         var postMessage = postBoxRepository.findById(postDto.getPostboxId()).orElse(null);
         if(tempUser != null && postMessage != null && postMessage.getReply() == null
         && postMessage.getTempUserId() == tempUser.getId()){
@@ -60,16 +59,16 @@ public class PostBoxService {
         return  false;
     }
 
-    public List<PostboxPost> getMessagesForTempUser(TokenId tokenId) {
-        var user = userRepository.findByTokenId(tokenId.getTokenId());
+    public List<PostboxPost> getMessagesForTempUser(String username) {
+        var user = userRepository.findByUsername(username);
         if(user != null && user.getRole().equals(ROLE_USER)){
             return postBoxRepository.getAllByTempUserIdAndReplyIsNull(user.getId());
         }
         return Collections.emptyList();
     }
 
-    public Map<String, List<IssueAndPostDto>> getMessagesForLawyer(TokenId tokenId) {
-        var lawyer = userRepository.findByTokenId(tokenId.getTokenId());
+    public Map<String, List<IssueAndPostDto>> getMessagesForLawyer(String username) {
+        var lawyer = userRepository.findByUsername(username);
 
         if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
             return issueRepository.findByLawyer_Id(lawyer.getId())

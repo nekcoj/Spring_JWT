@@ -3,15 +3,14 @@ package com.whistleblower.app.rest;
 import com.whistleblower.app.modelDto.AssignDto;
 import com.whistleblower.app.modelDto.IssueDto;
 import com.whistleblower.app.modelDto.StatusDto;
-import com.whistleblower.app.modelDto.TokenId;
 import com.whistleblower.app.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
 
 import static com.whistleblower.app.security.SecurityConstants.*;
 
@@ -46,16 +45,16 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
     if(assigned){
         return ResponseEntity.ok(assignDto);
     }else {
-        return ResponseEntity.badRequest().body("400: Bad request(User is not a lawyer)");
+        return ResponseEntity.badRequest().body("Bad request: Not assigned!");
     }
 }
 
     @PostMapping(CHANGE_ISSUE_STATUS)
-    ResponseEntity<?> changeStatus(@Valid @RequestBody StatusDto statusDto,
+    ResponseEntity<?> changeStatus(@Valid @RequestBody StatusDto statusDto, Authentication authentication,
                                   BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(statusDto);
 
-         boolean changed = issueService.changeIssueStatus(statusDto);
+         boolean changed = issueService.changeIssueStatus(statusDto, authentication);
 
          if(changed){
              return ResponseEntity.ok(statusDto);
@@ -63,12 +62,9 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
          return  ResponseEntity.badRequest().body(statusDto);
     }
 
-    @PostMapping(GET_ALL_ISSUES_FOR_LAWYER)
-    ResponseEntity<?> getIssues(@Valid @RequestBody TokenId tokenId,
-                                          BindingResult bindingResult){
-        if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(tokenId);
-
-          var issues = issueService.getIssuesForLawyer(tokenId);
+    @GetMapping(GET_ALL_ISSUES_FOR_LAWYER)
+    ResponseEntity<?> getIssues(Authentication authentication){
+          var issues = issueService.getIssuesForLawyer(authentication.getName());
 
           return ResponseEntity.ok(issues);
     }

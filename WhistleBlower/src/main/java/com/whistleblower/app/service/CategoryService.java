@@ -20,8 +20,8 @@ public class CategoryService {
     @Autowired
     UserRepository userRepository;
 
-    public boolean addCategory(CategoryDto categoryDto) {
-         var user = userRepository.findByTokenId(categoryDto.getTokenId());
+    public boolean addCategory(CategoryDto categoryDto, String username) {
+         var user = userRepository.findByUsername(username);
          if(user != null && user.getRole().equals(ROLE_ADMIN)
                  && !categoryDto.getCategoryName().isEmpty()){
              Category category = new Category();
@@ -32,8 +32,8 @@ public class CategoryService {
          return false;
     }
 
-    public boolean removeCategory(CategoryDto categoryDto) {
-        var user = userRepository.findByTokenId(categoryDto.getTokenId());
+    public boolean removeCategory(CategoryDto categoryDto, String username) {
+        var user = userRepository.findByUsername(username);
         if(user != null && user.getRole().equals(ROLE_ADMIN)){
          var category =  categoryRepository.findByCategoryName(categoryDto.getCategoryName());
          if(category != null){
