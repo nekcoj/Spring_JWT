@@ -9,10 +9,24 @@ export default new Vuex.Store({
   state: {
     formdata: {},
     temporaryUser: {},
+    catagories:[],
+    selectedCategory: 0
   },
   mutations: {
     setTempUser(state, value) {
       this.$store.state.temporaryUser = value;
+    },
+
+    setCategory(state, value) {
+      this.$store.state.catagory = value;
+    },
+
+    setCategories(state, value) {
+      this.$store.state.catagories = value;
+    },
+
+    setselectedCetagory(state, value) {
+      state.selectedCatagory = value;
     },
   },
   actions: {
@@ -34,6 +48,12 @@ export default new Vuex.Store({
         body: JSON.stringify(username, password),
       };
       return await fetch(url, requestOptions);
+    },
+
+    async getCategories({ commit }) {
+      let response = await fetch("localhost:9090/category");
+      response = await response.json();
+      commit("setCategory", response);
     },
   },
   modules: {},

@@ -8,8 +8,8 @@
             <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-select class="inputbox" id="select-category" v-model="category"
-              :options="categories" required>
+            <b-form-select class="inputbox" id="select-category" v-model="selectedCategory">
+              <options v-for="category in $store.state.catagories" :key="category.id" {{category.category_name}}></options>
             </b-form-select>
           </b-col>
         </b-row>
@@ -81,10 +81,11 @@ export default {
   data() {
     return {
       formdata: {},
-      categories: ["Mutor, korruption & förfalskning", "Dataskydd & brott mot IT-säkerhet", 
-      "Diskriminering, trakasserier & andra arbetsrelaterade lagproblem", "Bedrägeri, missbruk & stöld",
-      "Hälsa, säkerhet & miljö", "Penningtvätt", "Personal", "Annat"]
-    };
+    //   categories: ["Mutor, korruption & förfalskning", "Dataskydd & brott mot IT-säkerhet", 
+    //   "Diskriminering, trakasserier & andra arbetsrelaterade lagproblem", "Bedrägeri, missbruk & stöld",
+    //   "Hälsa, säkerhet & miljö", "Penningtvätt", "Personal", "Annat"]
+    // };
+    }
   },
   computed:{
     category:{
