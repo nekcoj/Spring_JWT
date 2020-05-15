@@ -1,7 +1,6 @@
 package com.whistleblower.app.modelDto;
 
 public class StatusDto {
-    private String tokenId;
     private  long issueId;
     private  long statusId;
 
@@ -9,13 +8,6 @@ public class StatusDto {
         return issueId;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
-    }
 
     public void setIssueId(long issueId) {
         this.issueId = issueId;

@@ -5,6 +5,7 @@ import com.whistleblower.app.modelDto.PostDto;
 import com.whistleblower.app.repository.PostBoxRepository;
 import com.whistleblower.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class PostBoxService {
     private UserRepository userRepository;
 
 
-    public List<PostDto> getUnRepliedMessages(String tokenId){
-        var entityUser = userRepository.findByTokenId(tokenId);
+    public List<PostDto> getUnRepliedMessages(String username){
+        var entityUser = userRepository.findByUsername(username);
         if(entityUser == null) return Collections.emptyList();
 
         var post = postBoxRepository.findAllByTempUserIdAndRepliedFalseAndSentBy(entityUser.getId(),ROLE_LAWYER);
@@ -40,8 +41,8 @@ public class PostBoxService {
         }).collect(Collectors.toList());
     }
 
-    public boolean insertReplyFromTempUser(PostDto postDto) {
-        var entityUser =  userRepository.findByTokenId(postDto.getTokenId());
+    public boolean insertReplyFromTempUser(PostDto postDto, Authentication authentication) {
+        var entityUser =  userRepository.findByUsername(authentication.getName());
         if(entityUser == null) return  false;
 
         var referencedPost = postBoxRepository.findByIdAndTempUserIdAndRepliedFalseAndSentBy(

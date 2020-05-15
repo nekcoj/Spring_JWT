@@ -7,12 +7,12 @@ import com.whistleblower.app.modelDto.StatusDto;
 import com.whistleblower.app.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-
+import java.security.Principal;
 import java.util.List;
 
 import static com.whistleblower.app.security.SecurityConstants.*;
@@ -53,11 +53,11 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
 }
 
     @PostMapping(CHANGE_ISSUE_STATUS)
-    ResponseEntity<?> changeStatus(@Valid @RequestBody StatusDto statusDto,
+    ResponseEntity<?> changeStatus(@Valid @RequestBody StatusDto statusDto, Authentication authentication,
                                   BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(statusDto);
 
-         boolean changed = issueService.changeIssueStatus(statusDto);
+         boolean changed = issueService.changeIssueStatus(statusDto, authentication);
 
          if(changed){
              return ResponseEntity.ok(statusDto);

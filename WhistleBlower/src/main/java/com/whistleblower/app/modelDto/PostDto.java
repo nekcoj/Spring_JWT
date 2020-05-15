@@ -5,7 +5,6 @@ import java.util.Date;
 public class PostDto {
     private long lawyerId;
     private String message;
-    private String tokenId;
     private long refId;
     private Date sent;
 
@@ -41,11 +40,4 @@ public class PostDto {
         this.message = message;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
-    }
 }

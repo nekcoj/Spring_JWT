@@ -10,6 +10,7 @@ import com.whistleblower.app.repository.CategoryRepository;
 import com.whistleblower.app.repository.IssueRepository;
 import com.whistleblower.app.repository.IssueStatusRepository;
 import com.whistleblower.app.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -110,8 +111,8 @@ public class IssueService {
     }
 
     //Lawyer
-    public boolean changeIssueStatus(StatusDto statusDto) {
-        var user = userRepository.findByTokenId(statusDto.getTokenId());
+    public boolean changeIssueStatus(StatusDto statusDto, Authentication authentication) {
+        var user = userRepository.findByUsername(authentication.getName());
         var issue = issueRepository.findById(statusDto.getIssueId());
         if (issue.isPresent() && user != null && user.getId() == issue.get().getLawyer().getId()
         && user.getRole().equals(ROLE_LAWYER)) {

@@ -23,7 +23,6 @@ public class UserEntity {
     private String lastName;
 
     private Date lastLogin;
-    private String tokenId;
     private String role;
 
     private Date created;
@@ -46,13 +45,6 @@ public class UserEntity {
         this.created = created;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenID) {
-        this.tokenId = tokenID;
-    }
 
     public long getId() {
         return id;
