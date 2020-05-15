@@ -69,8 +69,12 @@ export default {
   methods:{
     onSubmit(evt){
       evt.preventDefault();
-      const { username, password } = this;
-      this.$store.dispatch('login', {username, password});
+      let login = {
+        username: this.username,
+        password: this.password 
+       }
+      console.log(login)
+      this.$store.dispatch('login', login);
     }
   }
     //detta är gammalt bös jag klippt från förra projektet

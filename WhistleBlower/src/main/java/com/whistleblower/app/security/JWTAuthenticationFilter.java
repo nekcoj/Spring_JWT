@@ -62,6 +62,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication authentication) throws IOException {
         var user = ((User) authentication.getPrincipal());
+        LoginResponse loginResponse = new LoginResponse();
         var entityUser = userRepository.findByUsernameIgnoreCase(((User) authentication.getPrincipal()).getUsername());
         var roles = user.getAuthorities()
                 .stream()
@@ -79,16 +80,20 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .claim("rol", roles)
                 .compact();
-        entityUser.setLastLogin(Date.from(new Date().toInstant()));
-        userRepository.save(entityUser);
+
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         ObjectMapper mapper = new ObjectMapper();
-        LoginResponse loginResponse = new LoginResponse();
+
+
+        loginResponse.setLastLogin(entityUser.getLastLogin());
         loginResponse.setToken(token);
         loginResponse.setPath("/" + entityUser.getRole().toLowerCase());
         response.getWriter().write(mapper.writeValueAsString(loginResponse));
+
+        entityUser.setLastLogin(new Date());
+        userRepository.save(entityUser);
     }
 
 
