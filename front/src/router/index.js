@@ -19,7 +19,7 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue')
   },
   {
-    path: '/valj',
+    path: '/user',
     name: 'Vad göra?',
     component: () => import('../views/blower/Dash.vue')
   },

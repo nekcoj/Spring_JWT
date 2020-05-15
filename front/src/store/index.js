@@ -29,20 +29,16 @@ export default new Vuex.Store({
       const result = await response.json();
       this.state.temporaryUser = Object.assign({}, result);
     },
-    login: async function(username, password) {
+
+    login: async function(value) {
       let url = "http://localhost:9090/login";
-      const requestOptions = {
+      const request = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(username, password),
-      };
-      const result = await fetch(url, requestOptions);
-      if(result.ok){
-        
-      }
-      const login = await result.json();      
-  
-      return login;
+        body: JSON.stringify(value),
+      });
+      const result = await request.json();
+      return result;
     },
 
     async getCategories() {
@@ -50,6 +46,10 @@ export default new Vuex.Store({
       response = await response.json();
       this.state.categories = Object.assign({}, response);
     },
+    getAuthenticationHeader: function(){
+      return { 'Authorization': 'Bearer ' + this.state.tokenId,
+        'Content-Type': 'application/json' }
+    }
   },
   modules: {},
 });
