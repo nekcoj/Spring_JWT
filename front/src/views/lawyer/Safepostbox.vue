@@ -1,5 +1,21 @@
 <template>
    <div class="safepostbox container">
+     <b-card>
+     <b-card-header>
+        <b-nav pills fill type="light" variant="light">
+            <b-nav-item :to="{ path: '/jurist/'}" exact-active-class="active">
+                Panel
+            </b-nav-item>
+            <b-nav-item :to="{ path: '/jurist/arenden'}" exact-active-class="active">
+                Nya ärenden
+            </b-nav-item>
+            <b-nav-item to="/loggaut" exact-active-class="active">
+                Logga ut
+            </b-nav-item>
+        </b-nav>
+    </b-card-header>  
+    <b-card-body>
+      <p class="h2">Ärendenr: 293229</p>
     <div role="tablist">
     <b-card no-body class="mb-1 text-left" v-for="item in items" :key="item.id">
       <b-card-header header-tag="header" class="p-1" role="tab">
@@ -33,13 +49,17 @@
       <p class="h3">Skicka nytt meddelande</p>
       <label for="new-message-header">Rubrik</label>
       <b-textarea id="new-message-header" rows="1"></b-textarea>
+      <b-button id="new-message-button" class="mt-3 mb-3" variant="primary">Skicka</b-button>
 
     </div>
-    <router-link to="../jurist">
-    <b-button id="safepost-blower-button-back" variant="primary">Tillbaka</b-button>
+    <router-link to="/jurist">
+    <b-button id="safepost-back-button" variant="secondary">Tillbaka</b-button>
     </router-link>
   </div>
-</div>  
+  
+    </b-card-body>
+     </b-card>
+     </div>  
 </template>
 
 <script>
@@ -65,26 +85,13 @@ export default {
             }
             },  
         }
-    }
+    },
+    
 
 }
 </script>
 
 <style>
 
-#safepost-blower-button{
-margin-top: 1.5em;
-   
-}
-
-#safepost-blower-button-back{
- margin-top: 5em;
-
-   
-}
-
-#answer-blower{
-display: flex;
-}
 
 </style>

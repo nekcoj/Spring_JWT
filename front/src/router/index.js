@@ -71,15 +71,15 @@ Vue.use(VueRouter)
       component: () => import ('../views/lawyer/LoginLawyer.vue')
     },
     {
-      path: '/juristsafepostbox',
-      name: 'Safe postbox',
+      path: '/juristpostbox',
+      name: 'Safe postbox jurist',
       component: () => import ('../views/lawyer/Safepostbox.vue')
     },
     {
       path: '/safepostbox',
-      name: 'Safepostbox anmälare',
+      name: 'Safe postbox anmälare',
       component: () => import ('../views/blower/Safepostbox.vue')
-    },
+    }
 
 
 

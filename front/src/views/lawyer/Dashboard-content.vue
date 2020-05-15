@@ -61,10 +61,12 @@
             <b-card-text id="awarenessIssue">{{item.awareness}}</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
             <b-card-text id="attachmentIssue">{{item.attachment}}</b-card-text>
-            <b-button variant="primary" class="btn-lg" v-on:click="postboxLink(item)">Safe postbox</b-button>
+            <router-link :to="{name: 'Safe postbox jurist', params:{tempUserID: item.id}}"><b-button variant="primary" class="btn-lg">Safe postbox</b-button></router-link>
           </b-card-body>
         </b-collapse>
-      </b-card>
+      </b-card> 
+      <router-view>
+        </router-view>
     </div>
   </div>
 </template>
@@ -136,8 +138,8 @@ export default {
       addRemoveText: null,
 
       methods: {
-        postboxLink(item) {
-          this.$router.push("postbox/" + item.id);
+        postboxLink() {
+          this.$router.push("/juristSpostbox");
         },
         addRemoveCategory: function() {
           if (this.addRemoveOption === "1") {
