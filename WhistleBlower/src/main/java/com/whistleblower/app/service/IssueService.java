@@ -131,8 +131,8 @@ public class IssueService {
     }
 
 
-   public List<IssueDto> getIssuesForLawyer(TokenId tokenId){
-        var lawyer  = userRepository.findByTokenId(tokenId.getTokenId());
+   public List<IssueDto> getIssuesForLawyer(String username){
+        var lawyer  = userRepository.findByUsername(username);
         if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
             return issueRepository.findByLawyer_Id(lawyer.getId()).stream().map(IssueDto::new).collect(Collectors.toList());
 

@@ -2,7 +2,6 @@ package com.whistleblower.app.modelDto;
 
 public class PostDto {
     private String message;
-    private String tokenId;
     private long postboxId;
     private long tempUserId;
 
@@ -31,11 +30,4 @@ public class PostDto {
         this.message = message;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenId) {
-        this.tokenId = tokenId;
-    }
 }
