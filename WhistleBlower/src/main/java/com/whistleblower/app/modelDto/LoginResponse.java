@@ -1,8 +1,20 @@
 package com.whistleblower.app.modelDto;
 
+import java.util.Date;
+
 public class LoginResponse {
     private String token;
     private String path;
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    private Date lastLogin;
 
     public String getToken() {
         return token;

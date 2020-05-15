@@ -37,7 +37,6 @@ export default new Vuex.Store({
       const result = await response.json();
       this.state.temporaryUser = Object.assign({}, result);
     },
-
     login: async function(value) {
       let url = "http://localhost:9090/login";
       const request = await fetch(url, {
