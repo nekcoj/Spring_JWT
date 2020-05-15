@@ -81,10 +81,7 @@ export default {
   data() {
     return {
       formdata: {},
-      categories: ["Mutor, korruption & förfalskning", "Dataskydd & brott mot IT-säkerhet", 
-      "Diskriminering, trakasserier & andra arbetsrelaterade lagproblem", "Bedrägeri, missbruk & stöld",
-      "Hälsa, säkerhet & miljö", "Penningtvätt", "Personal", "Annat"]
-    };
+    }
   },
   computed:{
     category:{
@@ -135,6 +132,17 @@ export default {
         this.$store.state.formdata.attachment = value;
       }
     },
+    setselectedCategory:{
+      get(){
+        return this.$store.state.selectedCategory;
+      },
+      set(value){
+        this.$store.state.selectedCategory = value;
+      }
+    } 
+  },
+  created: async function() {
+    await this.$store.dispatch("getCategories")
   }
 };
 </script>

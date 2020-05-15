@@ -9,6 +9,9 @@ export default new Vuex.Store({
   state: {
     formdata: {},
     temporaryUser: {},
+    categories:[],
+    selectedCategory: {},
+    tokenId: ""
   },
   mutations: {
     setTempUser(state, value) {
@@ -33,7 +36,19 @@ export default new Vuex.Store({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(username, password),
       };
-      return await fetch(url, requestOptions);
+      const result = await fetch(url, requestOptions);
+      if(result.ok){
+        
+      }
+      const login = await result.json();      
+  
+      return login;
+    },
+
+    async getCategories() {
+      let response = await fetch("http://localhost:9090/category/get-all");
+      response = await response.json();
+      this.state.categories = Object.assign({}, response);
     },
   },
   modules: {},
