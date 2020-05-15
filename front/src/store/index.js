@@ -17,10 +17,18 @@ export default new Vuex.Store({
     setTempUser(state, value) {
       this.$store.state.temporaryUser = value;
     },
+
+    setCategories(state, value) {
+      this.$store.state.categories = value;
+    },
+
+    setselectedCategory(state, value) {
+      this.$store.state.selectedCategory = value;
+    },
   },
   actions: {
     newIssue: async function(value) {
-      let url = "http://localhost:9090/send";
+      let url = "http://localhost:9090/issue/create";
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

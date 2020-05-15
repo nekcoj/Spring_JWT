@@ -9,7 +9,7 @@
             <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-text class="inputbox" id="select-category">{{category}}
+            <b-form-text class="inputbox" id="select-category">{{selectedCategory.categoryName}}
             </b-form-text>
           </b-col>
         </b-row>
@@ -91,7 +91,9 @@ export default {
   data() {
     return {
       formdata: {},
-      clicked: false
+      clicked: false,
+      categoryName: '', 
+      categories: []
     };
   },
   methods:{
@@ -105,12 +107,19 @@ export default {
         this.clicked = false;
       }, 500);
       this.$router.push({path: '/bekraftelse'})
-    }
+    },
+    // showSelectedCategory: function(){
+    //   this.categoryName = this.$store.state.categories.forEach(element => 
+    //    console.log('test' + element.categoryName)
+    //   );
+    //   console.log('categoryName' + this.categoryName)
+    // }
+
   },
   computed:{
-    category:{
+  selectedCategory:{
       get() {
-        return this.$store.state.formdata.category;
+        return this.$store.state.selectedCategory;
       }
     },
     whenIssue:{
@@ -138,7 +147,11 @@ export default {
         return this.$store.state.formdata.attachment;
       }
     },
-  }
+  },
+    created() {
+     this.formdata.categoryId = this.selectedCategory.id;
+   }
+
 };
 </script>
 
