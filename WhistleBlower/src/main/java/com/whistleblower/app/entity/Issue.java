@@ -1,6 +1,7 @@
 package com.whistleblower.app.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +15,6 @@ public class Issue {
     private long id;
 
 
-
     private String whenIssue;
 
     private String whereIssue;
@@ -26,8 +26,9 @@ public class Issue {
     private String attachment;
 
     private Date created;
-
     private Date assigned;
+
+    private boolean active;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
@@ -49,10 +50,19 @@ public class Issue {
         return category;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public void setCategory(Category category) {
         this.category = category;
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     public Date getAssigned() {
         return assigned;
     }

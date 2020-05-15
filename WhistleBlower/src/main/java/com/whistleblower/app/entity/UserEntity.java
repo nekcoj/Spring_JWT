@@ -22,12 +22,21 @@ public class UserEntity {
     private String firstName;
     private String lastName;
 
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date lastLogin;
-    private String tokenId;
     private String role;
+    private boolean enabled;
 
     private Date created;
 
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getRole() {
         return role;
@@ -46,13 +55,6 @@ public class UserEntity {
         this.created = created;
     }
 
-    public String getTokenId() {
-        return tokenId;
-    }
-
-    public void setTokenId(String tokenID) {
-        this.tokenId = tokenID;
-    }
 
     public long getId() {
         return id;
