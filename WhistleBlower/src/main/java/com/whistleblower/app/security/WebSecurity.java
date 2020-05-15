@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -27,6 +28,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserRepository userRepository;
 
+
     public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -34,17 +36,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, SecurityConstants.CREATE_NEW_ISSUE).permitAll()
-                .antMatchers(HttpMethod.POST, SecurityConstants.ISSUE_URL_ROOT + SecurityConstants.ASSIGN_ISSUE)
+        http.cors().and().csrf().requireCsrfProtectionMatcher(new AntPathRequestMatcher("**/login"))
+        .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, CREATE_NEW_ISSUE).permitAll()
+                .antMatchers(HttpMethod.POST, ISSUE_URL_ROOT + ASSIGN_ISSUE)
                 .hasAuthority(ROLE_ADMIN)
-                .antMatchers(HttpMethod.GET, SecurityConstants.ISSUE_URL_ROOT + GET_ALL_ISSUES_FOR_ADMIN)
+                .antMatchers(HttpMethod.GET, ISSUE_URL_ROOT + GET_ALL_ISSUES_FOR_ADMIN)
                 .hasAuthority(ROLE_ADMIN)
-                .antMatchers(HttpMethod.POST, SecurityConstants.ISSUE_URL_ROOT + SecurityConstants.CHANGE_ISSUE_STATUS)
+                .antMatchers(HttpMethod.POST, ISSUE_URL_ROOT + CHANGE_ISSUE_STATUS)
                 .hasAuthority(ROLE_LAWYER)
-                .antMatchers(HttpMethod.POST, SecurityConstants.CATEGORY_URL_ROOT + "/**")
+                .antMatchers(HttpMethod.POST, CATEGORY_URL_ROOT + "/**")
                 .hasAuthority(ROLE_ADMIN)
-                .antMatchers(HttpMethod.GET, SecurityConstants.CATEGORY_URL_ROOT + GET_CATEGORIES)
+                .antMatchers(HttpMethod.GET, CATEGORY_URL_ROOT + GET_CATEGORIES)
                 .permitAll()
                 .antMatchers(HttpMethod.GET, ISSUE_STATUS_URL_ROOT + GET_ALL_ISSUE_STATUS)
                 .hasAnyAuthority(ROLE_ADMIN,ROLE_LAWYER)
@@ -52,7 +56,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
               //  .anyRequest().permitAll()
                // .anyRequest().authenticated()
-
                 .and()
                 .addFilter(new JWTAuthenticationFilter(userRepository, authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
