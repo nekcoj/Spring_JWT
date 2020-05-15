@@ -2,10 +2,7 @@ package com.whistleblower.app.service;
 
 import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.entity.UserEntity;
-import com.whistleblower.app.modelDto.AssignDto;
-import com.whistleblower.app.modelDto.NewIssueDto;
-import com.whistleblower.app.modelDto.StatusDto;
-import com.whistleblower.app.modelDto.TempUserDto;
+import com.whistleblower.app.modelDto.*;
 import com.whistleblower.app.repository.CategoryRepository;
 import com.whistleblower.app.repository.IssueRepository;
 import com.whistleblower.app.repository.IssueStatusRepository;
@@ -14,8 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
 import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
@@ -43,24 +42,25 @@ public class IssueService {
         this.categoryRepository = categoryRepository;
     }
 
-    public TempUserDto createIssueAndUser(NewIssueDto newIssueDto) {
+    public TempUserDto createIssueAndUser(IssueDto issueDto) {
         TempUserDto tempUser = createTempUser();
-        createNewIssue(tempUser, newIssueDto);
+        createNewIssue(tempUser, issueDto);
         return tempUser;
     }
 
-    private void createNewIssue(TempUserDto tempUser, NewIssueDto newIssueDto) {
+    private void createNewIssue(TempUserDto tempUser, IssueDto issueDto) {
         var newIssue = new Issue();
-        var category = categoryRepository.findById(newIssueDto.getCategoryId()).orElse(null);
+        var category = categoryRepository.findById(issueDto.getCategoryId()).orElse(null);
         newIssue.setCategory(category);
-        newIssue.setWhenIssue(newIssueDto.getWhenIssue());
-        newIssue.setWhereIssue(newIssueDto.getWhereIssue());
-        newIssue.setDetails(newIssueDto.getDetails());
-        newIssue.setEmployeeAwareness(newIssueDto.getEmployeeAwareness());
-        newIssue.setAttachment(newIssueDto.getAttachment());
+        newIssue.setWhenIssue(issueDto.getWhenIssue());
+        newIssue.setWhereIssue(issueDto.getWhereIssue());
+        newIssue.setDetails(issueDto.getDetails());
+        newIssue.setEmployeeAwareness(issueDto.getEmployeeAwareness());
+        newIssue.setAttachment(issueDto.getAttachment());
         newIssue.setTempUser(userRepository.getOne(tempUser.getId()));
-        newIssue.setCreated(Date.from(new Date().toInstant()));
+        newIssue.setCreated(new Date());
         newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
+        newIssue.setActive(true);
         issueRepository.save(newIssue);
     }
 
@@ -75,8 +75,9 @@ public class IssueService {
                 username = newUsername;
                 tempUserEntity.setUsername(username);
                 password = randomNumberGenerator();
+                tempUserEntity.setEnabled(true);
                 tempUserEntity.setRole(ROLE_USER);
-                tempUserEntity.setCreated(Date.from(new Date().toInstant()));
+                tempUserEntity.setCreated(new Date());
                 tempUserEntity.setPassword(bCryptPasswordEncoder.encode(password));
                 userRepository.save(tempUserEntity);
             }
@@ -89,8 +90,8 @@ public class IssueService {
         return String.valueOf(Math.random()).replace("0.", "").substring(0, 8);
     }
 
-    public List<Issue> getAllNewIssues() {
-        return issueRepository.findAll();
+    public List<IssueDto> getAllIssuesForAdmin() {
+        return issueRepository.findAll().stream().map(IssueDto::new).collect(Collectors.toList());
     }
 
     //Admin
@@ -104,6 +105,7 @@ public class IssueService {
             var status = issueStatusRepository.findById(2L);
             status.ifPresent(issue::setIssueStatus);
             issue.setLawyer(lawyer);
+            issue.setAssigned(new Date());
             issueRepository.save(issue);
             return true;
         }
@@ -127,4 +129,15 @@ public class IssueService {
         }
         return false;
     }
+
+
+   public List<IssueDto> getIssuesForLawyer(TokenId tokenId){
+        var lawyer  = userRepository.findByTokenId(tokenId.getTokenId());
+        if(lawyer != null && lawyer.getRole().equals(ROLE_LAWYER)){
+            return issueRepository.findByLawyer_Id(lawyer.getId()).stream().map(IssueDto::new).collect(Collectors.toList());
+
+        }
+        return Collections.emptyList();
+    }
+
 }

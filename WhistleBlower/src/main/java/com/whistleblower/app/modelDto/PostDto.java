@@ -1,35 +1,26 @@
 package com.whistleblower.app.modelDto;
 
-import java.util.Date;
-
 public class PostDto {
-    private long lawyerId;
     private String message;
-    private long refId;
-    private Date sent;
+    private String tokenId;
+    private long postboxId;
+    private long tempUserId;
 
-    public Date getSent() {
-        return sent;
+
+    public long getTempUserId() {
+        return tempUserId;
     }
 
-    public void setSent(Date sent) {
-        this.sent = sent;
+    public void setTempUserId(long tempUserId) {
+        this.tempUserId = tempUserId;
     }
 
-    public long getRefId() {
-        return refId;
+    public long getPostboxId() {
+        return postboxId;
     }
 
-    public void setRefId(long refId) {
-        this.refId = refId;
-    }
-
-    public long getLawyerId() {
-        return lawyerId;
-    }
-
-    public void setLawyerId(long lawyerId) {
-        this.lawyerId = lawyerId;
+    public void setPostboxId(long postboxId) {
+        this.postboxId = postboxId;
     }
 
     public String getMessage() {
@@ -40,4 +31,11 @@ public class PostDto {
         this.message = message;
     }
 
+    public String getTokenId() {
+        return tokenId;
+    }
+
+    public void setTokenId(String tokenId) {
+        this.tokenId = tokenId;
+    }
 }

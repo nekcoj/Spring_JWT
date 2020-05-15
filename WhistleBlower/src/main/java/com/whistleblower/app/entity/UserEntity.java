@@ -22,11 +22,21 @@ public class UserEntity {
     private String firstName;
     private String lastName;
 
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date lastLogin;
     private String role;
+    private boolean enabled;
 
     private Date created;
 
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public String getRole() {
         return role;
