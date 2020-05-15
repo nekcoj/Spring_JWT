@@ -22,6 +22,7 @@ public class UserEntity {
     private String firstName;
     private String lastName;
 
+    @DateTimeFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date lastLogin;
     private String tokenId;
     private String role;
