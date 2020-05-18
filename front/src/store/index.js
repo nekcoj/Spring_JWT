@@ -15,7 +15,7 @@ export default new Vuex.Store({
     selectedCategory: {},
     tokenId: null,
     user:{},
-    issues: {},
+    issues: [],
     lawyers: []
  
   },
@@ -82,14 +82,19 @@ export default new Vuex.Store({
         headers: header
       });
 
-      const result = await response.json();
+      const result = await response.json()
+      //TODO berätta för magnus vad ".ok"-checken gör här och varför result aldrig blir ok 
+      //och förklara varför vi gjort Object.assign, när vi vill ha issues som en lista och redan har issues som en lista 
       if(result.ok){
-        this.state.issues = Object.assign({}, result);
-        console.log("Issues fetched!");
+        //this.state.issues = Object.assign({}, result)
+        this.state.issues = result
+        console.log("Issues fetched!: ",this.state.issues)
       } else {       
-        Array(result).forEach((element) => {
-          console.log(element);
-      });}
+        console.log("resultat: ", result)
+        //this.state.issues = Object.assign({}, result);
+        this.state.issues = result
+        console.log("result.ok === false, men här är ändå alla issues: ",this.state.issues)
+;}
       
     },
 
