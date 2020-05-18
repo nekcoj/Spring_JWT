@@ -235,7 +235,7 @@ export default {
       },
       set(value){
         this.$store.state.category = value;
-      }
+      },
     }
   },
   setselectedCategory:{
