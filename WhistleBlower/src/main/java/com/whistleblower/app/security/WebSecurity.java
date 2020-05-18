@@ -22,8 +22,8 @@ import static com.whistleblower.app.security.SecurityConstants.*;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    private UserDetailsServiceImpl userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -44,8 +44,18 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAuthority(ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET, ISSUE_URL_ROOT + GET_ALL_ISSUES_FOR_ADMIN)
                 .hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.GET, ISSUE_URL_ROOT + GET_ALL_ISSUES_FOR_LAWYER)
+                .hasAuthority(ROLE_LAWYER)
                 .antMatchers(HttpMethod.POST, ISSUE_URL_ROOT + CHANGE_ISSUE_STATUS)
                 .hasAuthority(ROLE_LAWYER)
+                .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_SEND_BY_LAWYER)
+                .hasAuthority(ROLE_LAWYER)
+                .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_REPLY_BY_USER)
+                .hasAuthority(ROLE_USER)
+                .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_GET_ALL_FOR_LAWYER)
+                .hasAuthority(ROLE_LAWYER)
+                .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_GET_ALL_FOR_USER)
+                .hasAuthority(ROLE_USER)
                 .antMatchers(HttpMethod.POST, CATEGORY_URL_ROOT + "/**")
                 .hasAuthority(ROLE_ADMIN)
                 .antMatchers(HttpMethod.GET, CATEGORY_URL_ROOT + GET_CATEGORIES)
