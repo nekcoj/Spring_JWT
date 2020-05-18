@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+
+import java.util.Date;
 
 import static com.whistleblower.app.security.SecurityConstants.*;
 
@@ -22,13 +25,36 @@ public class IssueController {
   private IssueService issueService;
 
 
-@PostMapping(CREATE_NEW_ISSUE)
- ResponseEntity<?> createIssueAndUser(@Valid @RequestBody IssueDto issueDto,
-                                                BindingResult bindingResult){
-    if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(issueDto);
-    var newUser = issueService.createIssueAndUser(issueDto);
-    return ResponseEntity.ok(newUser);
-}
+
+
+    @PostMapping(CREATE_NEW_ISSUE)
+    ResponseEntity<?> createIssueAndUser(@RequestParam("categoryId") long categoryId ,
+                                         @RequestParam("whenIssue") String whenIssue,
+                                         @RequestParam("whereIssue") String whereIssue,
+                                         @RequestParam("details") String details,
+                                         @RequestParam("employeeAwareness") String employeeAwareness,
+                                         @RequestParam("attachment") MultipartFile attachment){
+
+        IssueDto issue = new IssueDto();
+        issue.setCategoryId(categoryId);
+        issue.setWhenIssue(whenIssue);
+        issue.setWhereIssue(whereIssue);
+        issue.setDetails(details);
+        issue.setEmployeeAwareness(employeeAwareness);
+
+        var newUser = issueService.createIssueAndUser(issue);
+
+
+        return ResponseEntity.ok(newUser);
+    }
+
+//@PostMapping(CREATE_NEW_ISSUE)
+// ResponseEntity<?> createIssueAndUser(@Valid @RequestBody IssueDto issueDto,
+//                                                BindingResult bindingResult){
+//    if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(issueDto);
+//    var newUser = issueService.createIssueAndUser(issueDto);
+//    return ResponseEntity.ok(newUser);
+//}
 
 @GetMapping(GET_ALL_ISSUES_FOR_ADMIN)
 ResponseEntity<?> getAllIssuesAdmin(){

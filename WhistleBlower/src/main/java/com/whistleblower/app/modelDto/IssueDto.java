@@ -2,6 +2,7 @@ package com.whistleblower.app.modelDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.whistleblower.app.entity.Issue;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -28,7 +29,6 @@ public class IssueDto {
        setWhereIssue(issue.getWhereIssue());
        setDetails(issue.getDetails());
        setEmployeeAwareness(issue.getEmployeeAwareness());
-       setAttachment(issue.getAttachment());
        setCreated(issue.getCreated());
        setAssigned(issue.getAssigned());
        setTempUserId(issue.getTempUser().getId());

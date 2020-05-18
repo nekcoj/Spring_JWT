@@ -37,7 +37,7 @@ public class FileUploadController {
     @PostMapping("/upload")
     public ResponseEntity<?> handleFileUpload(@RequestParam("file")MultipartFile file){
 
-        storageService.store(file);
+        storageService.store(file,"test");
 
         String filename = file.getOriginalFilename();
         if(filename != null){

@@ -33,6 +33,8 @@ public class IssueService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+
     public IssueService(IssueRepository issueRepository, UserRepository userRepository,
                         BCryptPasswordEncoder bCryptPasswordEncoder, IssueStatusRepository issueStatusRepository, CategoryRepository categoryRepository) {
         this.issueRepository = issueRepository;
@@ -56,7 +58,6 @@ public class IssueService {
         newIssue.setWhereIssue(issueDto.getWhereIssue());
         newIssue.setDetails(issueDto.getDetails());
         newIssue.setEmployeeAwareness(issueDto.getEmployeeAwareness());
-        newIssue.setAttachment(issueDto.getAttachment());
         newIssue.setTempUser(userRepository.getOne(tempUser.getId()));
         newIssue.setCreated(new Date());
         newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
