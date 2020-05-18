@@ -15,7 +15,7 @@
         <p id="text-capslock" style="display:none"> Caps lock är aktiverat</p>
       </b-form>
     </div>
-     <b-button href="/" v-b-modal.modal-center id="admin-login-button">Logga in</b-button> 
+     <b-button variant="primary" href="/" v-b-modal.modal-center id="admin-login-button">Logga in</b-button> 
     <b-modal id="modal-center" centered title="GDPR" ok-title="Godkänn" cancel-title="Stäng">
       <p class="my-4">
         Vi behandlar personuppgifter som inkommit
@@ -64,9 +64,19 @@ methods:{
 
 <style>
 
+#login-admin{
+  margin-top: 7%;
+}
+
+
+  
+   
+
+
+
 
 #admin-login-button{
-    margin-top: 2px;
+    margin-top: 40px;  
 }
 
 p#text-capslock{

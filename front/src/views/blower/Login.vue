@@ -21,7 +21,7 @@
             placeholder="Lösenord"
           ></b-form-input>
         </div>
-        <span class="liten-text">* obligatoriska fält</span>
+        <em><span class="liten-text">* obligatoriska fält</span></em>
         <div class="form-group text-center">
           <b-button variant="primary" id="btn-vissla-login" class="btn btn-lg" @click="onSubmit">Logga in</b-button>
         </div>

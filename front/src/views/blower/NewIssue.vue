@@ -151,6 +151,7 @@ export default {
 </script>
 
 <style scoped>
+
 #select-what{
   text-overflow:ellipsis;
 }
