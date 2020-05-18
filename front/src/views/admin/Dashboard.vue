@@ -24,30 +24,31 @@
         </span>
       </div>
     </div>
-
-    <div role="tablist">
-      <b-card no-body class="mb-1 text-left" id="issueContainer">
+<div role="tablist">
+      <b-card
+        no-body
+        class="mb-1 text-left"
+        v-for="item in items"
+        :key="item.id"
+      >
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button
-            block
-            v-b-toggle.accordion-1
+          <b-button block 
+            v-b-toggle="item.id"
             variant="secondary"
             class="text-left"
-          >
-            <span>Ärendenummer(1)</span>
+            
+            >
+            
+            <span>Ärendeid: {{item.id}}</span>
           </b-button>
         </b-card-header>
-        <b-collapse
-          id="accordion-1"
-          visible
-          accordion="my-accordion"
-          role="tabpanel"
-        >
+        <b-collapse 
+          :id=item.id 
+          accordion="my-accordion" 
+          role="tabpanel">
+          
           <b-card-body id="issueBody">
-            <font-awesome-icon
-              icon="trash-alt"
-              class="trash-icon"
-            ></font-awesome-icon>
+            <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
@@ -62,74 +63,31 @@
                 <b-form-select-option
                   class=""
                   v-for="lawyer in lawyers"
-                  :key="lawyer"
-                  :value="lawyer"
-                  >{{ lawyer }}</b-form-select-option
+                  :key= lawyer.id
+                  :value= lawyer.id
+                  >{{ lawyer.username }}</b-form-select-option
                 >
               </b-form-select>
+              <b-button v-on:click="assignIssueToLawyer" class="mt-1">TILLDELA</b-button>
             </b-form-group>
+
+
             <label for="whenIssue">När inträffade händelsen?</label>
-            <b-card-text id="whenIssue">2020-05-14</b-card-text>
+            <b-card-text id="whenIssue">{{item.when}}</b-card-text>
             <label for="whereIssue">När inträffade händelsen?</label>
-            <b-card-text id="whereIssue">Hemma</b-card-text>
+            <b-card-text id="whereIssue">{{item.where}}</b-card-text>
             <label for="detailsIssue">Detaljer om ärendet:</label>
-            <b-card-text id="detailsIssue"
-              >Jag har inte borstat tänderna</b-card-text
-            >
-            <label for="awarenessIssue"
-              >Är andra anställda medvetna om detta?</label
-            >
-            <b-card-text id="awarenessIssue">100%</b-card-text>
+            <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
+            <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
+            <b-card-text id="awarenessIssue">{{item.awareness}}</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
-            <b-card-text id="attachmentIssue">bild.jpg</b-card-text>
-          </b-card-body>
+            <b-card-text id="attachmentIssue">{{item.attachment}}</b-card-text>
+            </b-card-body>
         </b-collapse>
-      </b-card>
-
-      <b-card no-body class="mb-1 text-left">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button
-            block
-            v-b-toggle.accordion-2
-            variant="secondary"
-            class="text-left"
-            ><span>Ärendenummer(2)</span></b-button
-          >
-        </b-card-header>
-        <b-collapse
-          id="accordion-2"
-          accordion="my-accordion"
-          role="tabpanel"
-          class="text-left"
-        >
-          <b-card-body>
-            <b-card-text>{{ text }}</b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
-
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button
-            block
-            v-b-toggle.accordion-3
-            variant="secondary"
-            class="text-left"
-            ><span>Ärendenummer(3)</span></b-button
-          >
-        </b-card-header>
-        <b-collapse
-          id="accordion-3"
-          accordion="my-accordion"
-          role="tabpanel"
-          class="text-left"
-        >
-          <b-card-body>
-            <b-card-text>{{ text }}</b-card-text>
-          </b-card-body>
-        </b-collapse>
-      </b-card>
+      </b-card> 
     </div>
+
+    
     <div class="row">
       <div class="col-4">
         <b-form-group>
@@ -161,11 +119,38 @@
 export default {
   data() {
     return {
+      
+      items: {
+        1: {
+          id: "1",
+          when: "Idag",
+          where: "Hemma",
+          details: "inga detaljer",
+          awareness: "alla vet",
+          attachment: "test.png"
+        },
+        2: {
+          id: "2",
+          when: "Igår",
+          where: "På kontoret",
+          details: "Du vet vad som hände! Det var helt galet!",
+          awareness: "ALLA VET!!!",
+          attachment: "bildbevis.jpeg"
+        },
+        3: {
+          id: "3",
+          when: "Torsdags",
+          where: "Borta",
+          details: "hmmmm. det var inget mer",
+          awareness: "alla vet",
+          attachment: "test2.zip"
+        }
+      },
       lawyers: [
-        "Joacim Norbeck",
-        "Ralf Tjärnlund",
-        "Sofia Fredman",
-        "Magnus Pettersson",
+      //   "Joacim Norbeck",
+      //   "Ralf Tjärnlund",
+      //   "Sofia Fredman",
+      //   "Magnus Pettersson",
       ],
       // categories: [
       //   "Mutor, korruption & förfalskning",
@@ -212,6 +197,36 @@ export default {
         if (index !== -1) this.categories.splice(index, 1);
       }
     },
+    assignIssueToLawyer: async function () {
+      console.log('trying to assign issue to lawyer')
+      await fetch('http://localhost:9090/issue/assign',{
+        method: "POST",
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify(`{ 
+   	"lawyerId" : 45,
+    "issueId" : 20
+   }`)
+      })
+      console.log('hur gick det? vem vet')
+    },
+    getLawyers: async function() {
+      console.log('försöker hämta alla lawyers. ')
+      let response = await fetch('http://localhost:9090/user/lawyers')
+      let lawyers = await response.json()
+      console.log('såhär gick det: ',lawyers)
+      this.lawyers = lawyers
+    },
+    getIssues: async function() {
+      console.log('hämtar alla issues')
+      let response = await fetch('http://localhost:9090/issue/get-all')
+      let issues = await response.json()
+      console.log('såhär gick det: ',issues)
+      this.issues = issues
+    }
+  },
+  mounted() {
+    this.getLawyers(),
+    this.getIssues()
   },
   computed:{
     category:{
@@ -220,7 +235,7 @@ export default {
       },
       set(value){
         this.$store.state.category = value;
-      }
+      },
     }
   },
   setselectedCategory:{
