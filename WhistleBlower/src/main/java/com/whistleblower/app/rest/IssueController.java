@@ -65,7 +65,6 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
     @GetMapping(GET_ALL_ISSUES_FOR_LAWYER)
     ResponseEntity<?> getIssues(Authentication authentication){
           var issues = issueService.getIssuesForLawyer(authentication.getName());
-
           return ResponseEntity.ok(issues);
     }
 
