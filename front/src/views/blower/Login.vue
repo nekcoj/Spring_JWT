@@ -48,7 +48,12 @@ export default {
       this.submitted = true;
       const { dispatch } = this.$store;
             if (this.loginCredentials.username && this.loginCredentials.password) {
-                dispatch('account/login', this.loginCredentials)
+              console.log("Innan dispatch login");
+              
+              dispatch('account/login', this.loginCredentials)
+
+              await console.log("Efter dispatch login");
+              
             }
     },
     onSubmit: async function(){

@@ -186,6 +186,7 @@ export default {
 					assumenda shoreditch et.`,
       addRemoveOption: null,
       addRemoveText: null,
+      searchIssue: ""
     };
   },
   methods: {
@@ -216,17 +217,17 @@ export default {
       console.log('såhär gick det: ',lawyers)
       this.lawyers = lawyers
     },
-    getIssues: async function() {
-      console.log('hämtar alla issues')
-      let response = await fetch('http://localhost:9090/issue/get-all')
-      let issues = await response.json()
-      console.log('såhär gick det: ',issues)
-      this.issues = issues
-    }
+    // getIssues: async function() {
+    //   console.log('hämtar alla issues')
+    //   let response = await fetch('http://localhost:9090/issue/get-all')
+    //   let issues = await response.json()
+    //   console.log('såhär gick det: ',issues)
+    //   this.issues = issues
+    // }
   },
   mounted() {
-    this.getLawyers(),
-    this.getIssues()
+    this.getLawyers()
+    //this.getIssues()
   },
   computed:{
     category:{
@@ -248,6 +249,7 @@ export default {
     },
   created: async function() {
     await this.$store.dispatch("getCategories")
+    await this.$store.dispatch('getIssues');
   }
  
 };

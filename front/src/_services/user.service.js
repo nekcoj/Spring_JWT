@@ -18,7 +18,7 @@ function login(username, password) {
             console.log(user);
             
             // login successful if there's a jwt token in the response
-            if (user.token && !(user.path === '/user')) {
+            if (user.token && !(user.path == '/user')) {                
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
             } else {this.$store.state.token = user.token}

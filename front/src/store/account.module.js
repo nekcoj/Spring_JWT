@@ -16,6 +16,7 @@ const actions = {
                 user => {
                     commit('loginSuccess', user);
                     router.push(user.path);
+                    
                 },
                 error => {
                     commit('loginFailure', error);

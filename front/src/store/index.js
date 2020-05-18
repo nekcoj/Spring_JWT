@@ -13,9 +13,9 @@ export default new Vuex.Store({
     temporaryUser: {},
     categories:[],
     selectedCategory: {},
-    tokenId: "",
+    tokenId: null,
     user:{},
-    getIssues: {}
+    issues: {}
   },
   mutations: {
     setTempUser(state, value) {
@@ -64,18 +64,32 @@ export default new Vuex.Store({
         tokenId = user.token;
       } else {tokenId = this.state.tokenId}
 
-      return { 'Authorization': 'Bearer ' + tokenId,
-        'Content-Type': 'application/json' }
+      let header = "'Authorization': 'Bearer "
+      header += tokenId;
+      header += ", 'Content-Type': 'application/json'"
+      console.log("header in getAuthHeader: " + header);
+      
+      return header
     },
     async getIssues() {
-      const header = this.dispatch('getAuthenticationHeader');
+      const header = await this.dispatch('getAuthenticationHeader');
+      console.log("header  :"+header);
+      
       let url = "http://localhost:9090/issue/get-all";
       const response = await fetch(url, {
         method: "GET",
-        headers: {header},
+        headers: {header}
       });
+
       const result = await response.json();
-      this.state.getIssues = Object.assign({}, result);
+      if(result.ok){
+        this.state.issues = Object.assign({}, result);
+        console.log("Issues fetched!");
+      } else {       
+        Array(result).forEach((element) => {
+          console.log(element);
+      });}
+      
     },
 
 
