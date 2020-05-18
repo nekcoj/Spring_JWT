@@ -2,8 +2,8 @@
   <div class="text-left">
     <b-form-group label="Filtrera på kategori" label-for="select-category">
          <b-form-select class="inputbox" id="select-category" v-model="setselectedCategory">
-              <b-form-select-option v-for="category in this.$store.state.categories"
-               :key="category.id" :value="category"> {{category.categoryName}} </b-form-select-option>
+              <b-form-select-option v-for="category in categories"
+               :key="category.id" value=category> {{category.categoryName}} </b-form-select-option>
             </b-form-select> 
     </b-form-group>
     <b-form-group label="Filtrera på månad" label-for="select-month">
@@ -18,17 +18,19 @@
     </b-form-group>
     <div class="search-parent">
       <div class="search-bar">
-        <b-form-input type="text" v-model="searchIssue" placeholder="Fritext sökning"></b-form-input>
+        <b-form-input type="text" v-model="searchIssue" placeholder="Fritextsökning"></b-form-input>
         <span class="search-icon">
           <font-awesome-icon icon="search"></font-awesome-icon>
         </span>
       </div>
     </div>
+
+
 <div role="tablist">
       <b-card
         no-body
         class="mb-1 text-left"
-        v-for="item in items"
+        v-for="item in issues"
         :key="item.id"
       >
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -53,8 +55,10 @@
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category">
-               <b-form-select-option v-for="category in this.$store.state.categories"
-               :key="category.id" :value="category"> {{category.categoryName}} </b-form-select-option>
+               <b-form-select-option v-for="category in categories"
+               :key=category.id
+               :value=category.id
+               > {{category.categoryName}} </b-form-select-option>
                 >
               </b-form-select>
             </b-form-group>
@@ -64,11 +68,11 @@
                   class=""
                   v-for="lawyer in lawyers"
                   :key= lawyer.id
-                  :value= lawyer.id
+                  :value= lawyer
                   >{{ lawyer.username }}</b-form-select-option
                 >
               </b-form-select>
-              <b-button v-on:click="assignIssueToLawyer" class="mt-1">TILLDELA</b-button>
+              <b-button v-on:click="assignIssueToLawyer" class="mt-1">Tilldela</b-button>
             </b-form-group>
 
 
@@ -119,7 +123,9 @@
 export default {
   data() {
     return {
-      
+      setselectedCategory: {},
+      searchIssue: "",
+      issues: {},
       items: {
         1: {
           id: "1",
@@ -152,16 +158,6 @@ export default {
       //   "Sofia Fredman",
       //   "Magnus Pettersson",
       ],
-      // categories: [
-      //   "Mutor, korruption & förfalskning",
-      //   "Dataskydd och brott mot IT-säkerhet",
-      //   "Diskriminering, trakasserier och andra arbetsrelaterade lagproblem",
-      //   "Bedrägeri, missbruk och stöld",
-      //   "Hälsa, säkerhet & miljö",
-      //   "Penningtvätt",
-      //   "Personal",
-      //   "Annat",
-      // ],
       months: [
         "Januari",
         "Februari",
@@ -208,33 +204,22 @@ export default {
    }`)
       })
       console.log('hur gick det? vem vet')
-    },
-    getLawyers: async function() {
-      console.log('försöker hämta alla lawyers. ')
-      let response = await fetch('http://localhost:9090/user/lawyers')
-      let lawyers = await response.json()
-      console.log('såhär gick det: ',lawyers)
-      this.lawyers = lawyers
-    },
-    getIssues: async function() {
-      console.log('hämtar alla issues')
-      let response = await fetch('http://localhost:9090/issue/get-all')
-      let issues = await response.json()
-      console.log('såhär gick det: ',issues)
-      this.issues = issues
     }
   },
   mounted() {
-    this.getLawyers(),
-    this.getIssues()
+    this.$store.dispatch("getLawyers")
+    this.$store.dispatch("getCategories")
+    this.$store.dispatch("getIssues")
+    this.issues = this.$store.state.issues
+
   },
   computed:{
-    category:{
+    categories:{
       get() {
-        return this.$store.state.category;
+        return this.$store.state.categories;
       },
       set(value){
-        this.$store.state.category = value;
+        this.$store.state.categories = value;
       },
     }
   },
@@ -245,10 +230,7 @@ export default {
       set(value){
         this.$store.state.selectedCategory = value;
       }
-    },
-  created: async function() {
-    await this.$store.dispatch("getCategories")
-  }
+    }
  
 };
 </script>

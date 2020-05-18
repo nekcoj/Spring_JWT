@@ -13,6 +13,8 @@ export default new Vuex.Store({
     selectedCategory: {},
     tokenId: "",
     getIssues: {},
+    issues: {},
+    lawyers: []
  
   },
   mutations: {
@@ -54,16 +56,42 @@ export default new Vuex.Store({
       let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
       this.state.categories = Object.assign({}, response);
+      console.log("categories: ",response)
     },
+    
     getAuthenticationHeader: function(){
-      return { 'Authorization': 'Bearer ' + this.state.tokenId,
+      let tokenId = null;
+      if(this.state.tokenId == null){
+        let user = JSON.parse(localStorage.getItem('user'));
+        tokenId = user.token;
+      } else {tokenId = this.state.tokenId}
+
+      return { 'Authorization': 'Bearer ' + tokenId,
         'Content-Type': 'application/json' }
     },
+
+
     async getIssues() {
-      let response = await fetch("http://localhost:9090/issue/get-all");
-      response = await response.json();
-      this.state.categories = Object.assign({}, response);
+      const header = this.dispatch('getAuthenticationHeader');
+      let url = "http://localhost:9090/issue/get-all";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {header},
+      });
+      const result = await response.json();
+      this.state.issues = Object.assign({}, result);
+      console.log("hämtat issues: ",this.state.issues)
     },
+
+
+
+    async getLawyers() {
+      console.log('försöker hämta alla lawyers. ')
+      let response = await fetch('http://localhost:9090/user/lawyers')
+      let lawyers = await response.json()
+      console.log('såhär gick det: lawyers ',lawyers)
+      this.state.lawyers = Object.assign({}, lawyers)
+    }
 
 
   },
