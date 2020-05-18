@@ -1,14 +1,10 @@
 <template>
   <div class="text-left">
     <b-form-group label="Filtrera på kategori" label-for="select-category">
-      <b-form-select class="" id="select-category" v-model="selectedCategory">
-        <b-form-select-option
-          v-for="category in categories"
-          :key="category"
-          :value="category"
-          >{{ category }}</b-form-select-option
-        >
-      </b-form-select>
+         <b-form-select class="inputbox" id="select-category" v-model="setselectedCategory">
+              <b-form-select-option v-for="category in this.$store.state.categories"
+               :key="category.id" :value="category"> {{category.categoryName}} </b-form-select-option>
+            </b-form-select> 
     </b-form-group>
     <b-form-group label="Filtrera på månad" label-for="select-month">
       <b-form-select class="" id="select-month" v-model="selectedMonth">
@@ -22,7 +18,7 @@
     </b-form-group>
     <div class="search-parent">
       <div class="search-bar">
-        <b-form-input type="text" placeholder="Fritext sökning"></b-form-input>
+        <b-form-input type="text" v-model="searchIssue" placeholder="Fritext sökning"></b-form-input>
         <span class="search-icon">
           <font-awesome-icon icon="search"></font-awesome-icon>
         </span>
@@ -56,12 +52,8 @@
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category">
-                <b-form-select-option
-                  class=""
-                  v-for="category in categories"
-                  :key="category"
-                  :value="category"
-                  >{{ category }}</b-form-select-option
+               <b-form-select-option v-for="category in this.$store.state.categories"
+               :key="category.id" :value="category"> {{category.categoryName}} </b-form-select-option>
                 >
               </b-form-select>
             </b-form-group>
@@ -175,16 +167,16 @@ export default {
         "Sofia Fredman",
         "Magnus Pettersson",
       ],
-      categories: [
-        "Mutor, korruption & förfalskning",
-        "Dataskydd och brott mot IT-säkerhet",
-        "Diskriminering, trakasserier och andra arbetsrelaterade lagproblem",
-        "Bedrägeri, missbruk och stöld",
-        "Hälsa, säkerhet & miljö",
-        "Penningtvätt",
-        "Personal",
-        "Annat",
-      ],
+      // categories: [
+      //   "Mutor, korruption & förfalskning",
+      //   "Dataskydd och brott mot IT-säkerhet",
+      //   "Diskriminering, trakasserier och andra arbetsrelaterade lagproblem",
+      //   "Bedrägeri, missbruk och stöld",
+      //   "Hälsa, säkerhet & miljö",
+      //   "Penningtvätt",
+      //   "Personal",
+      //   "Annat",
+      // ],
       months: [
         "Januari",
         "Februari",
@@ -221,6 +213,28 @@ export default {
       }
     },
   },
+  computed:{
+    category:{
+      get() {
+        return this.$store.state.category;
+      },
+      set(value){
+        this.$store.state.category = value;
+      }
+    }
+  },
+  setselectedCategory:{
+      get(){
+        return this.$store.state.selectedCategory;
+      },
+      set(value){
+        this.$store.state.selectedCategory = value;
+      }
+    },
+  created: async function() {
+    await this.$store.dispatch("getCategories")
+  }
+ 
 };
 </script>
 <style scoped>

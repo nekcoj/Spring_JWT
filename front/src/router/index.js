@@ -19,7 +19,7 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue')
   },
   {
-    path: '/valj',
+    path: '/user',
     name: 'Vad göra?',
     component: () => import('../views/blower/Dash.vue')
   },
@@ -52,6 +52,12 @@ Vue.use(VueRouter)
     ]
   },
   {
+    
+    path: '/loginAdmin',
+    name: 'Logga in admin',
+    component: () => import ('../views/admin/LoginAdmin.vue')
+  },
+  {
     path: '/jurist',
     component: () => import ('../views/lawyer/Dashboard-base.vue'),
     children: [
@@ -60,25 +66,20 @@ Vue.use(VueRouter)
     ]
   },
     {
-    
       path: '/loginJurist',
       name: 'Logga in jurist',
       component: () => import ('../views/lawyer/LoginLawyer.vue')
     },
-
     {
-    
-      path: '/loginAdmin',
-      name: 'Logga in admin',
-      component: () => import ('../views/admin/LoginAdmin.vue')
+      path: '/juristpostbox',
+      name: 'Safe postbox jurist',
+      component: () => import ('../views/lawyer/Safepostbox.vue')
     },
-
     {
-    
       path: '/safepostbox',
-      name: 'Safepostbox anmälare',
+      name: 'Safe postbox anmälare',
       component: () => import ('../views/blower/Safepostbox.vue')
-    },
+    }
 
 
 
