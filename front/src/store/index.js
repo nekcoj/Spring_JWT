@@ -58,13 +58,24 @@ export default new Vuex.Store({
       this.state.categories = Object.assign({}, response);
     },
     getAuthenticationHeader: function(){
-      return { 'Authorization': 'Bearer ' + this.state.tokenId,
+      let tokenId = null;
+      if(this.state.tokenId == null){
+        let user = JSON.parse(localStorage.getItem('user'));
+        tokenId = user.token;
+      } else {tokenId = this.state.tokenId}
+
+      return { 'Authorization': 'Bearer ' + tokenId,
         'Content-Type': 'application/json' }
     },
     async getIssues() {
-      let response = await fetch("http://localhost:9090/issue/get-all");
-      response = await response.json();
-      this.state.categories = Object.assign({}, response);
+      const header = this.dispatch('getAuthenticationHeader');
+      let url = "http://localhost:9090/issue/get-all";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {header},
+      });
+      const result = await response.json();
+      this.state.getIssues = Object.assign({}, result);
     },
 
 

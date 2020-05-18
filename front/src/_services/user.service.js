@@ -6,8 +6,6 @@ export const userService = {
 };
 
 function login(username, password) {
-    console.log("in user.service: u:" + username + " p:" + password );
-    
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,8 +36,6 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            console.log("handleResponse login failure");
-            
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }

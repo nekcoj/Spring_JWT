@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from "../store/index.js";
 
 Vue.use(VueRouter)
 
@@ -66,7 +67,14 @@ const router = new VueRouter({
       children: [
         {path: '', name: 'AdminDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
         {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        if(store.state.account.status.loggedIn == false || store.state.account.loggedIn == null){
+          next({path: '/sakerinloggning'})
+        } else {
+          next()
+        }
+      }
     },
       {
         path: '/loginJurist',

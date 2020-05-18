@@ -47,7 +47,6 @@ export default {
       
       this.submitted = true;
       const { dispatch } = this.$store;
-      
             if (this.loginCredentials.username && this.loginCredentials.password) {
                 dispatch('account/login', this.loginCredentials)
             }
