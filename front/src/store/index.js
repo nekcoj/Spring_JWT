@@ -14,7 +14,8 @@ export default new Vuex.Store({
     categories:[],
     selectedCategory: {},
     tokenId: "",
-    user:{}
+    user:{},
+    getIssues: {}
   },
   mutations: {
     setTempUser(state, value) {
@@ -59,7 +60,14 @@ export default new Vuex.Store({
     getAuthenticationHeader: function(){
       return { 'Authorization': 'Bearer ' + this.state.tokenId,
         'Content-Type': 'application/json' }
-    }
+    },
+    async getIssues() {
+      let response = await fetch("http://localhost:9090/issue/get-all");
+      response = await response.json();
+      this.state.categories = Object.assign({}, response);
+    },
+
+
   },
   modules: {
     account
