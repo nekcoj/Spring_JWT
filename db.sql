@@ -29,16 +29,13 @@ DELETE FROM `category`;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
 INSERT INTO `category` (`id`, `category_name`) VALUES
 	(1, 'Annat'),
-	(15, 'banan tjuvar'),
-	(18, 'bananfobi'),
 	(4, 'Bedrägeri, missbruk och stöld'),
 	(2, 'Dataskydd och brott mot IT-säkerhet'),
 	(3, 'Diskriminering, trakasserier och andra arbetsrelaterade lagproblem'),
 	(5, 'Hälsa, säkerhet & miljö'),
 	(8, 'Mutor, korruption & förfalskning'),
 	(6, 'Penningtvätt'),
-	(7, 'Personal'),
-	(16, 'tomtar på loftet');
+	(7, 'Personal');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 
 -- Dumping structure for event whistleblower.clear_records_older_than_6_month
@@ -70,13 +67,16 @@ CREATE TABLE IF NOT EXISTS `issue` (
   CONSTRAINT `FK_issue_issue_status` FOREIGN KEY (`issue_status_id`) REFERENCES `issue_status` (`id`) ON UPDATE NO ACTION,
   CONSTRAINT `FKkbbg50l7cewo3wo6737ioh54d` FOREIGN KEY (`temp_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `assigned_issue_user_id_fk` FOREIGN KEY (`lawyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table whistleblower.issue: ~1 rows (approximately)
+-- Dumping data for table whistleblower.issue: ~4 rows (approximately)
 DELETE FROM `issue`;
 /*!40000 ALTER TABLE `issue` DISABLE KEYS */;
 INSERT INTO `issue` (`id`, `category_id`, `when_issue`, `where_issue`, `details`, `employee_awareness`, `attachment`, `temp_user_id`, `lawyer_id`, `created`, `assigned`, `issue_status_id`, `active`) VALUES
-	(16, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 46, 45, '2020-05-15 08:20:02', '2020-05-15 08:26:42', 2, b'1');
+	(16, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 46, 45, '2020-05-15 08:20:02', '2020-05-15 08:26:42', 2, b'1'),
+	(17, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 47, 45, '2020-05-18 06:50:48', '2020-05-18 07:39:13', 2, b'1'),
+	(18, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 48, NULL, '2020-05-18 08:36:28', NULL, 1, b'1'),
+	(19, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 49, NULL, '2020-05-18 08:43:49', NULL, 1, b'1');
 /*!40000 ALTER TABLE `issue` ENABLE KEYS */;
 
 -- Dumping structure for table whistleblower.issue_status
@@ -98,26 +98,29 @@ INSERT INTO `issue_status` (`id`, `status`) VALUES
 
 -- Dumping structure for table whistleblower.postbox_post
 CREATE TABLE IF NOT EXISTS `postbox_post` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sent_date` datetime NOT NULL,
   `temp_user_id` int(10) unsigned NOT NULL DEFAULT 0,
   `lawyer_id` int(10) unsigned NOT NULL DEFAULT 0,
   `message` varchar(2048) NOT NULL,
   `replied_date` datetime DEFAULT NULL,
   `reply` text DEFAULT NULL,
-  `replied` bit(1) NOT NULL,
+  `replied` bit(1) NOT NULL DEFAULT b'0',
   `sent` datetime DEFAULT NULL,
   `sent_by` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
   KEY `FK_postbox_post_user` (`temp_user_id`),
   KEY `FK_postbox_post_user_2` (`lawyer_id`),
   CONSTRAINT `FK_postbox_post_user` FOREIGN KEY (`temp_user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_postbox_post_user_2` FOREIGN KEY (`lawyer_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table whistleblower.postbox_post: ~0 rows (approximately)
+-- Dumping data for table whistleblower.postbox_post: ~1 rows (approximately)
 DELETE FROM `postbox_post`;
 /*!40000 ALTER TABLE `postbox_post` DISABLE KEYS */;
+INSERT INTO `postbox_post` (`id`, `sent_date`, `temp_user_id`, `lawyer_id`, `message`, `replied_date`, `reply`, `replied`, `sent`, `sent_by`) VALUES
+	(1, '2020-05-18 08:17:42', 46, 45, 'Meddelande från jurist till visslare', NULL, NULL, b'0', NULL, NULL);
 /*!40000 ALTER TABLE `postbox_post` ENABLE KEYS */;
 
 -- Dumping structure for table whistleblower.user
@@ -133,15 +136,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `enabled` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username_uindex` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table whistleblower.user: ~3 rows (approximately)
+-- Dumping data for table whistleblower.user: ~6 rows (approximately)
 DELETE FROM `user`;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
 INSERT INTO `user` (`id`, `username`, `password`, `role`, `last_login`, `created`, `first_name`, `last_name`, `enabled`) VALUES
-	(44, 'Admin', '$2a$10$nvVOs2DFIaHFoHXxuVU4bedqHPWuK8qWoU3Aqp.pTvom/EESftnES', 'ADMIN', '2020-05-15 09:09:15', '2020-05-15 08:09:24', NULL, NULL, b'0'),
-	(45, 'Lawyer', '$2a$10$ua7Y3SAJfquUXbs/aNqEqOyRWFVhHb4fw38fwnlCbmsF9cs7S1dVq', 'LAWYER', '2020-05-15 09:08:34', '2020-05-15 08:09:24', NULL, NULL, b'0'),
-	(46, '21316156', '$2a$10$XdE5t92lTFbtdqwtOx9Aw.4PKnEZd/8po4kmJh.9IkthDdJZSqIEa', 'USER', '2020-05-15 08:20:40', '2020-05-15 08:20:02', NULL, NULL, b'1');
+	(44, 'Admin', '$2a$10$nvVOs2DFIaHFoHXxuVU4bedqHPWuK8qWoU3Aqp.pTvom/EESftnES', 'ADMIN', '2020-05-18 08:20:26', '2020-05-15 08:09:24', NULL, NULL, b'0'),
+	(45, 'Lawyer', '$2a$10$ua7Y3SAJfquUXbs/aNqEqOyRWFVhHb4fw38fwnlCbmsF9cs7S1dVq', 'LAWYER', '2020-05-18 08:24:37', '2020-05-15 08:09:24', NULL, NULL, b'0'),
+	(46, '21316156', '$2a$10$XdE5t92lTFbtdqwtOx9Aw.4PKnEZd/8po4kmJh.9IkthDdJZSqIEa', 'USER', '2020-05-15 08:20:40', '2020-05-15 08:20:02', NULL, NULL, b'1'),
+	(47, '34302446', '$2a$10$Yx3.SHhwhkmpAmIAP8hx7uboQ1x5aazckQ.nD.mtD9lVj.3BoYPuS', 'USER', '2020-05-18 06:52:42', '2020-05-18 06:50:48', NULL, NULL, b'1'),
+	(48, '05626407', '$2a$10$lRCfo6ipBsCilQcVyhezDecd9NaJ44lFyStLNJujL/O7t85FwMtc.', 'USER', NULL, '2020-05-18 08:36:28', NULL, NULL, b'1'),
+	(49, '95615564', '$2a$10$lou6xoGQ13x464Vj3Zo4yesOlepg1pR3gDVXgCw5QcW/PVV4ZLdd.', 'USER', '2020-05-18 08:44:19', '2020-05-18 08:43:49', NULL, NULL, b'1');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

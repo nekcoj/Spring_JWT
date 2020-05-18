@@ -34,7 +34,7 @@ public class PostBoxController {
 
 
 
-    @PostMapping(POSTBOX_REPLY_USER)
+    @PostMapping(POSTBOX_REPLY_BY_USER)
     ResponseEntity<?> replyMessageByLawyer(@Valid @RequestBody PostDto postDto, Authentication authentication,
                                            BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
