@@ -71,10 +71,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 // IssueStatus Controller
                 .antMatchers(HttpMethod.GET, ISSUE_STATUS_URL_ROOT + GET_ALL_ISSUE_STATUS)
                 .hasAnyAuthority(ROLE_ADMIN,ROLE_LAWYER)
-
-
-              //  .anyRequest().permitAll()
-               // .anyRequest().authenticated()
+                
                 .and()
                 .addFilter(new JWTAuthenticationFilter(userRepository, authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
