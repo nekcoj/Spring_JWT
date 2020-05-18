@@ -23,7 +23,17 @@
 </div>
 </template>
 <script>
-
+export default {
+  data() {
+    return {}
+  },
+  methods: {
+    logout(){
+        const { dispatch } = this.$store;
+        dispatch('account/logout');
+    }
+  }
+}
 </script>
 
 

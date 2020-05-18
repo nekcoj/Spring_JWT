@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { account } from './account.module';
+
 // Vue.config.productionTip = false;
 
 Vue.use(Vuex);
@@ -11,7 +13,8 @@ export default new Vuex.Store({
     temporaryUser: {},
     categories:[],
     selectedCategory: {},
-    tokenId: ""
+    tokenId: "",
+    user:{}
   },
   mutations: {
     setTempUser(state, value) {
@@ -58,5 +61,7 @@ export default new Vuex.Store({
         'Content-Type': 'application/json' }
     }
   },
-  modules: {},
+  modules: {
+    account
+}
 });

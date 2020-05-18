@@ -23,23 +23,35 @@
         </div>
         <span class="liten-text">* obligatoriska fält</span>
         <div class="form-group text-center">
-          <b-button variant="primary" id="btn-vissla-login" class="btn btn-lg" @click="onSubmit">Logga in</b-button>
+          <b-button variant="primary" id="btn-vissla-login" class="btn btn-lg" @click="login">Logga in</b-button>
         </div>
       </b-form>
     </div>
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       loginCredentials: {
         username: "",
         password: ""
-      }
+      },
+      submitted: false
     }
   },
   methods:{
+    login: async function(){
+      console.log("in login function");
+      
+      this.submitted = true;
+      const { dispatch } = this.$store;
+      
+            if (this.loginCredentials.username && this.loginCredentials.password) {
+                dispatch('account/login', this.loginCredentials)
+            }
+    },
     onSubmit: async function(){
       let url = "http://localhost:9090/login";
 
