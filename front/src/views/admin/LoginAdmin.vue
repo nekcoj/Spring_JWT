@@ -66,11 +66,12 @@ methods:{
 
 
 #admin-login-button{
-    margin-top: 2%;
+    margin-top: 2px;
 }
 
-#text-capslock{
+p#text-capslock{
     color: red;
+    margin-bottom: 0;
 }
 
 </style>

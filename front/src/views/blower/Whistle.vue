@@ -15,6 +15,8 @@
 
 <style scoped>
 
+
+
 .whistle{
   height: 80vh;
   display: flex;
@@ -26,6 +28,8 @@
 .btn-selection{
 margin-bottom: 20px;
 margin-top: 20px;
+width: 250px;
+border-radius: 25px;
 }
 
 
