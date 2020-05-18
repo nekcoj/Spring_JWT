@@ -15,7 +15,9 @@ export default new Vuex.Store({
     selectedCategory: {},
     tokenId: null,
     user:{},
-    issues: {}
+    issues: {},
+    lawyers: []
+ 
   },
   mutations: {
     setTempUser(state, value) {
@@ -56,7 +58,9 @@ export default new Vuex.Store({
       let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
       this.state.categories = Object.assign({}, response);
+      console.log("categories: ",response)
     },
+    
     getAuthenticationHeader: function(){
       let tokenId = null;
       if(this.state.tokenId == null){
@@ -71,6 +75,8 @@ export default new Vuex.Store({
       
       return header
     },
+
+
     async getIssues() {
       const header = await this.dispatch('getAuthenticationHeader');
       console.log("header  :"+header);
@@ -91,6 +97,16 @@ export default new Vuex.Store({
       });}
       
     },
+
+
+
+    async getLawyers() {
+      console.log('försöker hämta alla lawyers. ')
+      let response = await fetch('http://localhost:9090/user/lawyers')
+      let lawyers = await response.json()
+      console.log('såhär gick det: lawyers ',lawyers)
+      this.state.lawyers = Object.assign({}, lawyers)
+    }
 
 
   },
