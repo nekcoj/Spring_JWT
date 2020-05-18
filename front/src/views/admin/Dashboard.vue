@@ -182,7 +182,6 @@ export default {
 					assumenda shoreditch et.`,
       addRemoveOption: null,
       addRemoveText: null,
-      searchIssue: ""
     };
   },
   methods: {

@@ -68,12 +68,7 @@ export default new Vuex.Store({
         tokenId = user.token;
       } else {tokenId = this.state.tokenId}
 
-      let header = "'Authorization': 'Bearer "
-      header += tokenId;
-      header += ", 'Content-Type': 'application/json'"
-      console.log("header in getAuthHeader: " + header);
-      
-      return header
+      return { 'Authorization': 'Bearer ' + tokenId, 'Content-Type': 'application/json' }
     },
 
 
@@ -84,7 +79,7 @@ export default new Vuex.Store({
       let url = "http://localhost:9090/issue/get-all";
       const response = await fetch(url, {
         method: "GET",
-        headers: {header}
+        headers: header
       });
 
       const result = await response.json();
