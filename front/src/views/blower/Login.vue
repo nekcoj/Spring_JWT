@@ -12,7 +12,7 @@
           ></b-form-input>
         </div>
         <div class="form-group">
-          <span>Ange det tillfälliga lösenord du blev tilldelad när du skapade ärendet(*):</span>
+         <span>Ange det tillfälliga lösenord du blev tilldelad när du skapade ärendet(*):</span>
           <b-form-input
             id="vissla-PW"
             type="password"
@@ -21,7 +21,7 @@
             placeholder="Lösenord"
           ></b-form-input>
         </div>
-        <span class="liten-text">* obligatoriska fält</span>
+        <em><span class="liten-text">* obligatoriska fält</span></em>
         <div class="form-group text-center">
           <b-button variant="primary" id="btn-vissla-login" class="btn btn-lg" @click="login">Logga in</b-button>
         </div>
@@ -84,16 +84,28 @@ export default {
 
 <style scoped>
 
+
+
 #vissla-login{
   display:flex;
   flex-direction:column;
+  padding-top: 8%;
+ 
 }
 #vissla-login *{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width:80vw;
+   width:80vw; 
   align-self:center;
+}
+
+@media (min-width: 800px) and (max-width: 1980px) {
+  #vissla-login *{
+   width:40vw; 
+}
+
+  
 }
 #vissla-login #vissla-ID{
   border: 1px solid black;
@@ -101,9 +113,11 @@ export default {
 #vissla-login #vissla-PW{
   border: 1px solid black;
 }
-#vissla-login #btn-vissla-login{
-  width:30vw;
-}
+ #vissla-login #btn-vissla-login{
+  width:120px;
+  
+  
+} 
 span.liten-text{
   margin-top: -10px;
   font-size:80%;

@@ -6,7 +6,7 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
+            <label class="lbl" for="select-category">Vad gäller ärendet?</label>
           </b-col>
           <b-col sm="12">
             <b-form-text class="inputbox" id="select-category">{{selectedCategory.categoryName}}
@@ -16,7 +16,7 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-whenIssue">När inträffade händelsen?(*)</label>
+            <label class="lbl" for="textarea-whenIssue">När inträffade händelsen?</label>
           </b-col>
           <b-col sm="12">
             <b-form-text class="inputbox" id="textarea-whenIssue">{{whenIssue}}
@@ -26,7 +26,7 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-whereIssue">Var inträffade händelsen?(*)
+            <label class="lbl" for="textarea-whereIssue">Var inträffade händelsen?
             </label>
           </b-col>
           <b-col sm="12">
@@ -37,7 +37,7 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-details">Detaljer om ärendet(*)
+            <label class="lbl" for="textarea-details">Detaljer om ärendet
             </label>
           </b-col>
           <b-col sm="12">
@@ -48,7 +48,7 @@
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-employeeAwareness">Är andra anställda medvetna om detta?(*)
+            <label class="lbl" for="textarea-employeeAwareness">Är andra anställda medvetna om detta?
             </label>
           </b-col>
           <b-col sm="12">
@@ -59,7 +59,7 @@
 
         <b-row class="d-flex" id="row-attachment">
           
-          <b-col ><span id="col-attachment-text" >Bilaga:</span>
+          <b-col ><span id="col-attachment-text">Bilaga:</span>
           </b-col>
           <b-col id="col-attachment-filename"><label id="lbl-attachment">{{attachment}}</label>
           </b-col>
@@ -69,11 +69,11 @@
         <b-row class="d-flex" id="row-verify">
           <b-col></b-col>
           <b-col>
-            <b-button to="./nyttarende" variant="primary" class="btn" id="btn-back">
+            <b-button to="./nyttarende" variant="primary" class="btn-preview" id="btn-back">
               Tillbaka
             </b-button></b-col>
           <b-col>
-            <b-button variant="primary" class="btn" v-on:click="sendNewIssue">
+            <b-button variant="primary" class="btn-preview" v-on:click="sendNewIssue">
               Skicka
             </b-button>
           </b-col>
@@ -167,7 +167,8 @@ export default {
 }
 #row-attachment{
   padding-top: 8px;
-  justify-content: left;
+   padding-bottom: 10px;
+  justify-content: center;
   align-items:baseline;
 }
 #lbl-attachment{
@@ -181,10 +182,13 @@ export default {
   display:flex;
   justify-content: right;
   padding-right:10px;
+ 
 }
 #col-attachment-filename{
   display:flex;
   justify-content: left;
+ 
+
 }
 .inputbox{
   margin: 0px 0px 6px;
@@ -194,5 +198,10 @@ export default {
   padding-top: 6px;
   margin-bottom: 0px;
 }
+
+ .btn-preview{
+   width: 90px;
+
+} 
 
 </style>
