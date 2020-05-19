@@ -14,6 +14,7 @@ export default new Vuex.Store({
     categories:[],
     selectedCategory: {},
     tokenId: null,
+    authUser: "",
     user:{},
     issues: {},
     lawyers: []
@@ -73,13 +74,26 @@ export default new Vuex.Store({
 
 
     async getIssues() {
-      const header = await this.dispatch('getAuthenticationHeader');
-      console.log("header  :"+header);
-      
       let url = "http://localhost:9090/issue/get-all";
       const response = await fetch(url, {
         method: "GET",
-        headers: header
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+
+      const result = await response.json();
+      if(!result.ok){       
+        Array(result).forEach((element) => {
+          console.log(element);
+          return;
+      });}
+      this.state.issues = Object.assign({}, result); 
+    },
+
+    async getLawyers() {
+      let url = "http://localhost:9090/user/lawyers";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
       });
 
       const result = await response.json();
@@ -90,17 +104,6 @@ export default new Vuex.Store({
         Array(result).forEach((element) => {
           console.log(element);
       });}
-      
-    },
-
-
-
-    async getLawyers() {
-      console.log('försöker hämta alla lawyers. ')
-      let response = await fetch('http://localhost:9090/user/lawyers')
-      let lawyers = await response.json()
-      console.log('såhär gick det: lawyers ',lawyers)
-      this.state.lawyers = Object.assign({}, lawyers)
     }
 
 

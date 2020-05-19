@@ -30,7 +30,6 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
@@ -43,40 +42,11 @@ export default {
   },
   methods:{
     login: async function(){
-      console.log("in login function");
-      
       this.submitted = true;
       const { dispatch } = this.$store;
-            if (this.loginCredentials.username && this.loginCredentials.password) {
-              console.log("Innan dispatch login");
-              
-              dispatch('account/login', this.loginCredentials)
-
-              await console.log("Efter dispatch login");
-              
-            }
-    },
-    onSubmit: async function(){
-      let url = "http://localhost:9090/login";
-
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(this.loginCredentials),
-      };
-
-      const result = await fetch(url, requestOptions);
-
-      let login = null;
-
-      if(result.ok){
-        login = await result.json();
-        this.$store.state.tokenId = login.token;
-        /**ANVÄND DETTA PÅ JURIST/ADMIN LOGIN MED!!*/
-        this.$router.push({path: login.path})   
-      }
-  
-      return login;
+        if (this.loginCredentials.username && this.loginCredentials.password) {
+          dispatch('account/login', this.loginCredentials)              
+        }
     },
   }
 }
