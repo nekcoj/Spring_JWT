@@ -12,12 +12,16 @@ export default new Vuex.Store({
     formdata: {},
     temporaryUser: {},
     categories:[],
-    selectedCategory: {},
+    // selectedCategory: {},
+    // selectedMonth:{},
+    // searchField: "",
     tokenId: null,
     authUser: "",
     user:{},
     issues: [],
-    lawyers: []
+    lawyers: [],
+    sortDesc: Boolean,
+    
  
   },
   mutations: {
@@ -26,12 +30,18 @@ export default new Vuex.Store({
     },
 
     setCategories(state, value) {
-      this.$store.state.categories = value;
+      this.$store.state.categories = value
     },
+    // setSelectedMonth(state,value){
+    //   this.$store.state.selectedMonth = value
+    // },
 
-    setselectedCategory(state, value) {
-      this.$store.state.selectedCategory = value;
-    },
+    // setSelectedCategory(state, value) {
+    //   this.$store.state.selectedCategory = value
+    // },
+    // setSearchField(state, value){
+    //   this.$store.state.searchField = value
+    // },
   },
   actions: {
     newIssue: async function(value) {
@@ -108,5 +118,8 @@ export default new Vuex.Store({
   },
   modules: {
     account
+  },
+  created() {
+    this.categories = []
   }
 });
