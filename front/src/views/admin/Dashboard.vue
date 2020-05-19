@@ -212,7 +212,7 @@ export default {
   async mounted() {
    
     await this.$store.dispatch("getLawyers")
-    this.lawers = await this.$store.state.lawyers
+    this.lawyers = await this.$store.state.lawyers
     await this.$store.dispatch("getCategories")
     await this.$store.dispatch("getIssues")
     this.issues = await this.$store.state.issues

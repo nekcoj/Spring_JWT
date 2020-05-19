@@ -100,7 +100,7 @@ export default new Vuex.Store({
           return;
       });
     }
-      this.state.lawyers = Object.assign({}, result); 
+      this.state.lawyers = result; 
     },
 
     
