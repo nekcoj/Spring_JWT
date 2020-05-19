@@ -83,9 +83,6 @@ export default {
       formdata: {},
     }
   },
-
-  
-
   computed:{
     category:{
       get() {

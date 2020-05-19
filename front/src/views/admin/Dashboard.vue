@@ -233,13 +233,13 @@ export default {
     }
   },
   setselectedCategory:{
-      get(){
-        return this.$store.state.selectedCategory;
-      },
-      set(value){
-        this.$store.state.selectedCategory = value;
-      }
+    get(){
+      return this.$store.state.selectedCategory;
+    },
+    set(value){
+      this.$store.state.selectedCategory = value;
     }
+  }
 };
 </script>
 <style scoped>

@@ -1,20 +1,80 @@
 <template>
-  <div class="dash">
-    <div>
-      <router-link to="./safepostbox">
-        <b-button variant="primary" class="btn-selection btn-lg" id="btn-new-issue">Safe postbox</b-button>
-      </router-link>
-    </div>
-    <div>
-      <router-link to="./loggaut">
-        <b-button variant="danger" class="btn-loggaut btn-selection btn-lg" id="btn-followup">Logga ut</b-button>
-        <!--ok byt till den här då 
-        <b-button variant="primary" class="btn-selection btn-lg" id="btn-followup">Logga ut</b-button>
-        -->
+  <div class="dash container">
+    <div class="row card">
+      <div class="col-md-12">
+        <p id="issueStatus">Status på ärendet: {{issueStatus}}</p>
+        <router-link :to="{ path: '/safepostbox'}" v-if="messages.length">
+          <b-button variant="primary" class="btn-selection btn-lg" id="btn-new-issue">Safe postbox</b-button>
         </router-link>
+      </div>
+      <div class="col-md-12">
+        <router-link to="./vissla">
+          <b-button variant="danger" class="btn-loggaut btn-selection btn-lg" @click="logout" id="btn-followup">Logga ut</b-button>
+          <!--ok byt till den här då 
+          <b-button variant="primary" class="btn-selection btn-lg" id="btn-followup">Logga ut</b-button>
+          -->
+          </router-link>
+      </div>
     </div>
   </div>
 </template>
+
+<script>
+  export default {
+    data() {
+      return {
+      }
+    },
+    async created() {
+      this.getIssueStatusForUser()
+      this.getMessages()      
+    },
+    computed: {
+      issueStatus: {
+        get(){
+          return this.$store.state.issueStatusUser;
+        }
+      },
+      messages:{
+        get(){
+          return this.$store.state.messages;
+        }
+      }
+    },
+    methods:{
+      async getIssueStatusForUser() {
+        let issueStatus = "";
+        let url = "http://localhost:9090/issue/user";
+        const response = await fetch(url, {
+          method: "GET",
+          headers: await this.$store.dispatch('getAuthenticationHeader')
+        });
+        
+        await response.text().then( function(text){
+          issueStatus = text;
+        });
+        this.$store.commit("setIssueStatusForUser", issueStatus);
+      },
+
+      logout(){
+        const { dispatch } = this.$store;
+        dispatch('account/logout');
+      },
+
+      async getMessages() {
+        const {commit} = this.$store;
+        let url = "http://localhost:9090/post/get-user";
+        const response = await fetch(url, {
+          method: "GET",
+          headers: await this.$store.dispatch('getAuthenticationHeader')
+        });
+
+        const result = await response.json();
+        commit("setMessages", result)       
+      },
+    }
+  }
+</script>
 
 <style scoped>
 
@@ -36,6 +96,7 @@
 margin-bottom: 20px;
 margin-top: 20px;
 }
-
-
+#issueStatus {
+  font-size: 1.5em;
+}
 </style>

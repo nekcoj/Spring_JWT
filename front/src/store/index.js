@@ -17,8 +17,8 @@ export default new Vuex.Store({
     authUser: "",
     user:{},
     issues: [],
-    lawyers: []
- 
+    lawyers: [],
+    messages: {}
   },
   mutations: {
     setTempUser(state, value) {
@@ -32,6 +32,12 @@ export default new Vuex.Store({
     setselectedCategory(state, value) {
       this.$store.state.selectedCategory = value;
     },
+    setIssueStatusForUser(state, value){
+      this.state.issueStatusUser = value;
+    },
+    setMessages(state, value){
+      this.state.messages = value;
+    }
   },
   actions: {
     newIssue: async function(value) {
@@ -44,6 +50,7 @@ export default new Vuex.Store({
       const result = await response.json();
       this.state.temporaryUser = Object.assign({}, result);
     },
+
     login: async function(value) {
       let url = "http://localhost:9090/login";
       const request = await fetch(url, {
@@ -104,7 +111,7 @@ export default new Vuex.Store({
       });}
       this.state.lawyers = result;
       console.log("lawyers: " + this.state.lawyers);
-    }
+    },
   },
   modules: {
     account

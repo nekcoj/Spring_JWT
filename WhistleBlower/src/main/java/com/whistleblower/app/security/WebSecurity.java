@@ -61,9 +61,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAuthority(ROLE_LAWYER)
                 .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_REPLY_BY_USER)
                 .hasAuthority(ROLE_USER)
-                .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_GET_ALL_FOR_LAWYER)
+                .antMatchers(HttpMethod.GET, POSTBOX_URL_ROOT + POSTBOX_GET_ALL_FOR_LAWYER)
                 .hasAuthority(ROLE_LAWYER)
-                .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_GET_ALL_FOR_USER)
+                .antMatchers(HttpMethod.GET, POSTBOX_URL_ROOT + POSTBOX_GET_ALL_FOR_USER)
                 .hasAuthority(ROLE_USER)
                 //Category Controller
                 .antMatchers(HttpMethod.POST, CATEGORY_URL_ROOT + "/**")

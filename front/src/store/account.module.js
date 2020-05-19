@@ -10,8 +10,6 @@ const state = user
 const actions = {
     login({ commit }, { username, password }) {
         commit('loginRequest', { username });
-        console.log("username: " + username + " password: " + password);
-
         userService.login(username, password)
             .then(
                 user => {
