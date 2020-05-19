@@ -32,6 +32,7 @@ public class IssueDto {
        setAssigned(issue.getAssigned());
        setTempUserId(issue.getTempUser().getId());
        setIssueStatus(issue.getIssueStatus().getStatus());
+       setAttachmentFileName(issue.getAttachment());
     }
 
     public String getIssueStatus() {

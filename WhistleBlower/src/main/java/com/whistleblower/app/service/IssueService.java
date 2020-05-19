@@ -72,6 +72,7 @@ public class IssueService {
         newIssue.setCreated(new Date());
         newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
         newIssue.setActive(true);
+        newIssue.setAttachment(issueDto.getAttachmentFileName());
         issueRepository.save(newIssue);
     }
 

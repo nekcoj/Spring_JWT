@@ -40,7 +40,7 @@ public class IssueController {
         issue.setWhereIssue(whereIssue);
         issue.setDetails(details);
         issue.setEmployeeAwareness(employeeAwareness);
-
+        issue.setAttachmentFileName(attachment.getOriginalFilename());
 
         var newUser = issueService.createIssueAndUser(issue,attachment);
 

@@ -104,13 +104,13 @@ export default {
       this.clicked = true;
 
       let dataDto =  new FormData()
-      dataDto.append('categoryId', JSON.stringify(this.selectedCategory.id))
-      dataDto.append('whenIssue',  JSON.stringify(this.whenIssue))
-      dataDto.append('whereIssue',JSON.stringify( this.whereIssue))
-      dataDto.append('details', JSON.stringify(this.details))
-      dataDto.append('employeeAwareness', JSON.stringify( this.employeeAwareness))
+      dataDto.append('categoryId', this.selectedCategory.id)
+      dataDto.append('whenIssue', this.whenIssue)
+      dataDto.append('whereIssue', this.whereIssue)
+      dataDto.append('details', this.details)
+      dataDto.append('employeeAwareness', this.employeeAwareness)
       dataDto.append('attachment',  this.attachment, this.attachment.name)
-      console.log(dataDto)
+    
       let url = "http://localhost:9090/issue/create";
       const response = await fetch(url, {
         method: "POST",
