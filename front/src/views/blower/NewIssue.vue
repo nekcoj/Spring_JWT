@@ -83,6 +83,9 @@ export default {
       formdata: {},
     }
   },
+
+  
+
   computed:{
     category:{
       get() {
@@ -148,6 +151,7 @@ export default {
 </script>
 
 <style scoped>
+
 #select-what{
   text-overflow:ellipsis;
 }
@@ -167,6 +171,7 @@ export default {
   background-color:white;
   color: rgb(46, 46, 46);
   border-radius: 10%;
+ 
 }
 #lbl-attachment{
   padding-left:10px;
