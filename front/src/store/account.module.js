@@ -1,5 +1,6 @@
 import { userService } from '../_services';
 import router from '../router';
+import store from '../store'
 
 const user = JSON.parse(localStorage.getItem('user'));
 const state = user
@@ -15,8 +16,8 @@ const actions = {
             .then(
                 user => {
                     commit('loginSuccess', user);
-                    router.push(user.path);
-                    
+                    store.state.authUser = user.path;
+                    router.push(user.path)
                 },
                 error => {
                     commit('loginFailure', error);
@@ -44,7 +45,7 @@ const mutations = {
         state.user = null;
     },
     logout(state) {
-        state.status = {};
+        state.status = { loggedIn: false};
         state.user = null;
     }
 };

@@ -26,26 +26,26 @@
     </div>
 
 
-<div role="tablist">
+    <div role="tablist">
       <b-card
         no-body
         class="mb-1 text-left"
         v-for="item in issues"
-        :key="item.id"
+        :key="item.issueId"
       >
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block 
-            v-b-toggle="item.id"
+            v-b-toggle="item.issueId"
             variant="secondary"
             class="text-left"
             
             >
             
-            <span>Ärendeid: {{item.id}}</span>
+            <span>Ärendeid: {{item.issueId}}</span>
           </b-button>
         </b-card-header>
         <b-collapse 
-          :id=item.id 
+          :id=item.issueId
           accordion="my-accordion" 
           role="tabpanel">
           
@@ -77,13 +77,13 @@
 
 
             <label for="whenIssue">När inträffade händelsen?</label>
-            <b-card-text id="whenIssue">{{item.when}}</b-card-text>
+            <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
             <label for="whereIssue">När inträffade händelsen?</label>
-            <b-card-text id="whereIssue">{{item.where}}</b-card-text>
+            <b-card-text id="whereIssue">{{item.whereIssue}}</b-card-text>
             <label for="detailsIssue">Detaljer om ärendet:</label>
             <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
             <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
-            <b-card-text id="awarenessIssue">{{item.awareness}}</b-card-text>
+            <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
             <b-card-text id="attachmentIssue">{{item.attachment}}</b-card-text>
             </b-card-body>
@@ -125,7 +125,7 @@ export default {
     return {
       setselectedCategory: {},
       searchIssue: "",
-      issues: {},
+      issues: [],
       items: {
         1: {
           id: "1",
@@ -204,14 +204,23 @@ export default {
    }`)
       })
       console.log('hur gick det? vem vet')
+    },
+    getIssues: async function() {
+    
     }
   },
-  mounted() {
-    this.$store.dispatch("getLawyers")
-    this.$store.dispatch("getCategories")
-    this.$store.dispatch("getIssues")
-    this.issues = this.$store.state.issues
-
+  async mounted() {
+   
+    await this.$store.dispatch("getLawyers")
+    this.lawyers = await this.$store.state.lawyers
+    await this.$store.dispatch("getCategories")
+    await this.$store.dispatch("getIssues")
+    this.issues = await this.$store.state.issues
+    //this.getIssues()
+    console.log("these issues: ",this.issues)
+  },
+  created(){
+  
   },
   computed:{
     categories:{

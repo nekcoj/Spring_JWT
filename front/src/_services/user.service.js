@@ -5,24 +5,21 @@ export const userService = {
     logout
 };
 
-function login(username, password) {
+async function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
 
-    return fetch(`${apiUrl}/login`, requestOptions)
+    return await fetch(`${apiUrl}/login`, requestOptions)
         .then(handleResponse)
         .then(user => {
-            console.log(user);
-            
             // login successful if there's a jwt token in the response
-            if (user.token && !(user.path == '/user')) {                
+            if (user.token) {                
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('user', JSON.stringify(user));
-            } else {this.$store.state.token = user.token}
-
+            }
             return user;
         });
 }
