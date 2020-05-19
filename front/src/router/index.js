@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -24,7 +25,14 @@ const router = new VueRouter({
     {
       path: '/user',
       name: 'Vad göra?',
-      component: () => import('../views/blower/Dash.vue')
+      component: () => import('../views/blower/Dash.vue'),
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/user'){
+          next()
+        } else {
+          next('/')
+        }
+      },
     },
     {
       path: '/nyttarende',
@@ -52,7 +60,14 @@ const router = new VueRouter({
       children: [
         {path: '', name: 'AdminDash' ,component: () => import ('../views/admin/Dashboard.vue')},
         {path: 'arenden', component: () => import ('../views/admin/NewPosts.vue')}
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/admin'){
+          next()
+        } else {
+          next('/')
+        }
+      }
     },
     {
       
@@ -66,7 +81,14 @@ const router = new VueRouter({
       children: [
         {path: '', name: 'AdminDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
         {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/lawyer'){
+          next()
+        } else {
+          next('/')
+        }
+      }
     },
     {
       path: '/loginJurist',
@@ -76,12 +98,26 @@ const router = new VueRouter({
     {
       path: '/juristpostbox',
       name: 'Safe postbox jurist',
-      component: () => import ('../views/lawyer/Safepostbox.vue')
+      component: () => import ('../views/lawyer/Safepostbox.vue'),
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/lawyer'){
+          next()
+        } else {
+          next('/')
+        }
+      },
     },
     {
       path: '/safepostbox',
       name: 'Safe postbox anmälare',
-      component: () => import ('../views/blower/Safepostbox.vue')
+      component: () => import ('../views/blower/Safepostbox.vue'),
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/user'){
+          next()
+        } else {
+          next('/')
+        }
+      }
     }
   ]
 });
