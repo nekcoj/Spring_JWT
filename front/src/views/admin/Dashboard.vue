@@ -105,14 +105,14 @@
           </b-form-select>
         </b-form-group>
       </div>
-      <div class="col-7 p-0 mx-auto">
+      <div class="col-8  mx-auto">
         <b-form-input
           placeholder="Lägg till/Ta bort Kategori"
           v-model="addRemoveText"
         ></b-form-input>
       </div>
-      <div class="col-6"></div>
-      <div class="col-6 p-0">
+      <div class="container-admin col-12 justify-content-center"></div>
+      <div class="col-12 ">
         <b-button v-on:click="addRemoveCategory">Utför</b-button>
       </div>
     </div>
@@ -260,5 +260,9 @@ label {
 #issueC {
   font-weight: normal;
   text-align: left;
+}
+
+.container-admin{
+  text-align: center!important;
 }
 </style>
