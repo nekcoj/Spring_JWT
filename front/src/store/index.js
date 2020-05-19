@@ -71,42 +71,39 @@ export default new Vuex.Store({
       return { 'Authorization': 'Bearer ' + tokenId, 'Content-Type': 'application/json' }
     },
 
-
     async getIssues() {
-      const header = await this.dispatch('getAuthenticationHeader');
-      console.log("header  :"+header);
-      
       let url = "http://localhost:9090/issue/get-all";
       const response = await fetch(url, {
         method: "GET",
-        headers: header
+        headers: await this.dispatch('getAuthenticationHeader')
       });
 
-      const result = await response.json()
-      //TODO berätta för magnus vad ".ok"-checken gör här och varför result aldrig blir ok 
-      //och förklara varför vi gjort Object.assign, när vi vill ha issues som en lista och redan har issues som en lista 
-      if(result.ok){
-        //this.state.issues = Object.assign({}, result)
-        this.state.issues = result
-        console.log("Issues fetched!: ",this.state.issues)
-      } else {       
-        console.log("resultat: ", result)
-        //this.state.issues = Object.assign({}, result);
-        this.state.issues = result
-        console.log("result.ok === false, men här är ändå alla issues: ",this.state.issues)
-;}
-      
+      const result = await response.json();
+      if(!result.ok){       
+        Array(result).forEach((element) => {
+          console.log(element);
+          return;
+      });}
+      this.state.issues = Object.assign({}, result); 
     },
 
-
-
     async getLawyers() {
-      console.log('försöker hämta alla lawyers. ')
-      let response = await fetch('http://localhost:9090/user/lawyers')
-      let lawyers = await response.json()
-      console.log('såhär gick det: lawyers ',lawyers)
-      this.state.lawyers = Object.assign({}, lawyers)
+      let url = "http://localhost:9090/user/lawyers";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });const result = await response.json();
+
+      if(!result.ok){       
+        Array(result).forEach((element) => {
+          console.log(element);
+          return;
+      });
     }
+      this.state.lawyers = Object.assign({}, result); 
+    },
+
+    
 
 
   },

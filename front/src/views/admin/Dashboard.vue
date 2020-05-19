@@ -204,15 +204,23 @@ export default {
    }`)
       })
       console.log('hur gick det? vem vet')
+    },
+    getIssues: async function() {
+    
     }
   },
-  mounted() {
-    this.$store.dispatch("getLawyers")
-    this.$store.dispatch("getCategories")
-    this.$store.dispatch("getIssues")
-    this.issues = this.$store.state.issues
+  async mounted() {
+   
+    await this.$store.dispatch("getLawyers")
+    this.lawers = await this.$store.state.lawyers
+    await this.$store.dispatch("getCategories")
+    await this.$store.dispatch("getIssues")
+    this.issues = await this.$store.state.issues
+    //this.getIssues()
     console.log("these issues: ",this.issues)
-
+  },
+  created(){
+  
   },
   computed:{
     categories:{
