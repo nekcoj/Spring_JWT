@@ -86,7 +86,8 @@ export default new Vuex.Store({
           console.log(element);
           return;
       });}
-      this.state.issues = Object.assign({}, result); 
+      this.state.issues = result;
+      console.log("issues: " + this.state.issues);
     },
 
     async getLawyers() {
@@ -97,13 +98,14 @@ export default new Vuex.Store({
       });
 
       const result = await response.json();
-      if(result.ok){
-        this.state.issues = Object.assign({}, result);
-        console.log("Issues fetched!");
-      } else {       
+      if(!result.ok){       
         Array(result).forEach((element) => {
           console.log(element);
+          return;
       });}
+      this.state.lawyers = result;
+      console.log("lawyers: " + this.state.lawyers);
+      
     }
 
 
