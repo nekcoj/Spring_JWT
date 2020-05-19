@@ -34,7 +34,6 @@ public class IssueController {
                                          @RequestParam("details") String details,
                                          @RequestParam("employeeAwareness") String employeeAwareness,
                                          @RequestParam("attachment") MultipartFile attachment){
-
         IssueDto issue = new IssueDto();
         issue.setCategoryId(categoryId);
         issue.setWhenIssue(whenIssue);
@@ -42,7 +41,8 @@ public class IssueController {
         issue.setDetails(details);
         issue.setEmployeeAwareness(employeeAwareness);
 
-        var newUser = issueService.createIssueAndUser(issue);
+
+        var newUser = issueService.createIssueAndUser(issue,attachment);
 
 
         return ResponseEntity.ok(newUser);

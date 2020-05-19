@@ -2,7 +2,6 @@ package com.whistleblower.app.modelDto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.whistleblower.app.entity.Issue;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -13,7 +12,7 @@ public class IssueDto {
     private String whereIssue;
     private String details;
     private String employeeAwareness;
-    private String attachment;
+    private String attachmentFileName;
     private long tempUserId;
     private Date created;
     private Date assigned;
@@ -118,12 +117,12 @@ public class IssueDto {
         this.employeeAwareness = employeeAwareness;
     }
 
-    public String getAttachment() {
-        return attachment;
+    public String getAttachmentFileName() {
+        return attachmentFileName;
     }
 
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
+    public void setAttachmentFileName(String attachmentFileName) {
+        this.attachmentFileName = attachmentFileName;
     }
 
 
