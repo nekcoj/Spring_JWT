@@ -34,16 +34,6 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    newIssue: async function(value) {
-      let url = "http://localhost:9090/issue/create";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(value.state.formdata),
-      });
-      const result = await response.json();
-      this.state.temporaryUser = Object.assign({}, result);
-    },
     login: async function(value) {
       let url = "http://localhost:9090/login";
       const request = await fetch(url, {
