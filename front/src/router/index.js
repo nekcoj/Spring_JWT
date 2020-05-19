@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import store from "../store/index.js";
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -10,7 +10,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '',
       name: 'Hem',
       component: Home
     },
@@ -20,12 +20,19 @@ const router = new VueRouter({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue')
+      component: () => import(/* webpackChunkName: "whistle" */ '../views/blower/Whistle.vue'),
     },
     {
       path: '/user',
       name: 'Vad göra?',
-      component: () => import('../views/blower/Dash.vue')
+      component: () => import('../views/blower/Dash.vue'),
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/user'){
+          next()
+        } else {
+          next('/')
+        }
+      },
     },
     {
       path: '/nyttarende',
@@ -53,13 +60,20 @@ const router = new VueRouter({
       children: [
         {path: '', name: 'AdminDash' ,component: () => import ('../views/admin/Dashboard.vue')},
         {path: 'arenden', component: () => import ('../views/admin/NewPosts.vue')}
-      ]
+      ],
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/admin'){
+          next()
+        } else {
+          next('/')
+        }
+      }
     },
     {
       
       path: '/loginAdmin',
       name: 'Logga in admin',
-      component: () => import ('../views/admin/LoginAdmin.vue')
+      component: () => import ('../views/admin/LoginAdmin.vue'),
     },
     {
       path: '/lawyer',
@@ -69,29 +83,44 @@ const router = new VueRouter({
         {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
       ],
       beforeEnter: (to, from, next) => {
-        if(store.state.account.status.loggedIn == false || store.state.account.loggedIn == null){
-          next({path: '/sakerinloggning'})
-        } else {
+        if(store.state.authUser === '/lawyer'){
           next()
+        } else {
+          next('/')
         }
       }
     },
-      {
-        path: '/loginJurist',
-        name: 'Logga in jurist',
-        component: () => import ('../views/lawyer/LoginLawyer.vue')
+    {
+      path: '/loginJurist',
+      name: 'Logga in jurist',
+      component: () => import ('../views/lawyer/LoginLawyer.vue')
+    },
+    {
+      path: '/juristpostbox',
+      name: 'Safe postbox jurist',
+      component: () => import ('../views/lawyer/Safepostbox.vue'),
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/lawyer'){
+          next()
+        } else {
+          next('/')
+        }
       },
-      {
-        path: '/juristpostbox',
-        name: 'Safe postbox jurist',
-        component: () => import ('../views/lawyer/Safepostbox.vue')
-      },
-      {
-        path: '/safepostbox',
-        name: 'Safe postbox anmälare',
-        component: () => import ('../views/blower/Safepostbox.vue')
+    },
+    {
+      path: '/safepostbox',
+      name: 'Safe postbox anmälare',
+      component: () => import ('../views/blower/Safepostbox.vue'),
+      beforeEnter: (to, from, next) => {
+        if(store.state.authUser === '/user'){
+          next()
+        } else {
+          next('/')
+        }
       }
+    }
   ]
 });
+
 
 export default router

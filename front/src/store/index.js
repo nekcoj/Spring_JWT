@@ -14,6 +14,7 @@ export default new Vuex.Store({
     categories:[],
     selectedCategory: {},
     tokenId: null,
+    authUser: "",
     user:{},
     issues: [],
     lawyers: []
@@ -84,7 +85,8 @@ export default new Vuex.Store({
           console.log(element);
           return;
       });}
-      this.state.issues = Object.assign({}, result); 
+      this.state.issues = result;
+      console.log("issues: " + this.state.issues);
     },
 
     async getLawyers() {
@@ -92,22 +94,19 @@ export default new Vuex.Store({
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
-      });const result = await response.json();
+      });
 
+      const result = await response.json();
       if(!result.ok){       
         Array(result).forEach((element) => {
           console.log(element);
           return;
-      });
+      });}
+      this.state.lawyers = result;
+      console.log("lawyers: " + this.state.lawyers);
     }
-      this.state.lawyers = result; 
-    },
-
-    
-
-
   },
   modules: {
     account
-}
+  }
 });
