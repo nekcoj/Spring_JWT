@@ -54,23 +54,22 @@
           <b-col sm="12">
             <b-form-textarea class="inputbox" id="textarea-knowledge" required v-model="employeeAwareness">
             </b-form-textarea>
+             <em><span class="liten-text">* obligatoriska fält</span></em>
           </b-col>
         </b-row>
-
         <b-row class="d-flex" id="row-attachment">
-          
           <b-col sm="3">
             <b-button id="btn-attachment">Välj fil</b-button>
           </b-col>
           <b-col sm="9"><label id="lbl-attachment" for="btn-attachment">Bilaga (Frivilligt)</label>
           </b-col>
+          
         </b-row>
         <b-row>
           <b-col>
             <b-button to="./forhandsgranska" variant="primary" class="btn" id="btn-preview">Förhandsgranska</b-button>
           </b-col>
         </b-row>
-
         </b-form>
     </b-container>
   </div>
@@ -186,5 +185,11 @@ export default {
 .lbl{
   padding-top: 6px;
   margin-bottom: 0px;
+}
+
+span.liten-text{
+  margin-top: -10px;
+  font-size:80%;
+  text-align: left;
 }
 </style>

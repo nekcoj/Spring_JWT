@@ -69,12 +69,6 @@ methods:{
 }
 
 
-  
-   
-
-
-
-
 #admin-login-button{
     margin-top: 40px;  
 }
