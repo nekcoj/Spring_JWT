@@ -15,17 +15,20 @@
 
 <style scoped>
 
-.whistle{
+
+.whistle {
   height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
 }
 
 .btn-selection{
 margin-bottom: 20px;
 margin-top: 20px;
+width: 230px;
+border-radius: 25px;
+
 }
 
 

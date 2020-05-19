@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { account } from './account.module';
+
 // Vue.config.productionTip = false;
 
 Vue.use(Vuex);
@@ -11,8 +13,11 @@ export default new Vuex.Store({
     temporaryUser: {},
     categories:[],
     selectedCategory: {},
-    tokenId: "",
-    getIssues: {},
+    tokenId: null,
+    authUser: "",
+    user:{},
+    issues: [],
+    lawyers: []
  
   },
   mutations: {
@@ -54,18 +59,54 @@ export default new Vuex.Store({
       let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
       this.state.categories = Object.assign({}, response);
+      console.log("categories: ",response)
     },
+    
     getAuthenticationHeader: function(){
-      return { 'Authorization': 'Bearer ' + this.state.tokenId,
-        'Content-Type': 'application/json' }
+      let tokenId = null;
+      if(this.state.tokenId == null){
+        let user = JSON.parse(localStorage.getItem('user'));
+        tokenId = user.token;
+      } else {tokenId = this.state.tokenId}
+
+      return { 'Authorization': 'Bearer ' + tokenId, 'Content-Type': 'application/json' }
     },
+
     async getIssues() {
-      let response = await fetch("http://localhost:9090/issue/get-all");
-      response = await response.json();
-      this.state.categories = Object.assign({}, response);
+      let url = "http://localhost:9090/issue/get-all";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+
+      const result = await response.json();
+      if(!result.ok){       
+        Array(result).forEach((element) => {
+          console.log(element);
+          return;
+      });}
+      this.state.issues = result;
+      console.log("issues: " + this.state.issues);
     },
 
+    async getLawyers() {
+      let url = "http://localhost:9090/user/lawyers";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
 
+      const result = await response.json();
+      if(!result.ok){       
+        Array(result).forEach((element) => {
+          console.log(element);
+          return;
+      });}
+      this.state.lawyers = result;
+      console.log("lawyers: " + this.state.lawyers);
+    }
   },
-  modules: {},
+  modules: {
+    account
+  }
 });
