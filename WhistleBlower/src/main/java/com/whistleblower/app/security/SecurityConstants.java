@@ -12,6 +12,7 @@ public class SecurityConstants {
     //issueStatusController
     public static final String ISSUE_STATUS_URL_ROOT = "/issue-status";
     public static final String GET_ALL_ISSUE_STATUS = "/get-all";
+    public static final String GET_ISSUE_STATUS_USER = "/user";
 
 
     //UserController

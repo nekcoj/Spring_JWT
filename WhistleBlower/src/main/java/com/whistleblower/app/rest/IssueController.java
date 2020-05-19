@@ -68,6 +68,15 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
           return ResponseEntity.ok(issues);
     }
 
+    @GetMapping(GET_ISSUE_STATUS_USER)
+    ResponseEntity<?> getIssueStatusForUser(Authentication authentication){
+        var issues = issueService.getIssueStatusForUser(authentication.getName());
+        if(issues != null) {
+            return ResponseEntity.ok(issues);
+        } else {
+            return ResponseEntity.badRequest().body("No issue found!");
+        }
+    }
 
 
 }

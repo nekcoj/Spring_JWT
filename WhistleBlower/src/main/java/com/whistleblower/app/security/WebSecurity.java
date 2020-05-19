@@ -53,6 +53,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAuthority(ROLE_LAWYER)
                 .antMatchers(HttpMethod.POST, ISSUE_URL_ROOT + CHANGE_ISSUE_STATUS)
                 .hasAnyAuthority(ROLE_LAWYER, ROLE_ADMIN)
+                .antMatchers(HttpMethod.GET, ISSUE_URL_ROOT + GET_ISSUE_STATUS_USER)
+                .hasAuthority(ROLE_USER)
+
                 //Postbox Controller
                 .antMatchers(HttpMethod.POST, POSTBOX_URL_ROOT + POSTBOX_SEND_BY_LAWYER)
                 .hasAuthority(ROLE_LAWYER)
@@ -71,7 +74,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 // IssueStatus Controller
                 .antMatchers(HttpMethod.GET, ISSUE_STATUS_URL_ROOT + GET_ALL_ISSUE_STATUS)
                 .hasAnyAuthority(ROLE_ADMIN,ROLE_LAWYER)
-                
+
+
                 .and()
                 .addFilter(new JWTAuthenticationFilter(userRepository, authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

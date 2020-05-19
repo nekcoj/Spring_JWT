@@ -140,4 +140,12 @@ public class IssueService {
         return Collections.emptyList();
     }
 
+    public String getIssueStatusForUser(String username) {
+        var user = userRepository.findByUsername(username);
+        if(user != null){
+            return issueRepository.findByTempUser_Id(user.getId()).getIssueStatus().getStatus();
+        }
+        return "";
+    }
+
 }

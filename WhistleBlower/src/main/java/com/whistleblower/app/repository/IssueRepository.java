@@ -14,7 +14,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
   boolean existsByLawyer_IdAndTempUser_Id(long lawyer_id, long tempUser_id);
 
-
-
+  Issue findByTempUser_Id(long tempUser_id);
 
 }

@@ -139,7 +139,7 @@ export default {
 
       methods: {
         postboxLink() {
-          this.$router.push("/juristSpostbox");
+          this.$router.push("/juristpostbox");
         },
         addRemoveCategory: function() {
           if (this.addRemoveOption === "1") {
