@@ -2,12 +2,16 @@
   <div class="text-left">
     <div role="tablist">
       <b-form-group label="Filtrera på kategori" label-for="select-category" >
-        <b-form-select class="inputbox" v-model="selectedCategory" id="select-category">
+        <b-form-select class="inputbox" v-model="selectedCategory"  id="select-category"  >
+          <b-form-select-option  selectedCategory="">Välj kategori</b-form-select-option>
           <b-form-select-option
+            
             v-for="category in categories"
             :key="category.id"
             :value="category"
+          
           >{{category.categoryName}}</b-form-select-option>
+   
         </b-form-select>
       </b-form-group>
       <b-form-group label="Filtrera på månad" label-for="select-month">
@@ -50,6 +54,7 @@
                   v-for="category in categories"
                   :key="category.id"
                   :value="category.id"
+                  
                 >{{category.categoryName}}</b-form-select-option>>
               </b-form-select>
             </b-form-group>
@@ -174,6 +179,7 @@ export default {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssues");
     this.issues = await this.$store.state.issues;
+    await this.$store.dispatch("deleteIssue");
   },
   created() {
     this.$store.dispatch("getIssues");
@@ -197,6 +203,7 @@ export default {
       //fritextsökning
       if (temp.length === 0) {
         console.log("listan var tom!");
+
         return null;
       } else {
 

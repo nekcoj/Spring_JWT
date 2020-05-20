@@ -108,7 +108,7 @@ export default new Vuex.Store({
 
     /*Ej färdig, men tänker mig att det blir något sådant för backend */
     async deleteIssue({commit}, item){
-      let response = await fetch("http://localhost:9090/issue/inactivate/${issueId}");
+      let response = await fetch("localhost:9090/issue/active/${issueId}/${value}");
       response = await response.json();
       this.state.issues = Object.assign({}, response);
       commit('deleteIssue', item)
