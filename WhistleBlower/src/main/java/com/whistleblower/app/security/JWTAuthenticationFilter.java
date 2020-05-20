@@ -90,6 +90,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         loginResponse.setLastLogin(entityUser.getLastLogin());
         loginResponse.setToken(token);
         loginResponse.setPath("/" + entityUser.getRole().toLowerCase());
+        loginResponse.setConsent(entityUser.isConsent());
         response.getWriter().write(mapper.writeValueAsString(loginResponse));
 
         entityUser.setLastLogin(new Date());

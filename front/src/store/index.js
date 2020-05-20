@@ -13,6 +13,7 @@ export default new Vuex.Store({
     authUser: "",
     categories:[],
     formdata: {},
+    gdprConsent: false,
     issues: [],
     issueStatusUser: "",
     lawyers: [],
@@ -27,6 +28,10 @@ export default new Vuex.Store({
   mutations: {
     setCategories(state, value) {
       this.$store.state.categories = value;
+    },
+
+    setGDPRConsent(state, value){
+      this.state.gdprConsent = value;
     },
 
     setIssueStatusForUser(state, value){
@@ -47,7 +52,7 @@ export default new Vuex.Store({
 
     setTempUser(state, value) {
       this.$store.state.temporaryUser = value;
-    } 
+    }
   },
 
   actions: {

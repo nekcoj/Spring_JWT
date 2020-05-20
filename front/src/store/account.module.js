@@ -15,7 +15,12 @@ const actions = {
                 user => {
                     commit('loginSuccess', user);
                     store.state.authUser = user.path;
-                    router.push(user.path)
+                    store.state.gdprConsent = user.consent;
+                    if(!user.consent && !(user.path === '/user')){
+                      console.log("GDPR CHECK!");
+                    } else {
+                      router.push(user.path)
+                    }
                 },
                 error => {
                     commit('loginFailure', error);
