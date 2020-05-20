@@ -16,4 +16,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 
   Issue findByTempUser_Id(long tempUser_id);
 
+  Issue getIssueByIdAndLawyer_Username(long id, String lawyer_username);
+
 }

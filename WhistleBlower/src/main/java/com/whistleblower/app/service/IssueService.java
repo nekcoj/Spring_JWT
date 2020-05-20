@@ -53,14 +53,14 @@ public class IssueService {
 
     public TempUserDto createIssueAndUser(IssueDto issueDto, MultipartFile attachment) {
         TempUserDto tempUser = createTempUser();
-        createNewIssue(tempUser, issueDto);
+        Issue issue = createNewIssue(tempUser, issueDto);
         if(attachment != null){
-            storageService.store(attachment, String.valueOf(tempUser.getId()));
+            storageService.store(attachment, String.valueOf(issue.getId()));
         }
         return tempUser;
     }
 
-    private void createNewIssue(TempUserDto tempUser, IssueDto issueDto) {
+    private Issue createNewIssue(TempUserDto tempUser, IssueDto issueDto) {
         var newIssue = new Issue();
         var category = categoryRepository.findById(issueDto.getCategoryId()).orElse(null);
         newIssue.setCategory(category);
@@ -73,7 +73,7 @@ public class IssueService {
         newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
         newIssue.setActive(true);
         newIssue.setAttachment(issueDto.getAttachmentFileName());
-        issueRepository.save(newIssue);
+      return  issueRepository.save(newIssue);
     }
 
     private TempUserDto createTempUser() {
@@ -160,4 +160,7 @@ public class IssueService {
         return "";
     }
 
+    public Issue getIssueByLawyerAndIssueId(String name, long issueId) {
+        return issueRepository.getIssueByIdAndLawyer_Username(issueId,name);
+    }
 }
