@@ -16,7 +16,7 @@
         >
       </b-form-select>
     </b-form-group>
-    <div class="search-parent">
+    <div class="search-parent-admin">
       <div class="search-bar">
         <b-form-input type="text" v-model="searchIssue" placeholder="Fritextsökning"></b-form-input>
         <span class="search-icon">
@@ -278,5 +278,13 @@ label {
 
 .container-admin{
   text-align: center!important;
+}
+
+ .search-parent-admin{
+ margin-bottom: 20px; 
+}
+
+#select-month{
+  margin-bottom: 20px;
 }
 </style>
