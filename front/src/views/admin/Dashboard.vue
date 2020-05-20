@@ -2,17 +2,16 @@
   <div class="text-left">
     <div role="tablist">
       <b-form-group label="Filtrera på kategori" label-for="select-category" >
-        <b-form-select class="inputbox" id="select-category">
+        <b-form-select class="inputbox" v-model="selectedCategory" id="select-category">
           <b-form-select-option
             v-for="category in categories"
             :key="category.id"
             :value="category"
-            v-model="selectedCategory"
           >{{category.categoryName}}</b-form-select-option>
         </b-form-select>
       </b-form-group>
       <b-form-group label="Filtrera på månad" label-for="select-month">
-        <b-form-select id="select-month" v-bind="selectedMonth">
+        <b-form-select id="select-month" v-model="selectedMonth">
           <b-form-select-option
             v-for="month in months"
             :key="month.id"
@@ -160,9 +159,8 @@ export default {
     "issueId" : 20
    }`)
       });
-      console.log("hur gick det? vem vet");
+      console.log("den här knappen funkar inte än! TODO fixa den");
     },
-    getIssues: async function() {}
   },
   async mounted() {
     await this.$store.dispatch("getLawyers");
@@ -170,8 +168,6 @@ export default {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssues");
     this.issues = await this.$store.state.issues;
-    //this.getIssues()
-    console.log("these issues: ", this.issues);
   },
   created() {
     this.$store.dispatch("getIssues");
@@ -181,51 +177,15 @@ export default {
   computed: {
     categories: {
       get() {
-        console.log("tryna get categories");
         return this.$store.state.categories;
       },
       set(value) {
-        console.log("tryna COMMIT to setCategories");
         this.$store.commit("setCategories", value);
       }
     },
 
-    // selectedCategory: {
-    //   get() {
-    //     console.log("tryna get selectedCategory")
-
-    //     return this.$store.state.selectedCategory;
-    //   },
-    //   set(value) {
-    //     console.log("tryna COMMIT  selectedCategory")
-    //     this.$store.commit("setSelectedCategory", value)
-    //     console.log("här är felet")
-
-    //   }
-    // },
-
-    // searchfield: {
-    //   get() {
-    //     return this.$store.state.searchfield;
-    //   },
-    //   set(value) {
-    //     this.$store.commit("setSearchField", value);
-    // //   }
-    // // },
-    // selectedMonth: {
-    //   get() {
-    //     return this.$store.state.selectedMonth;
-    //   },
-    //   set(value) {
-    //     this.$store.commit("setSelectedMonth",  value);
-    //   }
-    // },
 
     filterIssues: function() {
-      console.log("kör filterIssues: funktion()");
-      console.log("Kategorier: ", this.categories)
-      console.log("såhär ser vald kategori ut: ", this.selectedCategory)
-      console.log("och den har namnet: ",this.selectedCategory.categoryName)
       let temp = this.$store.state.issues;
 
       //fritextsökning
@@ -233,11 +193,10 @@ export default {
         console.log("listan var tom!");
         return null;
       } else {
-        console.log("listan var INTE tom");
-        console.log("temp: ", temp);
 
         let searchResult = [];
-          console.log("såhär ser sökfältet ut: ", this.searchfield)
+        
+        //sökfält
         temp.forEach(issue => {
           if(
           issue.issueId === this.searchfield ||
@@ -251,47 +210,40 @@ export default {
             issue.whenIssue.toLowerCase().includes(this.searchfield.toLowerCase()) ||
             issue.whereIssue.toLowerCase().includes(this.searchfield.toLowerCase())
           ){
-            console.log("pushar detta issue till searchResult: ", issue.issueId)
             searchResult.push(issue)
           }
         });
-      // let searchResult = temp.filter(issue => {
-        //   return (
-        //     issue.issueId.equals(this.search) ||
-        //     issue.details.toLowerCase().includes(this.search.toLowerCase()) ||
-        //     issue.employeeAwareness
-        //       .toLowerCase()
-        //       .includes(this.search.toLowerCase()) ||
-        //     issue.issueStatus.toLowerCase().includes(this.search.toLowerCase()) ||
-        //     issue.whenIssue.toLowerCase().includes(this.search.toLowerCase()) ||
-        //     issue.whereIssue.toLowerCase().includes(this.search.toLowerCase())
-        //   )
-        // })
-        console.log("Filtrerat searchResult på fritext: ", searchResult);
+        
+        //kategori
+        if (JSON.stringify(this.selectedCategory) == "{}")
+        {
+          //console.log("ingen kategori vald")
+          }
+        else{
+        searchResult = searchResult.filter(issue => {
+          return issue.categoryId === this.selectedCategory.id;
+        })
+        }
 
 
-        console.log("vald kategori: ", this.selectedCategory)
-        // //kategori
-        // searchResult = searchResult.filter(issue => {
-        //   return issue.categoryId.equals(this.$store.state.selectedCategory);
-        // });
-        // console.log("filtrerat searchResult på kategori: ", searchResult);
-
-        // //månad
-        // searchResult = searchResult.filter(issue => {
-        //   return issue.created
-        //     .getMonth()
-        //     .equals(this.$store.state.selectedMonth.id);
-        // });
-        // console.log("filtrerat searchResult på månad: ", searchResult);
-
+        //månad
+        if (JSON.stringify(this.selectedMonth) == "{}"){
+          //console.log("ingen månad vald")
+          }
+        else{
+        searchResult = searchResult.filter(issue => {
+          let dateCreate = new Date(issue.created)
+          return dateCreate.getMonth() === this.selectedMonth.id;
+        });
+        
         // //sortera
         // searchResult = this.$store.state.sortDesc
         //   ? searchResult
         //   : searchResult.sort((a, b) => b.issueId - a.issueId);
 
         // console.log("sorterat searchResult: ", searchResult);
-
+        }
+        
         return searchResult;
       }
       
