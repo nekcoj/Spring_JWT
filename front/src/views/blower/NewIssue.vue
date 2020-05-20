@@ -1,77 +1,91 @@
 <template>
   <div class="new-issue">
     <b-container class="container">
-      <b-form id="main-form"><p class="h2">Anmälan om oegentligheter</p>
+      <b-form id="main-form">
+        <p class="h2">Anmälan om oegentligheter</p>
 
         <b-row class="mt-2">
           <b-col sm="12">
             <label class="lbl" for="select-category">Vad gäller ärendet?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-select class="inputbox" id="select-category" v-model="setselectedCategory" required>
-              <b-form-select-option v-for="category in this.$store.state.categories" :key="category.id" :value="category"> {{category.categoryName}} </b-form-select-option>
-            </b-form-select> 
+            <b-form-select
+              class="inputbox"
+              id="select-category"
+              v-model="setselectedCategory"
+              required
+            >
+              <b-form-select-option
+                v-for="category in this.$store.state.categories"
+                :key="category.id"
+                :value="category"
+              >{{category.categoryName}}</b-form-select-option>
+            </b-form-select>
           </b-col>
         </b-row>
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-when">När inträffade händelsen?(*)</label>
+            <label class="lbl" for="datePicker-when">När inträffade händelsen?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-when" required v-model="whenIssue">
-            </b-form-textarea>
-          </b-col>
-        </b-row>
-
-        <b-row class="mt-2">
-          <b-col sm="12">
-            <label class="lbl" for="textarea-where">Var inträffade händelsen?(*)
-            </label>
-          </b-col>
-          <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-where" required v-model="whereIssue">
-            </b-form-textarea>
+            <b-form-datepicker v-model="whenIssue" id="datePicker-when" required></b-form-datepicker>
           </b-col>
         </b-row>
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-details">Detaljer om ärendet(*)
-            </label>
+            <label class="lbl" for="textarea-where">Var inträffade händelsen?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-details" required v-model="details">
-            </b-form-textarea>
+            <b-form-textarea class="inputbox" id="textarea-where" required v-model="whereIssue"></b-form-textarea>
           </b-col>
         </b-row>
 
         <b-row class="mt-2">
           <b-col sm="12">
-            <label class="lbl" for="textarea-knowledge">Är andra anställda medvetna om detta?(*)
-            </label>
+            <label class="lbl" for="textarea-details">Detaljer om ärendet(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-textarea class="inputbox" id="textarea-knowledge" required v-model="employeeAwareness">
-            </b-form-textarea>
+            <b-form-textarea class="inputbox" id="textarea-details" required v-model="details"></b-form-textarea>
+          </b-col>
+        </b-row>
+
+        <b-row class="mt-2">
+          <b-col sm="12">
+            <label class="lbl" for="textarea-knowledge">Är andra anställda medvetna om detta?(*)</label>
+          </b-col>
+          <b-col sm="12">
+            <b-form-textarea
+              class="inputbox"
+              id="textarea-knowledge"
+              required
+              v-model="employeeAwareness"
+            ></b-form-textarea>
           </b-col>
         </b-row>
 
         <b-row class="d-flex" id="row-attachment">
-          
-          <b-col sm="3">
-            <b-button id="btn-attachment">Välj fil</b-button>
-          </b-col>
-          <b-col sm="9"><label id="lbl-attachment" for="btn-attachment">Bilaga (Frivilligt)</label>
+          <b-col sm="12">
+            <b-form-file
+              v-model="attachment"
+              :state="Boolean(attachment)"
+              placeholder="Välj eller släpp bilaga här.. ()"
+              drop-placeholder="Släpp bilaga här"
+            ></b-form-file>
           </b-col>
         </b-row>
         <b-row>
           <b-col>
-            <b-button to="./forhandsgranska" variant="primary" class="btn" id="btn-preview">Förhandsgranska</b-button>
+            <b-button
+              to="./forhandsgranska"
+              variant="primary"
+              class="btn"
+              id="btn-preview"
+            >Förhandsgranska</b-button>
           </b-col>
         </b-row>
-
-        </b-form>
+      </b-form>
     </b-container>
   </div>
 </template>
@@ -80,107 +94,106 @@
 export default {
   data() {
     return {
-      formdata: {},
-    }
+      formdata: {}
+    };
   },
-  computed:{
-    category:{
+
+  computed: {
+    category: {
       get() {
         return this.$store.state.formdata.category;
       },
-      set(value){
+      set(value) {
         this.$store.state.formdata.category = value;
       }
     },
-    whenIssue:{
-      get(){
+    whenIssue: {
+      get() {
         return this.$store.state.formdata.whenIssue;
       },
-      set(value){
+      set(value) {
         this.$store.state.formdata.whenIssue = value;
       }
     },
-    whereIssue:{
-      get(){
+    whereIssue: {
+      get() {
         return this.$store.state.formdata.whereIssue;
       },
-      set(value){
+      set(value) {
         this.$store.state.formdata.whereIssue = value;
       }
     },
-    details:{
-      get(){
+    details: {
+      get() {
         return this.$store.state.formdata.details;
       },
-      set(value){
+      set(value) {
         this.$store.state.formdata.details = value;
       }
     },
-    employeeAwareness:{
-      get(){
+    employeeAwareness: {
+      get() {
         return this.$store.state.formdata.employeeAwareness;
       },
-      set(value){
+      set(value) {
         this.$store.state.formdata.employeeAwareness = value;
       }
     },
-    attachment:{
-      get(){
+    attachment: {
+      get() {
         return this.$store.state.formdata.attachment;
       },
-      set(value){
+      set(value) {
         this.$store.state.formdata.attachment = value;
       }
     },
-    setselectedCategory:{
-      get(){
+    setselectedCategory: {
+      get() {
         return this.$store.state.selectedCategory;
       },
-      set(value){
+      set(value) {
         this.$store.state.selectedCategory = value;
       }
-    } 
+    }
   },
   created: async function() {
-    await this.$store.dispatch("getCategories")
+    await this.$store.dispatch("getCategories");
   }
 };
 </script>
 
 <style scoped>
-
-#select-what{
-  text-overflow:ellipsis;
+#select-what {
+  text-overflow: ellipsis;
 }
-#main-form{
-  padding-top:10px;
+#main-form {
+  padding-top: 10px;
 }
-#btn-preview{
-  margin-top:15px;
-  margin-bottom:15px;
+#btn-preview {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
-#row-attachment{
+#row-attachment {
   padding-top: 8px;
   justify-content: left;
-  align-items:baseline;
+  align-items: baseline;
 }
-#btn-attachment{
-  background-color:white;
+#btn-attachment {
+  background-color: white;
   color: rgb(46, 46, 46);
   border-radius: 10%;
- 
 }
-#lbl-attachment{
-  padding-left:10px;
+#lbl-attachment {
+  padding-left: 10px;
   justify-self: center;
   align-self: center;
-  color:gray;
+  color: gray;
 }
-.inputbox{
+.inputbox {
   margin: 0px 0px 6px;
-  padding:0px;
+  padding: 0px;
 }
-.lbl{
+.lbl {
   padding-top: 6px;
   margin-bottom: 0px;
 }

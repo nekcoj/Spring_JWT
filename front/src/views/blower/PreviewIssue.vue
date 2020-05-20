@@ -57,11 +57,11 @@
           </b-col>
         </b-row>
 
-        <b-row class="d-flex" id="row-attachment">
+        <b-row class="d-inline-flex"  id="row-attachment">
           
-          <b-col ><span id="col-attachment-text">Bilaga:</span>
+          <b-col  ><span id="col-attachment-text">Bilaga:</span>
           </b-col>
-          <b-col id="col-attachment-filename"><label id="lbl-attachment">{{attachment}}</label>
+          <b-col  id="col-attachment-filename"><label id="lbl-attachment">{{attachment.name}}</label>
           </b-col>
 
         </b-row>
@@ -102,7 +102,24 @@ export default {
         return;
       }
       this.clicked = true;
-      await this.$store.dispatch("newIssue", this.formdata);
+
+      let dataDto =  new FormData()
+      dataDto.append('categoryId', this.selectedCategory.id)
+      dataDto.append('whenIssue', this.whenIssue)
+      dataDto.append('whereIssue', this.whereIssue)
+      dataDto.append('details', this.details)
+      dataDto.append('employeeAwareness', this.employeeAwareness)
+      dataDto.append('attachment',  this.attachment, this.attachment.name)
+    
+      let url = "http://localhost:9090/issue/create";
+      const response = await fetch(url, {
+        method: "POST",
+      
+        body: dataDto,
+      });
+      const result = await response.json();
+      this.$store.state.temporaryUser = Object.assign({}, result);
+  
       setTimeout(() => {
         this.clicked = false;
       }, 500);

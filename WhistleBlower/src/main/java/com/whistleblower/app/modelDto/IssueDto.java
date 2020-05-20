@@ -12,7 +12,7 @@ public class IssueDto {
     private String whereIssue;
     private String details;
     private String employeeAwareness;
-    private String attachment;
+    private String attachmentFileName;
     private long tempUserId;
     private Date created;
     private Date assigned;
@@ -28,11 +28,11 @@ public class IssueDto {
        setWhereIssue(issue.getWhereIssue());
        setDetails(issue.getDetails());
        setEmployeeAwareness(issue.getEmployeeAwareness());
-       setAttachment(issue.getAttachment());
        setCreated(issue.getCreated());
        setAssigned(issue.getAssigned());
        setTempUserId(issue.getTempUser().getId());
        setIssueStatus(issue.getIssueStatus().getStatus());
+       setAttachmentFileName(issue.getAttachment());
     }
 
     public String getIssueStatus() {
@@ -118,12 +118,12 @@ public class IssueDto {
         this.employeeAwareness = employeeAwareness;
     }
 
-    public String getAttachment() {
-        return attachment;
+    public String getAttachmentFileName() {
+        return attachmentFileName;
     }
 
-    public void setAttachment(String attachment) {
-        this.attachment = attachment;
+    public void setAttachmentFileName(String attachmentFileName) {
+        this.attachmentFileName = attachmentFileName;
     }
 
 
