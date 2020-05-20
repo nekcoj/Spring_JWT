@@ -1,31 +1,39 @@
 <template>
   <div class="text-left">
-    <div role="tablist" >
-    <b-form-group label="Filtrera på kategori" label-for="select-category">
-      <b-form-select class="inputbox" id="select-category" v-model="selectedCategory">
-        <b-form-select-option
-          v-for="category in categories"
-          :key="category.id"
-          :value="category"
-          
-        >{{category.categoryName}}</b-form-select-option>
-      </b-form-select>
-    </b-form-group>
-    <b-form-group label="Filtrera på månad" label-for="select-month">
-      <b-form-select id="select-month" v-model="selectedMonth">
-        <b-form-select-option v-for="month in months" :key="month.id" :value="month" >{{ month.name }}</b-form-select-option>
-      </b-form-select>
-    </b-form-group>
-    <div class="search-parent">
-      <div class="search-bar">
-        <b-form-input type="text" v-model="searchField" :value="searchField" placeholder="Fritextsökning"></b-form-input>
-        <span class="search-icon">
-          <font-awesome-icon icon="search"></font-awesome-icon>
-        </span>
+    <div role="tablist">
+      <b-form-group label="Filtrera på kategori" label-for="select-category" >
+        <b-form-select class="inputbox" id="select-category">
+          <b-form-select-option
+            v-for="category in categories"
+            :key="category.id"
+            :value="category"
+            v-model="selectedCategory"
+          >{{category.categoryName}}</b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+      <b-form-group label="Filtrera på månad" label-for="select-month">
+        <b-form-select id="select-month" v-bind="selectedMonth">
+          <b-form-select-option
+            v-for="month in months"
+            :key="month.id"
+            :value="month"
+          >{{ month.name }}</b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+      <div class="search-parent">
+        <div class="search-bar">
+          <b-form-input
+            type="text"
+            v-model="searchfield"
+            :value="searchfield"
+            placeholder="Fritextsökning"
+          ></b-form-input>
+          <span class="search-icon">
+            <font-awesome-icon icon="search"></font-awesome-icon>
+          </span>
+        </div>
       </div>
-    </div>
 
-      
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle="'id'+item.issueId" variant="secondary" class="text-left">
@@ -67,7 +75,9 @@
             <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
             <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
-            <b-card-text id="attachmentIssue">{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+            <b-card-text
+              id="attachmentIssue"
+            >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -97,11 +107,10 @@
 export default {
   data() {
     return {
-      //selectedCategory: {},
       issues: [],
       selectedCategory: {},
       selectedMonth: {},
-      searchField: "",
+      searchfield: "",
       lawyers: [
         //   "Joacim Norbeck",
         //   "Ralf Tjärnlund",
@@ -109,18 +118,18 @@ export default {
         //   "Magnus Pettersson",
       ],
       months: [
-        {id: 0, name: "Januari"},
-        {id: 1, name: "Februari"},
-        {id: 2, name: "Mars"},
-        {id: 3, name: "April"},
-        {id: 4, name: "Maj"},
-        {id: 5, name: "Juni"},
-        {id: 6, name: "Juli"},
-        {id: 7, name: "Augusti"},
-        {id: 8, name: "September"},
-        {id: 9, name: "Oktober"},
-        {id: 10, name: "November"},
-        {id: 11, name: "December"}
+        { id: 0, name: "Januari" },
+        { id: 1, name: "Februari" },
+        { id: 2, name: "Mars" },
+        { id: 3, name: "April" },
+        { id: 4, name: "Maj" },
+        { id: 5, name: "Juni" },
+        { id: 6, name: "Juli" },
+        { id: 7, name: "Augusti" },
+        { id: 8, name: "September" },
+        { id: 9, name: "Oktober" },
+        { id: 10, name: "November" },
+        { id: 11, name: "December" }
       ],
       status: "UNASSIGNED",
       text: `Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
@@ -167,19 +176,18 @@ export default {
   created() {
     this.$store.dispatch("getIssues");
     this.issues = this.$store.state.issues;
-    this.filteredIssues = this.issues
+    this.filteredIssues = this.issues;
   },
   computed: {
-
     categories: {
       get() {
-        console.log("tryna get categories")
+        console.log("tryna get categories");
         return this.$store.state.categories;
       },
       set(value) {
-        console.log("tryna COMMIT to setCategories")
-        this.$store.commit("setCategories",value)
-      },
+        console.log("tryna COMMIT to setCategories");
+        this.$store.commit("setCategories", value);
+      }
     },
 
     // selectedCategory: {
@@ -195,10 +203,10 @@ export default {
 
     //   }
     // },
-    
-    // searchField: {
+
+    // searchfield: {
     //   get() {
-    //     return this.$store.state.searchField;
+    //     return this.$store.state.searchfield;
     //   },
     //   set(value) {
     //     this.$store.commit("setSearchField", value);
@@ -214,54 +222,81 @@ export default {
     // },
 
     filterIssues: function() {
-      
-      console.log("kör du nångång, filterIssues: funktion()????")
-      let temp = this.$store.state.issues
+      console.log("kör filterIssues: funktion()");
+      console.log("Kategorier: ", this.categories)
+      console.log("såhär ser vald kategori ut: ", this.selectedCategory)
+      console.log("och den har namnet: ",this.selectedCategory.categoryName)
+      let temp = this.$store.state.issues;
 
       //fritextsökning
-      console.log("temp: ", temp)
-      if(temp.length===0){
-        console.log("listan var tom!")
-        return null
+      if (temp.length === 0) {
+        console.log("listan var tom!");
+        return null;
+      } else {
+        console.log("listan var INTE tom");
+        console.log("temp: ", temp);
+
+        let searchResult = [];
+          console.log("såhär ser sökfältet ut: ", this.searchfield)
+        temp.forEach(issue => {
+          if(
+          issue.issueId === this.searchfield ||
+            issue.details.toLowerCase().includes(this.searchfield.toLowerCase()) ||
+            issue.employeeAwareness
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase()) ||
+            issue.issueStatus
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase()) ||
+            issue.whenIssue.toLowerCase().includes(this.searchfield.toLowerCase()) ||
+            issue.whereIssue.toLowerCase().includes(this.searchfield.toLowerCase())
+          ){
+            console.log("pushar detta issue till searchResult: ", issue.issueId)
+            searchResult.push(issue)
+          }
+        });
+      // let searchResult = temp.filter(issue => {
+        //   return (
+        //     issue.issueId.equals(this.search) ||
+        //     issue.details.toLowerCase().includes(this.search.toLowerCase()) ||
+        //     issue.employeeAwareness
+        //       .toLowerCase()
+        //       .includes(this.search.toLowerCase()) ||
+        //     issue.issueStatus.toLowerCase().includes(this.search.toLowerCase()) ||
+        //     issue.whenIssue.toLowerCase().includes(this.search.toLowerCase()) ||
+        //     issue.whereIssue.toLowerCase().includes(this.search.toLowerCase())
+        //   )
+        // })
+        console.log("Filtrerat searchResult på fritext: ", searchResult);
+
+
+        console.log("vald kategori: ", this.selectedCategory)
+        // //kategori
+        // searchResult = searchResult.filter(issue => {
+        //   return issue.categoryId.equals(this.$store.state.selectedCategory);
+        // });
+        // console.log("filtrerat searchResult på kategori: ", searchResult);
+
+        // //månad
+        // searchResult = searchResult.filter(issue => {
+        //   return issue.created
+        //     .getMonth()
+        //     .equals(this.$store.state.selectedMonth.id);
+        // });
+        // console.log("filtrerat searchResult på månad: ", searchResult);
+
+        // //sortera
+        // searchResult = this.$store.state.sortDesc
+        //   ? searchResult
+        //   : searchResult.sort((a, b) => b.issueId - a.issueId);
+
+        // console.log("sorterat searchResult: ", searchResult);
+
+        return searchResult;
       }
-      else{
-      let searchResult = temp.filter(issue => {
-        return (
-          issue.issueId.equals(this.search) ||
-          issue.details.toLowerCase().includes(this.search.toLowerCase()) ||
-          issue.employeeAwareness
-            .toLowerCase()
-            .includes(this.search.toLowerCase()) ||
-          issue.issueStatus.toLowerCase().includes(this.search.toLowerCase()) ||
-          issue.whenIssue.toLowerCase().includes(this.search.toLowerCase()) ||
-          issue.whereIssue.toLowerCase().includes(this.search.toLowerCase())
-        )
-      })
-      console.log("Filtrerat searchResult på fritext: ",searchResult)
-
-      //kategori
-      searchResult = searchResult.filter(issue => {
-        return (issue.categoryId.equals(this.$store.state.selectedCategory))
-      })
-      console.log("filtrerat searchResult på kategori: ",searchResult)
-
-      //månad
-      searchResult = searchResult.filter(issue => {
-        return (issue.created.getMonth().equals(this.$store.state.selectedMonth.id))
-      })
-      console.log("filtrerat searchResult på månad: ",searchResult)
-
-
-
-      //sortera
-      searchResult = this.$store.state.sortDesc ? searchResult : searchResult.sort((a,b) => b.issueId - a.issueId)
-
-      console.log("sorterat searchResult: ",searchResult)
-
-      return searchResult;
-      }
+      
     }
-  
+    
   }
 };
 </script>
