@@ -6,7 +6,7 @@
                 Panel
             </b-nav-item>
             <b-nav-item :to="{ path: '/jurist/arenden'}" exact-active-class="active">
-                Nya ärenden <span id="nr-of-messages-lawyer">1</span>
+                Nya ärenden <span id="nr-of-messages-lawyer">{{nrMessagesLawyer}}</span>
             </b-nav-item>
             <b-nav-item to="/vissla" @click="logout" exact-active-class="active">
                 Logga ut
@@ -23,7 +23,9 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+        nrMessagesLawyer: 1
+    }
   },
   methods: {
     logout(){

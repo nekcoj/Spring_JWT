@@ -19,8 +19,6 @@ export default new Vuex.Store({
     issues: [],
     lawyers: [],
     postboxPost:{},
-    
- 
   },
   mutations: {
     setTempUser(state, value) {
@@ -39,9 +37,6 @@ export default new Vuex.Store({
         state.issues.indexOf(item),1
       )
     }
-
-   
- 
   },
   actions: {
     newIssue: async function(value) {
@@ -118,8 +113,9 @@ export default new Vuex.Store({
       console.log("lawyers: " + this.state.lawyers);
     },
 
+    /*Ej färdig, men tänker mig att det blir något sådant för backend */
     async deleteIssue({commit}, item){
-      let response = await fetch("http://localhost:9090/issue/");
+      let response = await fetch("http://localhost:9090/issue/inactivate/${issueId}");
       response = await response.json();
       this.state.issues = Object.assign({}, response);
       commit('deleteIssue', item)
