@@ -12,13 +12,18 @@ export default new Vuex.Store({
     formdata: {},
     temporaryUser: {},
     categories:[],
-    selectedCategory: {},
+    // selectedCategory: {},
+    // selectedMonth:{},
+    // searchField: "",
     tokenId: null,
     authUser: "",
     user:{},
     issues: [],
     lawyers: [],
     postboxPost:{},
+    sortDesc: Boolean,
+    
+ 
   },
   mutations: {
     setTempUser(state, value) {
@@ -26,8 +31,11 @@ export default new Vuex.Store({
     },
 
     setCategories(state, value) {
-      this.$store.state.categories = value;
+      this.$store.state.categories = value
     },
+    // setSelectedMonth(state,value){
+    //   this.$store.state.selectedMonth = value
+    // },
 
     setselectedCategory(state, value) {
       this.$store.state.selectedCategory = value;
@@ -37,18 +45,14 @@ export default new Vuex.Store({
         state.issues.indexOf(item),1
       )
     }
+    // setSelectedCategory(state, value) {
+    //   this.$store.state.selectedCategory = value
+    // },
+    // setSearchField(state, value){
+    //   this.$store.state.searchField = value
+    // },
   },
   actions: {
-    newIssue: async function(value) {
-      let url = "http://localhost:9090/issue/create";
-      const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(value.state.formdata),
-      });
-      const result = await response.json();
-      this.state.temporaryUser = Object.assign({}, result);
-    },
     login: async function(value) {
       let url = "http://localhost:9090/login";
       const request = await fetch(url, {
@@ -64,8 +68,6 @@ export default new Vuex.Store({
       let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
       this.state.categories = Object.assign({}, response);
-      console.log("categories: ",response)
-   
     },
     
     getAuthenticationHeader: function(){
@@ -87,13 +89,8 @@ export default new Vuex.Store({
       });
 
       const result = await response.json();
-      if(!result.ok){       
-        Array(result).forEach((element) => {
-          console.log(element);
-          return;
-      });}
+      
       this.state.issues = result;
-      console.log("issues: " + this.state.issues);
     },
 
     async getLawyers() {
@@ -104,11 +101,7 @@ export default new Vuex.Store({
       });
 
       const result = await response.json();
-      if(!result.ok){       
-        Array(result).forEach((element) => {
-          console.log(element);
-          return;
-      });}
+      
       this.state.lawyers = result;
       console.log("lawyers: " + this.state.lawyers);
     },
@@ -123,5 +116,8 @@ export default new Vuex.Store({
   },
   modules: {
     account
+  },
+  created() {
+    this.categories = []
   }
 });
