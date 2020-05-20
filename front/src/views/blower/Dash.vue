@@ -1,6 +1,6 @@
 <template>
   <div class="dash container">
-    <div class="row card">
+    <div class="row">
       <div class="col-md-12">
         <p id="issueStatus">Status på ärendet: {{issueStatus}}</p>
         <router-link :to="{ path: '/safepostbox'}" v-if="messages.length">
@@ -26,14 +26,12 @@
       }
     },
     async created() {
-      this.getIssueStatusForUser()
-      this.getMessages()      
+      await this.$store.dispatch("getMessages")     
+      await this.$store.dispatch("getIssueStatusForUser")
     },
     computed: {
-      issueStatus: {
-        get(){
+      issueStatus() {
           return this.$store.state.issueStatusUser;
-        }
       },
       messages:{
         get(){
@@ -42,36 +40,12 @@
       }
     },
     methods:{
-      async getIssueStatusForUser() {
-        let issueStatus = "";
-        let url = "http://localhost:9090/issue/user";
-        const response = await fetch(url, {
-          method: "GET",
-          headers: await this.$store.dispatch('getAuthenticationHeader')
-        });
-        
-        await response.text().then( function(text){
-          issueStatus = text;
-        });
-        this.$store.commit("setIssueStatusForUser", issueStatus);
-      },
 
       logout(){
         const { dispatch } = this.$store;
         dispatch('account/logout');
       },
 
-      async getMessages() {
-        const {commit} = this.$store;
-        let url = "http://localhost:9090/post/get-user";
-        const response = await fetch(url, {
-          method: "GET",
-          headers: await this.$store.dispatch('getAuthenticationHeader')
-        });
-
-        const result = await response.json();
-        commit("setMessages", result)       
-      },
     }
   }
 </script>
@@ -82,9 +56,9 @@
   height: 80vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  
+  justify-content: center; 
 }
+
 .btn-loggaut{
   display:inline-block;
   min-height:100px;
@@ -96,7 +70,8 @@
 margin-bottom: 20px;
 margin-top: 20px;
 }
+
 #issueStatus {
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 </style>

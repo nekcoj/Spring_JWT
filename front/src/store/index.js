@@ -8,37 +8,48 @@ import { account } from './account.module';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    formdata: {},
-    temporaryUser: {},
-    categories:[],
-    selectedCategory: {},
-    tokenId: null,
-    authUser: "",
-    user:{},
-    issues: [],
-    lawyers: [],
-    messages: {}
-  },
-  mutations: {
-    setTempUser(state, value) {
-      this.$store.state.temporaryUser = value;
-    },
 
+  state: {
+    authUser: "",
+    categories:[],
+    formdata: {},
+    issues: [],
+    issueStatusUser: "",
+    lawyers: [],
+    messages: {},
+    messageToSend: {},
+    selectedCategory: {},
+    temporaryUser: {},
+    tokenId: null,
+    user:{}
+  },
+
+  mutations: {
     setCategories(state, value) {
       this.$store.state.categories = value;
+    },
+
+    setIssueStatusForUser(state, value){
+      this.state.issueStatusUser = value;
+    },
+
+    setMessages(state, value){
+      this.state.messages = value;
+    },
+
+    setMessageBody(state, value){
+      this.state.messageToSend = value;
     },
 
     setselectedCategory(state, value) {
       this.$store.state.selectedCategory = value;
     },
-    setIssueStatusForUser(state, value){
-      this.state.issueStatusUser = value;
-    },
-    setMessages(state, value){
-      this.state.messages = value;
-    }
+
+    setTempUser(state, value) {
+      this.$store.state.temporaryUser = value;
+    } 
   },
+
   actions: {
     newIssue: async function(value) {
       let url = "http://localhost:9090/issue/create";
@@ -112,7 +123,43 @@ export default new Vuex.Store({
       this.state.lawyers = result;
       console.log("lawyers: " + this.state.lawyers);
     },
+
+    async getIssueStatusForUser() {
+      let issueStatus = "";
+      let url = "http://localhost:9090/issue/user";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+      
+      await response.text().then( function(text){
+        issueStatus = text;
+      });
+      this.commit("setIssueStatusForUser", issueStatus);
+    },
+
+    async getMessages() {
+      let url = "http://localhost:9090/post/get-user";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+
+      const result = await response.json();
+      this.commit("setMessages", result)       
+    },
+
+    async sendReply() {
+      let url = "http://localhost:9090/post/reply";
+      fetch(url, {
+        method: "POST",
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: JSON.stringify(this.state.messageToSend)
+      });
+    }
+
   },
+
   modules: {
     account
   }
