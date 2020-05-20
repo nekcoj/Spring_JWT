@@ -76,6 +76,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .hasAnyAuthority(ROLE_ADMIN,ROLE_LAWYER)
 
 
+                //FileUploadController
+                .antMatchers(HttpMethod.GET, FILE_DOWNLOAD +"/**")
+                .hasAuthority(ROLE_LAWYER)
+
                 .and()
                 .addFilter(new JWTAuthenticationFilter(userRepository, authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))

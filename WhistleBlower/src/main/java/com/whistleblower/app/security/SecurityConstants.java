@@ -25,13 +25,16 @@ public class SecurityConstants {
     public static final String ADD_CATEGORY = "/add";
     public static final String GET_CATEGORIES = "/get-all";
 
-    //PostBox
+    //PostBoxController
     public static final  String POSTBOX_URL_ROOT = "/post";
     public static final  String POSTBOX_SEND_BY_LAWYER = "/send";
     public static final  String POSTBOX_REPLY_BY_USER = "/reply";
     public static final  String POSTBOX_GET_ALL_FOR_LAWYER = "/get-lawyer";
     public static final  String POSTBOX_GET_ALL_FOR_USER = "/get-user";
 
+
+    //FileUploadController
+    public static final  String FILE_DOWNLOAD = "/download";
 
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
