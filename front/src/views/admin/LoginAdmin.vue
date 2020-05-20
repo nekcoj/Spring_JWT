@@ -9,20 +9,16 @@
         <div>
           <label for="text-password">Lösenord (*):</label>
           <b-input :type="form.passwordFieldType" id="text-password" v-model="loginCredentials.password"></b-input>
-          <b-form-checkbox name="check-button" @change="showPassword()">Visa lösenord</b-form-checkbox>
+          <b-form-checkbox id="showPassword" name="check-button" @change="showPassword()">Visa lösenord</b-form-checkbox>
         </div>
         <em>(*) Obligatoriska fält</em>
         <p id="text-capslock" style="display:none"> Caps lock är aktiverat</p>
       </b-form>
     </div>
      <b-button variant="primary" id="login-button" @click="login">Logga in</b-button> 
-    <b-modal id="modal-center"  v-if="!this.$store.state.gdprConsent" centered title="GDPR" ok-title="Godkänn" cancel-title="Stäng">
-      <p class="my-4">
-        Vi behandlar personuppgifter som inkommit
-        till oss enligt bestämmelserna i dataskyddsförordningen,
-        GDPR (General Data Protection Regulation).
-      </p>
-    </b-modal>
+    <div>
+      <router-view v-if="checkLocalStorage()"></router-view>
+    </div>
   </div>
 </template>
 
@@ -43,16 +39,15 @@ export default {
   },
 
   mounted(){
-      let text = document.getElementById ('text-capslock')
-      document.addEventListener("keyup", function(event){
-          if(event.getModifierState('CapsLock')){
-              text.style.display = "block"
-            
-          }else{
-              text.style.display = "none"
-          }
-            
-      })
+    let text = document.getElementById ('text-capslock')
+    document.addEventListener("keyup", function(event){
+      if(event.getModifierState('CapsLock')){
+        text.style.display = "block"
+      }else{
+        text.style.display = "none"
+      }
+          
+    })
   },
   methods:{
     showPassword: function() {
@@ -65,15 +60,27 @@ export default {
       if (this.loginCredentials.username && this.loginCredentials.password) {
         dispatch('account/login', this.loginCredentials)              
       }
-
+    },
+    checkLocalStorage(){
+      let user = localStorage.getItem('user')
+      if(user != null && this.$store.state.gdprConsent === false){
+        return true;
+      }
+      else {
+        console.log("state gdpr:" + this.$store.state.gdprConsent);
+        return false;
+      }
     }
+
   }
 }
 
 </script>
 
 <style>
-
+#showPassword{
+  text-align: left;
+}
 #login-admin{
   margin-top: 7%;
 }

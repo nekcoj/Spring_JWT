@@ -13,7 +13,7 @@ export default new Vuex.Store({
     authUser: "",
     categories:[],
     formdata: {},
-    gdprConsent: false,
+    gdprConsent: null,
     issues: [],
     issueStatusUser: "",
     lawyers: [],
@@ -160,13 +160,30 @@ export default new Vuex.Store({
         headers: await this.dispatch('getAuthenticationHeader'),
         body: JSON.stringify(this.state.messageToSend)
       });
-    }
+    },
 
+    async updateGDPR() {
+      let url = "http://localhost:9090/user/gdpr-consent"
+
+      var raw = JSON.stringify({"consent":true});
+
+      var requestOptions = {
+        method: 'POST',
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: raw,
+      };
+
+      fetch(url, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    }
   },
 
   modules: {
     account
   },
+
   created() {
     this.categories = []
   }

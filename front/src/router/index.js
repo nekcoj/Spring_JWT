@@ -70,10 +70,19 @@ const router = new VueRouter({
       }
     },
     {
-      
       path: '/loginAdmin',
       name: 'Logga in admin',
       component: () => import ('../views/admin/LoginAdmin.vue'),
+      children: [
+        {path: '', name: 'GDPR', component: () => import ('../modules/gdpr-module.vue') }
+      ],
+      // beforeEnter: (to, from, next) => {
+      //   if(store.state.authUser.length > 0){
+      //     next(store.state.authUser)
+      //   } else {
+      //     next()
+      //   }
+      // }
     },
     {
       path: '/lawyer',

@@ -29,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllLawyers());
     }
 
-    @PutMapping(SET_GDPR_CONSENT)
+    @PostMapping(SET_GDPR_CONSENT)
     ResponseEntity<?> setConsent(@Valid @RequestBody GdprDto gdprDto, Authentication authentication,
                                  BindingResult bindingResult){
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
