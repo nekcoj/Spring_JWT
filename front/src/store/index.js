@@ -12,12 +12,16 @@ export default new Vuex.Store({
     formdata: {},
     temporaryUser: {},
     categories:[],
-    selectedCategory: {},
+    // selectedCategory: {},
+    // selectedMonth:{},
+    // searchField: "",
     tokenId: null,
     authUser: "",
     user:{},
     issues: [],
-    lawyers: []
+    lawyers: [],
+    sortDesc: Boolean,
+    
  
   },
   mutations: {
@@ -26,12 +30,18 @@ export default new Vuex.Store({
     },
 
     setCategories(state, value) {
-      this.$store.state.categories = value;
+      this.$store.state.categories = value
     },
+    // setSelectedMonth(state,value){
+    //   this.$store.state.selectedMonth = value
+    // },
 
-    setselectedCategory(state, value) {
-      this.$store.state.selectedCategory = value;
-    },
+    // setSelectedCategory(state, value) {
+    //   this.$store.state.selectedCategory = value
+    // },
+    // setSearchField(state, value){
+    //   this.$store.state.searchField = value
+    // },
   },
   actions: {
     login: async function(value) {
@@ -49,7 +59,6 @@ export default new Vuex.Store({
       let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
       this.state.categories = Object.assign({}, response);
-      console.log("categories: ",response)
     },
     
     getAuthenticationHeader: function(){
@@ -70,13 +79,8 @@ export default new Vuex.Store({
       });
 
       const result = await response.json();
-      if(!result.ok){       
-        Array(result).forEach((element) => {
-          console.log(element);
-          return;
-      });}
+      
       this.state.issues = result;
-      console.log("issues: " + this.state.issues);
     },
 
     async getLawyers() {
@@ -87,16 +91,14 @@ export default new Vuex.Store({
       });
 
       const result = await response.json();
-      if(!result.ok){       
-        Array(result).forEach((element) => {
-          console.log(element);
-          return;
-      });}
+      
       this.state.lawyers = result;
-      console.log("lawyers: " + this.state.lawyers);
     }
   },
   modules: {
     account
+  },
+  created() {
+    this.categories = []
   }
 });
