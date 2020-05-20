@@ -7,9 +7,12 @@ import com.whistleblower.app.repository.CategoryRepository;
 import com.whistleblower.app.repository.IssueRepository;
 import com.whistleblower.app.repository.IssueStatusRepository;
 import com.whistleblower.app.repository.UserRepository;
+import com.whistleblower.app.storage.StorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.Date;
@@ -33,18 +36,27 @@ public class IssueService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private StorageService storageService;
+
+
+
+    @Autowired
     public IssueService(IssueRepository issueRepository, UserRepository userRepository,
-                        BCryptPasswordEncoder bCryptPasswordEncoder, IssueStatusRepository issueStatusRepository, CategoryRepository categoryRepository) {
+                        BCryptPasswordEncoder bCryptPasswordEncoder, IssueStatusRepository issueStatusRepository, CategoryRepository categoryRepository, StorageService storageService) {
         this.issueRepository = issueRepository;
         this.userRepository = userRepository;
         this.issueStatusRepository = issueStatusRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.categoryRepository = categoryRepository;
+        this.storageService = storageService;
     }
 
-    public TempUserDto createIssueAndUser(IssueDto issueDto) {
+    public TempUserDto createIssueAndUser(IssueDto issueDto, MultipartFile attachment) {
         TempUserDto tempUser = createTempUser();
         createNewIssue(tempUser, issueDto);
+        if(attachment != null){
+            storageService.store(attachment, String.valueOf(tempUser.getId()));
+        }
         return tempUser;
     }
 
@@ -56,11 +68,11 @@ public class IssueService {
         newIssue.setWhereIssue(issueDto.getWhereIssue());
         newIssue.setDetails(issueDto.getDetails());
         newIssue.setEmployeeAwareness(issueDto.getEmployeeAwareness());
-        newIssue.setAttachment(issueDto.getAttachment());
         newIssue.setTempUser(userRepository.getOne(tempUser.getId()));
         newIssue.setCreated(new Date());
         newIssue.setIssueStatus(issueStatusRepository.getOne(1L));
         newIssue.setActive(true);
+        newIssue.setAttachment(issueDto.getAttachmentFileName());
         issueRepository.save(newIssue);
     }
 
@@ -138,6 +150,14 @@ public class IssueService {
 
         }
         return Collections.emptyList();
+    }
+
+    public String getIssueStatusForUser(String username) {
+        var user = userRepository.findByUsername(username);
+        if(user != null){
+            return issueRepository.findByTempUser_Id(user.getId()).getIssueStatus().getStatus();
+        }
+        return "";
     }
 
 }

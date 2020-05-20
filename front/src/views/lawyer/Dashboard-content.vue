@@ -47,7 +47,6 @@
           role="tabpanel">
           
           <b-card-body id="issueBody">
-            <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
 
@@ -139,7 +138,7 @@ export default {
 
       methods: {
         postboxLink() {
-          this.$router.push("/juristSpostbox");
+          this.$router.push("/juristpostbox");
         },
         addRemoveCategory: function() {
           if (this.addRemoveOption === "1") {
