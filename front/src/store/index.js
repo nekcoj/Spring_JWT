@@ -17,7 +17,9 @@ export default new Vuex.Store({
     authUser: "",
     user:{},
     issues: [],
-    lawyers: []
+    lawyers: [],
+    postboxPost:{},
+    
  
   },
   mutations: {
@@ -32,6 +34,14 @@ export default new Vuex.Store({
     setselectedCategory(state, value) {
       this.$store.state.selectedCategory = value;
     },
+    deleteIssue(state, item){
+      state.issues.splice(
+        state.issues.indexOf(item),1
+      )
+    }
+
+   
+ 
   },
   actions: {
     newIssue: async function(value) {
@@ -60,6 +70,7 @@ export default new Vuex.Store({
       response = await response.json();
       this.state.categories = Object.assign({}, response);
       console.log("categories: ",response)
+   
     },
     
     getAuthenticationHeader: function(){
@@ -71,6 +82,7 @@ export default new Vuex.Store({
 
       return { 'Authorization': 'Bearer ' + tokenId, 'Content-Type': 'application/json' }
     },
+
 
     async getIssues() {
       let url = "http://localhost:9090/issue/get-all";
@@ -104,6 +116,13 @@ export default new Vuex.Store({
       });}
       this.state.lawyers = result;
       console.log("lawyers: " + this.state.lawyers);
+    },
+
+    async deleteIssue({commit}, item){
+      let response = await fetch("http://localhost:9090/issue/");
+      response = await response.json();
+      this.state.issues = Object.assign({}, response);
+      commit('deleteIssue', item)
     }
   },
   modules: {

@@ -50,7 +50,7 @@
           role="tabpanel">
           
           <b-card-body id="issueBody">
-            <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
+           <span @click="deleteIssue(item)"> <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon></span>
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
@@ -207,6 +207,9 @@ export default {
     },
     getIssues: async function() {
     
+    },
+    deleteIssue: function(item){
+      this.$store.commit('deleteIssue', item)
     }
   },
   async mounted() {
@@ -239,7 +242,8 @@ export default {
       set(value){
         this.$store.state.selectedCategory = value;
       }
-    }
+    },
+   
 };
 </script>
 <style scoped>
@@ -265,6 +269,7 @@ label {
   position: absolute;
   top: 3px;
   right: 3px;
+  cursor: pointer;
 }
 #issueC {
   font-weight: normal;

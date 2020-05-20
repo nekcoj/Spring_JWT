@@ -83,8 +83,6 @@ export default {
     }
   },
 
-  
-
   computed:{
     category:{
       get() {
