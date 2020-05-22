@@ -170,6 +170,7 @@ export default {
     
     },
     deleteIssue: function(item){
+      this.$store.commit('setActive', item.active)
       this.$store.dispatch('deleteItem', item)
     }
   },

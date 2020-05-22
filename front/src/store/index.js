@@ -24,7 +24,8 @@ export default new Vuex.Store({
     sortDesc: Boolean,
     temporaryUser: {},
     tokenId: null,
-    user:{}
+    user:{},
+    activeValue: Boolean
   },
 
   mutations: {
@@ -57,6 +58,10 @@ export default new Vuex.Store({
 
     setselectedCategory(state, value) {
       this.$store.state.selectedCategory = value;
+    },
+
+    setActive(state, value){
+      this.state.activeValue = value;
     },
 
     setTempUser(state, value) {
@@ -138,7 +143,8 @@ export default new Vuex.Store({
     /*Ej färdig, men tänker mig att det blir något sådant för backend */
      async deleteItem({commit}, item){
       let id = item.issueId;
-      let active = !item.active
+      let active = this.state.activeValue;
+      console.log(this.state.activeValue)
       let tokenId = null;
       if(this.state.tokenId == null){
         let user = await JSON.parse(localStorage.getItem('user'));
