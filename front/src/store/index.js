@@ -18,7 +18,6 @@ export default new Vuex.Store({
     issueStatusUser: "",
     lawyers: [],
     postboxPost:{},
-    sortDesc: Boolean,
     messages: {},
     messageToSend: {},
     selectedCategory: {},
@@ -35,15 +34,11 @@ export default new Vuex.Store({
     // setSelectedMonth(state,value){
     //   this.$store.state.selectedMonth = value
     // },
-
-    setselectedCategory(state, value) {
-      this.$store.state.selectedCategory = value;
-    },
+    
     deleteIssue(state, item){
-      state.issues.splice(
-        state.issues.indexOf(item),1
-      )
-      },
+      state.issues.splice(state.issues.indexOf(item),1)
+    },
+
     setGDPRConsent(state, value){
       this.state.gdprConsent = value;
     },
@@ -153,8 +148,7 @@ export default new Vuex.Store({
         console.log('issue active/inacttive')
       this.state.issues =  response;
        commit('deleteIssue', item)
-     }
-    },
+     },
 
     async getIssueStatusForUser() {
       let issueStatus = "";
