@@ -26,7 +26,7 @@ export default new Vuex.Store({
     temporaryUser: {},
     tokenId: null,
     user:{},
-    activeValue: Boolean
+ 
   },
 
   mutations: {
@@ -59,10 +59,6 @@ export default new Vuex.Store({
 
     setselectedCategory(state, value) {
       this.$store.state.selectedCategory = value;
-    },
-
-    setActive(state, value){
-      this.state.activeValue = value;
     },
 
     setTempUser(state, value) {
@@ -152,27 +148,20 @@ export default new Vuex.Store({
       
     },
 
-    /*Ej färdig, men tänker mig att det blir något sådant för backend */
      async deleteItem({commit}, item){
       let id = item.issueId;
-      let active = this.state.activeValue;
-      console.log(this.state.activeValue)
+      let active = !item.active;
       let tokenId = null;
       if(this.state.tokenId == null){
         let user = await JSON.parse(localStorage.getItem('user'));
         tokenId = user.token;
       } else
        {tokenId = this.state.tokenId}
-      //  let response
          await fetch("http://localhost:9090/issue/active/"+id+"/"+active,  {
         method: "POST",
         headers: {'Authorization': 'Bearer ' + tokenId, 'Accept': 'application/json','Content-Type': 'application/json' }
       });
-
-      //  let result  = await response.json();
-        console.log('issue active/inactive')
-      // this.state.issues =  result;
-      // console.log(result)
+      /**här ska sedan vara en filtrering för att bara visa aktiva issues */
        commit('deleteIssue', item)
      },
 
