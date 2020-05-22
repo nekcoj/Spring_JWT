@@ -1,5 +1,6 @@
 package com.whistleblower.app.rest;
 
+import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.modelDto.AssignDto;
 import com.whistleblower.app.modelDto.IssueDto;
 import com.whistleblower.app.modelDto.StatusDto;
@@ -101,6 +102,16 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
             return ResponseEntity.ok(issues);
         } else {
             return ResponseEntity.badRequest().body("No issue found!");
+        }
+    }
+
+    @PostMapping(INACTIVATE_ISSUE + "/{issueId}/{value}")
+    ResponseEntity<?> activateInactivateIssue(@PathVariable long issueId, @PathVariable boolean value){
+        Issue issue = issueService.activateInactivateIssue(issueId, value);
+        if(issue != null){
+            return ResponseEntity.ok().body("Changed!");
+        }else {
+            return ResponseEntity.badRequest().body("Bad request!");
         }
     }
 
