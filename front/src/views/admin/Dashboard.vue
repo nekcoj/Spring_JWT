@@ -203,7 +203,7 @@ export default {
       let temp = this.$store.state.issues;
 
       //fritextsökning
-      if (temp.length === 0) {
+      if (typeof temp.length === 'undefined'  || temp.length === 0) {
         console.log("listan var tom!");
 
         return null;

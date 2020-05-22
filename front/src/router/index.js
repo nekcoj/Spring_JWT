@@ -88,7 +88,7 @@ const router = new VueRouter({
       path: '/lawyer',
       component: () => import ('../views/lawyer/Dashboard-base.vue'),
       children: [
-        {path: '', name: 'AdminDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
+        {path: '', name: 'LawyerDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
         {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
       ],
       beforeEnter: (to, from, next) => {

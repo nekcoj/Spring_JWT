@@ -15,6 +15,7 @@ export default new Vuex.Store({
     formdata: {},
     gdprConsent: null,
     issues: [],
+    issuesLawyer: [],
     issueStatusUser: "",
     lawyers: [],
     postboxPost:{},
@@ -125,6 +126,17 @@ export default new Vuex.Store({
       const result = await response.json();
       
       this.state.issues = result;
+    },
+    async getIssuesForLawyer() {
+      let url = "http://localhost:9090/issue/get-all-lawyer";
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+
+      const result = await response.json();
+      
+      this.state.issuesLawyer = result;
     },
 
     async getLawyers() {

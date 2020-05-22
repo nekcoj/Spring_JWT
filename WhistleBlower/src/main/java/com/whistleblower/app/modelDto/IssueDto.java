@@ -17,6 +17,7 @@ public class IssueDto {
     private Date created;
     private Date assigned;
     private String issueStatus;
+    private boolean active;
 
     public IssueDto() {
     }
@@ -33,6 +34,15 @@ public class IssueDto {
        setTempUserId(issue.getTempUser().getId());
        setIssueStatus(issue.getIssueStatus().getStatus());
        setAttachmentFileName(issue.getAttachment());
+       setActive(issue.isActive());
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getIssueStatus() {
