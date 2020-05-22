@@ -216,4 +216,5 @@ export default new Vuex.Store({
     this.categories = []
   }
 
-});
+}
+);
