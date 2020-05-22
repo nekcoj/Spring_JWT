@@ -170,7 +170,7 @@ export default {
     
     },
     deleteIssue: function(item){
-      this.$store.commit('deleteIssue', item)
+      this.$store.dispatch('deleteItem', item)
     }
   },
   async mounted() {
@@ -179,7 +179,8 @@ export default {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssues");
     this.issues = await this.$store.state.issues;
-    await this.$store.dispatch("deleteIssue");
+   
+    
   },
   created() {
     this.$store.dispatch("getIssues");
