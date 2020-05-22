@@ -163,4 +163,13 @@ public class IssueService {
     public Issue getIssueByLawyerAndIssueId(String name, long issueId) {
         return issueRepository.getIssueByIdAndLawyer_Username(issueId,name);
     }
+
+    public Issue activateInactivateIssue(long issueId, boolean value) {
+    Issue issue = issueRepository.findById(issueId).orElse(null);
+    if(issue != null){
+        issue.setActive(value);
+      return  issueRepository.save(issue);
+    }
+    return null;
+    }
 }
