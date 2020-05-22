@@ -8,12 +8,12 @@ public class SecurityConstants {
     public static final String GET_ALL_ISSUES_FOR_LAWYER = "/get-all-lawyer";
     public static final String ASSIGN_ISSUE = "/assign"; // (Admin)
     public static final String CHANGE_ISSUE_STATUS = "/change-status";
+    public static final String INACTIVATE_ISSUE = "/active";
 
     //issueStatusController
     public static final String ISSUE_STATUS_URL_ROOT = "/issue-status";
     public static final String GET_ALL_ISSUE_STATUS = "/get-all";
     public static final String GET_ISSUE_STATUS_USER = "/user";
-
 
     //UserController
     public static final String USER_URL_ROOT = "/user";
@@ -31,7 +31,6 @@ public class SecurityConstants {
     public static final  String POSTBOX_REPLY_BY_USER = "/reply";
     public static final  String POSTBOX_GET_ALL_FOR_LAWYER = "/get-lawyer";
     public static final  String POSTBOX_GET_ALL_FOR_USER = "/get-user";
-
 
     //FileUploadController
     public static final  String FILE_DOWNLOAD = "/download";
