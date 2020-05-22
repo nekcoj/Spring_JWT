@@ -140,7 +140,7 @@ export default new Vuex.Store({
       let id = item.issueId;
       let active = !item.active
        let response = await fetch("http://localhost:9090/issue/active/"+id+"/"+active,  {
-        method: "GET",
+        method: "POST",
         headers: await this.dispatch('getAuthenticationHeader')
       });
 
