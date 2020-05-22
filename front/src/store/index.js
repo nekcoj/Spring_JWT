@@ -56,7 +56,7 @@ export default new Vuex.Store({
     },
 
     async getCategories() {
-      let response = await fetch("https://localhost:9090/category/get-all");
+      let response = await fetch("http://localhost:9090/category/get-all");
       response = await response.json();
       this.state.categories = Object.assign({}, response);
     },
