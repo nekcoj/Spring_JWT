@@ -139,14 +139,22 @@ export default new Vuex.Store({
      async deleteItem({commit}, item){
       let id = item.issueId;
       let active = !item.active
-       let response = await fetch("http://localhost:9090/issue/active/"+id+"/"+active,  {
+      let tokenId = null;
+      if(this.state.tokenId == null){
+        let user = await JSON.parse(localStorage.getItem('user'));
+        tokenId = user.token;
+      } else
+       {tokenId = this.state.tokenId}
+      //  let response
+         await fetch("http://localhost:9090/issue/active/"+id+"/"+active,  {
         method: "POST",
-        headers: await this.dispatch('getAuthenticationHeader')
+        headers: {'Authorization': 'Bearer ' + tokenId, 'Accept': 'application/json','Content-Type': 'application/json' }
       });
 
-       response = await response.json();
-        console.log('issue active/inacttive')
-      this.state.issues =  response;
+      //  let result  = await response.json();
+        console.log('issue active/inactive')
+      // this.state.issues =  result;
+      // console.log(result)
        commit('deleteIssue', item)
      },
 
