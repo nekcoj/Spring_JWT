@@ -3,7 +3,7 @@
     <div role="tablist">
       <b-form-group label="Filtrera på kategori" label-for="select-category" >
         <b-form-select class="inputbox" v-model="selectedCategory"  id="select-category"  >
-          <b-form-select-option  selectedCategory="">Välj kategori</b-form-select-option>
+          <p  selectedCategory="">Välj kategori</p>
           <b-form-select-option
             
             v-for="category in categories"
