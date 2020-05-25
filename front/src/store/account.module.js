@@ -10,14 +10,17 @@ const state = user
 const actions = {
     login({ commit }, { username, password }) {
         commit('loginRequest', { username });
-        console.log("username: " + username + " password: " + password);
-
         userService.login(username, password)
             .then(
                 user => {
                     commit('loginSuccess', user);
                     store.state.authUser = user.path;
-                    router.push(user.path)
+                    store.state.gdprConsent = user.consent;
+                    if(!user.consent && !(user.path === '/user')){
+                      console.log("GDPR CHECK!");
+                    } else {
+                      router.push(user.path)
+                    }
                 },
                 error => {
                     commit('loginFailure', error);

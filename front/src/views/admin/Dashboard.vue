@@ -2,12 +2,16 @@
   <div class="text-left">
     <div role="tablist">
       <b-form-group label="Filtrera på kategori" label-for="select-category" >
-        <b-form-select class="inputbox" v-model="selectedCategory" id="select-category">
+        <b-form-select class="inputbox" v-model="selectedCategory"  id="select-category"  >
+          <p  selectedCategory="">Välj kategori</p>
           <b-form-select-option
+            
             v-for="category in categories"
             :key="category.id"
             :value="category"
+          
           >{{category.categoryName}}</b-form-select-option>
+   
         </b-form-select>
       </b-form-group>
       <b-form-group label="Filtrera på månad" label-for="select-month">
@@ -41,7 +45,7 @@
         </b-card-header>
         <b-collapse :id="'id'+item.issueId" accordion="my-accordion" role="tabpanel">
           <b-card-body id="issueBody">
-            <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
+           <span @click="deleteIssue(item)"> <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon></span>
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
@@ -50,6 +54,7 @@
                   v-for="category in categories"
                   :key="category.id"
                   :value="category.id"
+                  
                 >{{category.categoryName}}</b-form-select-option>>
               </b-form-select>
             </b-form-group>
@@ -161,6 +166,13 @@ export default {
       });
       console.log("den här knappen funkar inte än! TODO fixa den");
     },
+    getIssues: async function() {
+    
+    },
+    deleteIssue: function(item){
+      
+      this.$store.dispatch('deleteItem', item)
+    }
   },
   async mounted() {
     await this.$store.dispatch("getLawyers");
@@ -168,6 +180,8 @@ export default {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssues");
     this.issues = await this.$store.state.issues;
+   
+    
   },
   created() {
     this.$store.dispatch("getIssues");
@@ -189,8 +203,9 @@ export default {
       let temp = this.$store.state.issues;
 
       //fritextsökning
-      if (temp.length === 0) {
+      if (typeof temp.length === 'undefined'  || temp.length === 0) {
         console.log("listan var tom!");
+
         return null;
       } else {
 
@@ -275,6 +290,7 @@ label {
   position: absolute;
   top: 3px;
   right: 3px;
+  cursor: pointer;
 }
 #issueC {
   font-weight: normal;
@@ -283,5 +299,13 @@ label {
 
 .container-admin{
   text-align: center!important;
+}
+
+ .search-parent-admin{
+ margin-bottom: 20px; 
+}
+
+#select-month{
+  margin-bottom: 20px;
 }
 </style>

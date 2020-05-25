@@ -1,9 +1,8 @@
 <template>
-   <div class="safepostbox container">
      <b-card>
-     <b-card-header>
+     <b-card-header class="safepostbox container">
         <b-nav pills fill type="light" variant="light">
-            <b-nav-item :to="{ path: '/jurist/'}" exact-active-class="active">
+            <b-nav-item :to="{ path: '/lawyer/'}" exact-active-class="active">
                 Panel
             </b-nav-item>
             <b-nav-item :to="{ path: '/jurist/arenden'}" exact-active-class="active">
@@ -59,7 +58,7 @@
   
     </b-card-body>
      </b-card>
-     </div>  
+     
 </template>
 
 <script>
@@ -86,6 +85,8 @@ export default {
             },  
         }
     },
+
+
     
 
 }

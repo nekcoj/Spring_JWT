@@ -18,6 +18,7 @@ public class SecurityConstants {
     //UserController
     public static final String USER_URL_ROOT = "/user";
     public static final String GET_ALL_LAWYERS = "/lawyers";
+    public static final String SET_GDPR_CONSENT ="/gdpr-consent";
 
     //CategoryController
     public static final String CATEGORY_URL_ROOT = "/category";

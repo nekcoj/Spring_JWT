@@ -44,6 +44,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 //User controller
                 .antMatchers(HttpMethod.GET, USER_URL_ROOT + GET_ALL_LAWYERS)
                 .hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.POST, USER_URL_ROOT + SET_GDPR_CONSENT)
+                .hasAnyAuthority(ROLE_ADMIN, ROLE_LAWYER)
                 //Issue Controller
                 .antMatchers(HttpMethod.POST, ISSUE_URL_ROOT + ASSIGN_ISSUE)
                 .hasAuthority(ROLE_ADMIN)

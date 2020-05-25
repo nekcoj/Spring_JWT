@@ -1,13 +1,12 @@
 <template>
-<div  class="dashboard container">
 <b-card>
-    <b-card-header>
+    <b-card-header class="dashboard-container">
         <b-nav pills fill type="light" variant="light">
-            <b-nav-item :to="{ path: '/jurist/'}" exact-active-class="active">
+            <b-nav-item :to="{ path: '/lawyer/'}" exact-active-class="active">
                 Panel
             </b-nav-item>
             <b-nav-item :to="{ path: '/jurist/arenden'}" exact-active-class="active">
-                Nya ärenden
+                Nya ärenden <span id="nr-of-messages-lawyer">{{nrMessagesLawyer}}</span>
             </b-nav-item>
             <b-nav-item to="/vissla" @click="logout" exact-active-class="active">
                 Logga ut
@@ -20,23 +19,34 @@
         </router-view>
     </b-card-body>
 </b-card>
-</div>
 </template>
 <script>
 export default {
   data() {
-    return {}
+    return {
+        nrMessagesLawyer: 1
+    }
   },
   methods: {
     logout(){
         const { dispatch } = this.$store;
         dispatch('account/logout');
     }
-  }
+  },
+  
 }
 </script>
 
 
 <style scoped>
+
+#nr-of-messages-lawyer{
+    font-size: small!important;
+    color: black;
+   position: relative;
+    bottom: 5px;
+    font-weight: bold;
+}
+
 
 </style>
