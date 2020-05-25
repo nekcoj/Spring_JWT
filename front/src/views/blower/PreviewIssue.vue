@@ -111,7 +111,7 @@ export default {
       dataDto.append('employeeAwareness', this.employeeAwareness)
       dataDto.append('attachment',  this.attachment, this.attachment.name)
     
-      let url = "http://localhost:9090/issue/create";
+      let url = "https://localhost:9090/issue/create";
       const response = await fetch(url, {
         method: "POST",
       

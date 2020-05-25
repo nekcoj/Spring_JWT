@@ -1,7 +1,8 @@
 import Vue from "vue"
 import Vuex from "vuex"
 
-import { account } from './account.module'
+import { account } from './account.module';
+import {apiUrl} from '../_helpers/config.js'
 
 // Vue.config.productionTip = false;
 
@@ -84,8 +85,8 @@ export default new Vuex.Store({
   },
 
   actions: {
-    newIssue: async function (value) {
-      let url = "http://localhost:9090/issue/create"
+    newIssue: async function(value) {
+      let url = `${apiUrl}/issue/create`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -119,8 +120,8 @@ export default new Vuex.Store({
       })
     },
 
-    login: async function (value) {
-      let url = "http://localhost:9090/login"
+    login: async function(value) {
+      let url = `${apiUrl}/login`;
       const request = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -131,9 +132,9 @@ export default new Vuex.Store({
     },
 
     async getCategories() {
-      let response = await fetch("http://localhost:9090/category/get-all")
-      response = await response.json()
-      this.state.categories = Object.assign({}, response)
+      let response = await fetch(`${apiUrl}/category/get-all`);
+      response = await response.json();
+      this.state.categories = Object.assign({}, response);
     },
 
     getAuthenticationHeader: function () {
@@ -148,7 +149,7 @@ export default new Vuex.Store({
 
 
     async getIssues() {
-      let url = "http://localhost:9090/issue/get-all"
+      let url = `${apiUrl}/issue/get-all`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -159,7 +160,7 @@ export default new Vuex.Store({
       this.state.issues = result
     },
     async getIssuesForLawyer() {
-      let url = "http://localhost:9090/issue/get-all-lawyer"
+      let url = `${apiUrl}/issue/get-all-lawyer`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -171,7 +172,7 @@ export default new Vuex.Store({
     },
 
     async getLawyers() {
-      let url = "http://localhost:9090/user/lawyers"
+      let url = `${apiUrl}/user/lawyers`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -183,15 +184,16 @@ export default new Vuex.Store({
 
     },
 
-    async deleteItem({ commit }, item) {
-      let id = item.issueId
-      let active = !item.active
-      let tokenId = null
-      if (this.state.tokenId == null) {
-        let user = await JSON.parse(localStorage.getItem('user'))
-        tokenId = user.token
-      } else { tokenId = this.state.tokenId }
-      await fetch("http://localhost:9090/issue/active/" + id + "/" + active, {
+     async deleteItem({commit}, item){
+      let id = item.issueId;
+      let active = !item.active;
+      let tokenId = null;
+      if(this.state.tokenId == null){
+        let user = await JSON.parse(localStorage.getItem('user'));
+        tokenId = user.token;
+      } else
+       {tokenId = this.state.tokenId}
+         await fetch(`${apiUrl}/issue/active/`+id+"/"+active,  {
         method: "POST",
         headers: { 'Authorization': 'Bearer ' + tokenId, 'Accept': 'application/json', 'Content-Type': 'application/json' }
       })
@@ -202,8 +204,8 @@ export default new Vuex.Store({
 
 
     async getIssueStatusForUser() {
-      let issueStatus = ""
-      let url = "http://localhost:9090/issue/user"
+      let issueStatus = "";
+      let url = `${apiUrl}/issue/user`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -216,7 +218,7 @@ export default new Vuex.Store({
     },
 
     async getMessages() {
-      let url = "http://localhost:9090/post/get-user"
+      let url = `${apiUrl}/post/get-user`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -227,7 +229,7 @@ export default new Vuex.Store({
     },
 
     async sendReply() {
-      let url = "http://localhost:9090/post/reply"
+      let url = `${apiUrl}/post/reply`;
       fetch(url, {
         method: "POST",
         headers: await this.dispatch('getAuthenticationHeader'),
@@ -236,7 +238,7 @@ export default new Vuex.Store({
     },
 
     async updateGDPR() {
-      let url = "http://localhost:9090/user/gdpr-consent"
+      let url = `${apiUrl}/user/gdpr-consent`;
 
       var raw = JSON.stringify({ "consent": true })
 
@@ -249,7 +251,18 @@ export default new Vuex.Store({
       fetch(url, requestOptions)
         .then(response => response.text())
         .then(result => console.log(result))
-        .catch(error => console.log('error', error))
+        .catch(error => console.log('error', error));
+    },
+
+    async getMessagesForLawyer() {
+      let url = `${apiUrl}/post/get-lawyer`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+
+      const result = await response.json();
+      this.commit("setMessages", result)       
     }
   },
 

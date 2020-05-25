@@ -89,7 +89,8 @@ const router = new VueRouter({
       component: () => import ('../views/lawyer/Dashboard-base.vue'),
       children: [
         {path: '', name: 'LawyerDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
-        {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')}
+        {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')},
+        {path: 'postbox/:issueId', name: 'Safe postbox jurist', component: () => import ('../views/lawyer/Safepostbox.vue')}, 
       ],
       beforeEnter: (to, from, next) => {
         if(store.state.authUser === '/lawyer'){
@@ -98,19 +99,6 @@ const router = new VueRouter({
           next('/')
         }
       }
-    },
- 
-    {
-      path: '/juristpostbox',
-      name: 'Safe postbox jurist',
-      component: () => import ('../views/lawyer/Safepostbox.vue'),
-      beforeEnter: (to, from, next) => {
-        if(store.state.authUser === '/lawyer'){
-          next()
-        } else {
-          next('/')
-        }
-      },
     },
     {
       path: '/safepostbox',
@@ -129,3 +117,5 @@ const router = new VueRouter({
 
 
 export default router
+
+
