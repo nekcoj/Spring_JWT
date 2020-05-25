@@ -1,17 +1,14 @@
 <template>
   <div class="text-left">
     <div role="tablist">
-      <b-form-group label="Filtrera på kategori" label-for="select-category" >
-        <b-form-select class="inputbox" v-model="selectedCategory"  id="select-category"  >
-          <p  selectedCategory="">Välj kategori</p>
+      <b-form-group label="Filtrera på kategori" label-for="select-category">
+        <b-form-select class="inputbox" v-model="selectedCategory" id="select-category">
+          <p selectedCategory>Välj kategori</p>
           <b-form-select-option
-            
             v-for="category in categories"
             :key="category.id"
             :value="category"
-          
           >{{category.categoryName}}</b-form-select-option>
-   
         </b-form-select>
       </b-form-group>
       <b-form-group label="Filtrera på månad" label-for="select-month">
@@ -45,21 +42,23 @@
         </b-card-header>
         <b-collapse :id="'id'+item.issueId" accordion="my-accordion" role="tabpanel">
           <b-card-body id="issueBody">
-           <span @click="deleteIssue(item)"> <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon></span>
+            <span @click="deleteIssue(item)">
+              <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
+            </span>
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
-              <b-form-select id="change-category">
+              <b-form-select id="change-category" v-model="categoryToChangeTo">
                 <b-form-select-option
                   v-for="category in categories"
                   :key="category.id"
                   :value="category.id"
-                  
                 >{{category.categoryName}}</b-form-select-option>>
               </b-form-select>
+              <b-button v-on:click="issueChangeCategory(item)" class="mt-1">Utför</b-button>
             </b-form-group>
             <b-form-group label="Tilldela ärendet" label-for="change-assigned">
-              <b-form-select id="change-assigned">
+              <b-form-select id="change-assigned" v-model="selectedLawyer">
                 <b-form-select-option
                   class
                   v-for="lawyer in lawyers"
@@ -67,7 +66,7 @@
                   :value="lawyer"
                 >{{ lawyer.username }}</b-form-select-option>
               </b-form-select>
-              <b-button v-on:click="assignIssueToLawyer" class="mt-1">Tilldela</b-button>
+              <b-button v-on:click="assignIssueToLawyer(item)" class="mt-1">Tilldela</b-button>
             </b-form-group>
 
             <label for="whenIssue">När inträffade händelsen?</label>
@@ -100,7 +99,7 @@
         <b-form-input placeholder="Lägg till/Ta bort kategori" v-model="addRemoveText"></b-form-input>
       </div>
       <div class="container-admin col-12 justify-content-center"></div>
-      <div class="col-12 ">
+      <div class="col-12">
         <b-button v-on:click="addRemoveCategory">Utför</b-button>
       </div>
     </div>
@@ -111,10 +110,12 @@
 export default {
   data() {
     return {
+      categoryToChangeTo: {},
       issues: [],
       selectedCategory: {},
       selectedMonth: {},
       searchfield: "",
+      selectedLawyer: {},
       lawyers: [
         //   "Joacim Norbeck",
         //   "Ralf Tjärnlund",
@@ -143,127 +144,121 @@ export default {
 					assumenda shoreditch et.`,
       addRemoveOption: null,
       addRemoveText: null
-    };
+    }
   },
   methods: {
-    addRemoveCategory: function() {
+    addRemoveCategory: function () {
       if (this.addRemoveOption === "1") {
-        this.categories.push(this.addRemoveText);
+        this.categories.push(this.addRemoveText)
       } else if (this.addRemoveOption === "2") {
-        var index = this.categories.indexOf(this.addRemoveText);
-        if (index !== -1) this.categories.splice(index, 1);
+        var index = this.categories.indexOf(this.addRemoveText)
+        if (index !== -1) this.categories.splice(index, 1)
       }
     },
-    assignIssueToLawyer: async function() {
-      console.log("trying to assign issue to lawyer");
-      await fetch("https://localhost:9090/issue/assign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(`{ 
-   	"lawyerId" : 45,
-    "issueId" : 20
-   }`)
-      });
-      console.log("den här knappen funkar inte än! TODO fixa den");
+    issueChangeCategory: async function(issue){
+      await this.$store.commit("setIssueToChangeCategoryFor",issue)
+      await this.$store.commit("setNewCategory", this.categoryToChangeTo)
+      await this.$store.dispatch("issueChangeCategory")
     },
-    getIssues: async function() {
-    
+    assignIssueToLawyer: async function (issue) {
+      let combinedIds = {
+        lawyerId: this.selectedLawyer.id,
+        issueId: issue.issueId
+      }
+      await this.$store.commit("setIssueToAssign", combinedIds)
+      await this.$store.dispatch("assignIssue")
     },
-    deleteIssue: function(item){
-      
-      this.$store.dispatch('deleteItem', item)
+
+    deleteIssue: function (item) {
+      this.$store.dispatch("deleteItem", item)
     }
   },
   async mounted() {
-    await this.$store.dispatch("getLawyers");
-    this.lawyers = await this.$store.state.lawyers;
-    await this.$store.dispatch("getCategories");
-    await this.$store.dispatch("getIssues");
-    this.issues = await this.$store.state.issues;
-   
-    
+    await this.$store.dispatch("getLawyers")
+    this.lawyers = await this.$store.state.lawyers
+    await this.$store.dispatch("getCategories")
+    await this.$store.dispatch("getIssues")
+    this.issues = await this.$store.state.issues
   },
   created() {
-    this.$store.dispatch("getIssues");
-    this.issues = this.$store.state.issues;
-    this.filteredIssues = this.issues;
+    this.$store.dispatch("getIssues")
+    this.issues = this.$store.state.issues
+    this.filteredIssues = this.issues
   },
   computed: {
     categories: {
       get() {
-        return this.$store.state.categories;
+        return this.$store.state.categories
       },
       set(value) {
-        this.$store.commit("setCategories", value);
+        this.$store.commit("setCategories", value)
       }
     },
 
-
-    filterIssues: function() {
-      let temp = this.$store.state.issues;
+    filterIssues: function () {
+      let temp = this.$store.state.issues
 
       //fritextsökning
-      if (typeof temp.length === 'undefined'  || temp.length === 0) {
-        console.log("listan var tom!");
+      if (typeof temp.length === "undefined" || temp.length === 0) {
+        console.log("listan var tom!")
 
-        return null;
+        return null
       } else {
+        let searchResult = []
 
-        let searchResult = [];
-        
         //sökfält
         temp.forEach(issue => {
-          if(
-          issue.issueId === this.searchfield ||
-            issue.details.toLowerCase().includes(this.searchfield.toLowerCase()) ||
+          if (
+            issue.issueId === this.searchfield ||
+            issue.details
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase()) ||
             issue.employeeAwareness
               .toLowerCase()
               .includes(this.searchfield.toLowerCase()) ||
             issue.issueStatus
               .toLowerCase()
               .includes(this.searchfield.toLowerCase()) ||
-            issue.whenIssue.toLowerCase().includes(this.searchfield.toLowerCase()) ||
-            issue.whereIssue.toLowerCase().includes(this.searchfield.toLowerCase())
-          ){
+            issue.whenIssue
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase()) ||
+            issue.whereIssue
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase())
+          ) {
             searchResult.push(issue)
           }
-        });
-        
-        //kategori
-        if (JSON.stringify(this.selectedCategory) == "{}")
-        {
-          //console.log("ingen kategori vald")
-          }
-        else{
-        searchResult = searchResult.filter(issue => {
-          return issue.categoryId === this.selectedCategory.id;
         })
-        }
 
+        //kategori
+        if (JSON.stringify(this.selectedCategory) == "{}") {
+          //console.log("ingen kategori vald")
+        } else {
+          searchResult = searchResult.filter(issue => {
+            return issue.categoryId === this.selectedCategory.id
+          })
+        }
 
         //månad
-        if (JSON.stringify(this.selectedMonth) == "{}"){
+        if (JSON.stringify(this.selectedMonth) == "{}") {
           //console.log("ingen månad vald")
-          }
-        else{
-        searchResult = searchResult.filter(issue => {
-          let dateCreate = new Date(issue.created)
-          return dateCreate.getMonth() === this.selectedMonth.id;
-        });
-        
-        // //sortera
-        // searchResult = this.$store.state.sortDesc
-        //   ? searchResult
-        //   : searchResult.sort((a, b) => b.issueId - a.issueId);
+        } else {
+          searchResult = searchResult.filter(issue => {
+            let dateCreate = new Date(issue.created)
+            return dateCreate.getMonth() === this.selectedMonth.id
+          })
 
-        // console.log("sorterat searchResult: ", searchResult);
+          // //sortera
+          // searchResult = this.$store.state.sortDesc
+          //   ? searchResult
+          //   : searchResult.sort((a, b) => b.issueId - a.issueId);
+
+          // console.log("sorterat searchResult: ", searchResult);
         }
-        
-        return searchResult;
+
+        return searchResult
       }
-      
     }
-    
   }
 };
 </script>
@@ -297,15 +292,15 @@ label {
   text-align: left;
 }
 
-.container-admin{
-  text-align: center!important;
+.container-admin {
+  text-align: center !important;
 }
 
- .search-parent-admin{
- margin-bottom: 20px; 
+.search-parent-admin {
+  margin-bottom: 20px;
 }
 
-#select-month{
+#select-month {
   margin-bottom: 20px;
 }
 </style>
