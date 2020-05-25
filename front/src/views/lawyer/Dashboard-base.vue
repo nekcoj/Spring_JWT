@@ -29,8 +29,8 @@ export default {
   },
   methods: {
     logout(){
-        const { dispatch } = this.$store;
-        dispatch('account/logout');
+         const { dispatch } = this.$store;
+         dispatch('account/logout');
     }
   },
   
