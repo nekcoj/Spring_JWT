@@ -1,0 +1,15 @@
+Runtime: Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 13.0.1+9
+
+
+
+----ARGUMENTS-------------------
+
+input: root
+password: ~8wn?W9tA3eMYZ2
+algorithm: PBEWithMD5AndTripleDES
+
+
+
+----OUTPUT----------------------
+
+YN5+dixbmOJRpyTfrapK5Q==

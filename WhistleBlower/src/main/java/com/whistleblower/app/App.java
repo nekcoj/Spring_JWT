@@ -3,6 +3,7 @@ package com.whistleblower.app;
 
 import com.whistleblower.app.storage.StorageProperties;
 import com.whistleblower.app.storage.StorageService;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
 public class App {
+
 
 
 @Bean
