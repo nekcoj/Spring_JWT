@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {apiUrl} from "../_helpers"
 
 import { account } from './account.module';
+import {apiUrl} from '../_helpers/config.js'
 
 // Vue.config.productionTip = false;
 
@@ -75,7 +75,7 @@ export default new Vuex.Store({
 
   actions: {
     newIssue: async function(value) {
-      let url =  apiUrl +"/issue/create";
+      let url = `${apiUrl}/issue/create`;
       const response = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,7 +86,7 @@ export default new Vuex.Store({
     },
 
     login: async function(value) {
-      let url = apiUrl + "/login";
+      let url = `${apiUrl}/login`;
       const request = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,7 +97,7 @@ export default new Vuex.Store({
     },
 
     async getCategories() {
-      let response = await fetch(apiUrl + "/category/get-all");
+      let response = await fetch(`${apiUrl}/category/get-all`);
       response = await response.json();
       this.state.categories = Object.assign({}, response);
     },
@@ -114,7 +114,7 @@ export default new Vuex.Store({
 
 
     async getIssues() {
-      let url = apiUrl + "/issue/get-all";
+      let url = `${apiUrl}/issue/get-all`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -125,7 +125,7 @@ export default new Vuex.Store({
       this.state.issues = result;
     },
     async getIssuesForLawyer() {
-      let url = apiUrl + "/issue/get-all-lawyer";
+      let url = `${apiUrl}/issue/get-all-lawyer`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -137,7 +137,7 @@ export default new Vuex.Store({
     },
 
     async getLawyers() {
-      let url = apiUrl +  "/user/lawyers";
+      let url = `${apiUrl}/user/lawyers`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -158,7 +158,7 @@ export default new Vuex.Store({
         tokenId = user.token;
       } else
        {tokenId = this.state.tokenId}
-         await fetch(apiUrl +  "/issue/active/"+id+"/"+active,  {
+         await fetch(`${apiUrl}/issue/active/`+id+"/"+active,  {
         method: "POST",
         headers: {'Authorization': 'Bearer ' + tokenId, 'Accept': 'application/json','Content-Type': 'application/json' }
       });
@@ -168,7 +168,7 @@ export default new Vuex.Store({
 
     async getIssueStatusForUser() {
       let issueStatus = "";
-      let url = apiUrl +  "/issue/user";
+      let url = `${apiUrl}/issue/user`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -181,7 +181,7 @@ export default new Vuex.Store({
     },
 
     async getMessages() {
-      let url = apiUrl + "/post/get-user";
+      let url = `${apiUrl}/post/get-user`;
       const response = await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
@@ -192,7 +192,7 @@ export default new Vuex.Store({
     },
 
     async sendReply() {
-      let url = apiUrl +  "/post/reply";
+      let url = `${apiUrl}/post/reply`;
       fetch(url, {
         method: "POST",
         headers: await this.dispatch('getAuthenticationHeader'),
@@ -201,7 +201,7 @@ export default new Vuex.Store({
     },
 
     async updateGDPR() {
-      let url = apiUrl +  "/user/gdpr-consent"
+      let url = `${apiUrl}/user/gdpr-consent`;
 
       var raw = JSON.stringify({"consent":true});
 

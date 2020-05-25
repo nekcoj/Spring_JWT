@@ -1,11 +1,11 @@
 <template>
-<b-card id="gdpr-box" class="mx-auto">
-  <b-alert show variant="danger">
-    Innan du kan logga in måste du godkänna att du tagit del av att vi behandlar dina uppgifter enligt GDPR.
+  <b-card id="gdpr-box" class="mx-auto">
+    <b-alert show variant="danger">
+      Innan du kan logga in måste du godkänna att du tagit del av att vi behandlar dina uppgifter enligt GDPR.
 
-    <b-button variant="primary" id="login-button" @click="gdprConsentAndLogin">Godkänn och Logga in</b-button> 
-  </b-alert>
-</b-card>
+      <b-button variant="primary" id="login-button" @click="gdprConsentAndLogin">Godkänn och Logga in</b-button> 
+    </b-alert>
+  </b-card>
 </template>
 
 <script>

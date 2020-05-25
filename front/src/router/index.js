@@ -70,7 +70,7 @@ const router = new VueRouter({
       }
     },
     {
-      path: '/loginAdmin',
+      path: '/inloggning',
       name: 'Logga in admin',
       component: () => import ('../views/admin/LoginAdmin.vue'),
       children: [
@@ -99,11 +99,7 @@ const router = new VueRouter({
         }
       }
     },
-    {
-      path: '/loginJurist',
-      name: 'Logga in jurist',
-      component: () => import ('../views/lawyer/LoginLawyer.vue')
-    },
+ 
     {
       path: '/juristpostbox',
       name: 'Safe postbox jurist',
