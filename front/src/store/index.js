@@ -97,7 +97,8 @@ export default new Vuex.Store({
     },
     assignIssue: async function () {
       let val = JSON.stringify(this.state.issueToAssign)
-      await fetch("http://localhost:9090/issue/assign", {
+      let url = `${apiUrl}/issue/assign`
+      await fetch(url, {
         method: "POST",
         headers: await this.dispatch('getAuthenticationHeader'),
         body: val
@@ -109,12 +110,12 @@ export default new Vuex.Store({
     async issueChangeCategory(){
         
         let issueId = this.state.issueToChangeCategoryFor.issueId
-        console.log("issueId", issueId)
-        console.log("this.newCategory: ", this.state.newCategory)
+        console.log("issue id", issueId)
+        console.log("new Category id: ", this.state.newCategory)
         //val.categoryId = this.newCategory
-
+        let url = `${apiUrl}/issue/change-category`
         
-        await fetch("http://localhost:9090/issue/change-category/" + issueId + "/" + this.state.newCategory,{
+        await fetch(url + issueId + "/" + this.state.newCategory,{
         method:"POST",
         headers: await this.dispatch('getAuthenticationHeader')
       })
