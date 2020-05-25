@@ -215,6 +215,17 @@ export default new Vuex.Store({
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));
+    },
+
+    async getMessagesForLawyer() {
+      let url = `${apiUrl}/post/get-lawyer`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+
+      const result = await response.json();
+      this.commit("setMessages", result)       
     }
   },
 

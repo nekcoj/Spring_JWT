@@ -115,5 +115,15 @@ ResponseEntity<?> assignIssue(@Valid @RequestBody AssignDto assignDto,
         }
     }
 
+    @PostMapping(CHANGE_CATEGORY + "/{issueId}/{categoryId}")
+    ResponseEntity<?> changeCategoryForIssue(@PathVariable long issueId, @PathVariable long categoryId){
+        Issue issue = issueService.changeIssueCategory(issueId, categoryId);
+        if(issue != null){
+            return ResponseEntity.ok().body("Category changed!");
+        } else {
+            return ResponseEntity.badRequest().body("Bad request!");
+        }
+    }
+
 
 }
