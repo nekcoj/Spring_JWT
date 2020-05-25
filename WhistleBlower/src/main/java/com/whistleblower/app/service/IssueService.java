@@ -168,7 +168,7 @@ public class IssueService {
     Issue issue = issueRepository.findById(issueId).orElse(null);
     if(issue != null){
         issue.setActive(value);
-      return  issueRepository.save(issue);
+      return issueRepository.save(issue);
     }
     return null;
     }
