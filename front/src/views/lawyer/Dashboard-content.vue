@@ -48,6 +48,7 @@
             <b-card-text
               id="attachmentIssue"
             >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+             <router-link :to="{name: 'Safe postbox jurist', params:{tempUserID: item.id}}"><b-button variant="primary" class="btn-lg">Safe postbox</b-button></router-link>
           </b-card-body>
         </b-collapse>
       </b-card>
