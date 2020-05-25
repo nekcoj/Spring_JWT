@@ -156,7 +156,7 @@ export default {
     },
     assignIssueToLawyer: async function() {
       console.log("trying to assign issue to lawyer");
-      await fetch("http://localhost:9090/issue/assign", {
+      await fetch("https://localhost:9090/issue/assign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(`{ 
