@@ -48,13 +48,14 @@
             <!-- Status toLowerCase() -->
             <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
             <b-form-group label="Ändra kategori" label-for="change-category">
-              <b-form-select id="change-category">
+              <b-form-select id="change-category" v-model="categoryToChangeTo">
                 <b-form-select-option
                   v-for="category in categories"
                   :key="category.id"
                   :value="category.id"
                 >{{category.categoryName}}</b-form-select-option>>
               </b-form-select>
+              <b-button v-on:click="issueChangeCategory(item)" class="mt-1">Utför</b-button>
             </b-form-group>
             <b-form-group label="Tilldela ärendet" label-for="change-assigned">
               <b-form-select id="change-assigned" v-model="selectedLawyer">
@@ -109,6 +110,7 @@
 export default {
   data() {
     return {
+      categoryToChangeTo: {},
       issues: [],
       selectedCategory: {},
       selectedMonth: {},
@@ -153,13 +155,17 @@ export default {
         if (index !== -1) this.categories.splice(index, 1)
       }
     },
+    issueChangeCategory: async function(issue){
+      await this.$store.commit("setIssueToChangeCategoryFor",issue)
+      await this.$store.commit("setNewCategory", this.categoryToChangeTo)
+      await this.$store.dispatch("issueChangeCategory")
+    },
     assignIssueToLawyer: async function (issue) {
       let combinedIds = {
         lawyerId: this.selectedLawyer.id,
         issueId: issue.issueId
       }
       await this.$store.commit("setIssueToAssign", combinedIds)
-
       await this.$store.dispatch("assignIssue")
     },
 

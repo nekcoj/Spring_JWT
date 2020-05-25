@@ -18,10 +18,12 @@ export default new Vuex.Store({
     issuesLawyer: [],
     issueStatusUser: "",
     issueToAssign: {},
+    issueToChangeCategoryFor: {},
     lawyers: [],
     postboxPost: {},
     messages: {},
     messageToSend: {},
+    newCategory: {},
     selectedCategory: {},
     sortDesc: Boolean,
     temporaryUser: {},
@@ -49,13 +51,18 @@ export default new Vuex.Store({
     setIssueStatusForUser(state, value) {
       this.state.issueStatusUser = value
     },
-
+    setIssueToChangeCategoryFor(state,value) {
+      this.state.issueToChangeCategoryFor = value
+    },
     setMessages(state, value) {
       this.state.messages = value
     },
 
     setMessageBody(state, value) {
       this.state.messageToSend = value
+    },
+    setNewCategory(state,value){
+      this.state.newCategory = value
     },
 
     setselectedCategory(state, value) {
@@ -96,6 +103,20 @@ export default new Vuex.Store({
       })
 
       console.log("assignat issue till en lawyer ")
+    },
+    
+    async issueChangeCategory(){
+        
+        let issueId = this.state.issueToChangeCategoryFor.issueId
+        console.log("issueId", issueId)
+        console.log("this.newCategory: ", this.state.newCategory)
+        //val.categoryId = this.newCategory
+
+        
+        await fetch("http://localhost:9090/issue/change-category/" + issueId + "/" + this.state.newCategory,{
+        method:"POST",
+        headers: await this.dispatch('getAuthenticationHeader')
+      })
     },
 
     login: async function (value) {
