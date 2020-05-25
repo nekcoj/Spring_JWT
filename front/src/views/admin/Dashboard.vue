@@ -154,26 +154,15 @@ export default {
       }
     },
     assignIssueToLawyer: async function (issue) {
-      console.log("trying to assign issue to lawyer")
-      console.log("selectedLawyer: ", this.selectedLawyer)
-      console.log("issue: ", issue)
       let combinedIds = {
         lawyerId: this.selectedLawyer.id,
         issueId: issue.issueId
       }
-      let sendThisToBackend = JSON.stringify(combinedIds)
-      console.log(
-        "ett objekt med 2 st idnummer, stringifierat: ",
-        sendThisToBackend
-      )
-      await fetch("http://localhost:9090/issue/assign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: sendThisToBackend
-      })
+      await this.$store.commit("setIssueToAssign", combinedIds)
+
+      await this.$store.dispatch("assignIssue")
     },
 
-    getIssues: async function () { },
     deleteIssue: function (item) {
       this.$store.dispatch("deleteItem", item)
     }
