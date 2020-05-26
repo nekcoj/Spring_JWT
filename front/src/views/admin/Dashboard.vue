@@ -45,8 +45,16 @@
             <span @click="deleteIssue(item)">
               <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
             </span>
-            <!-- Status toLowerCase() -->
-            <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
+
+            <div v-for="category in categories" :key="category.id" :value="category.id">
+              <div v-if="item.categoryId === category.id">
+                <h6>
+                  Kategori:
+                  <em>{{ category.categoryName }}</em>
+                </h6>
+              </div>
+            </div>
+
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category" v-model="categoryToChangeTo">
                 <b-form-select-option
@@ -57,6 +65,12 @@
               </b-form-select>
               <b-button v-on:click="issueChangeCategory(item)" class="mt-1">Utför</b-button>
             </b-form-group>
+
+            <h6>
+              Status:
+              <em>{{ item.issueStatus.toLowerCase() }}</em>
+            </h6>
+            <div v-if="item.issueStatus.toLowerCase() === 'unassigned'">
             <b-form-group label="Tilldela ärendet" label-for="change-assigned">
               <b-form-select id="change-assigned" v-model="selectedLawyer">
                 <b-form-select-option
@@ -68,7 +82,8 @@
               </b-form-select>
               <b-button v-on:click="assignIssueToLawyer(item)" class="mt-1">Tilldela</b-button>
             </b-form-group>
-
+            </div>
+            <div id="issueForm">
             <label for="whenIssue">När inträffade händelsen?</label>
             <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
             <label for="whereIssue">Var inträffade händelsen?</label>
@@ -81,6 +96,7 @@
             <b-card-text
               id="attachmentIssue"
             >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+            </div>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -155,8 +171,8 @@ export default {
         if (index !== -1) this.categories.splice(index, 1)
       }
     },
-    issueChangeCategory: async function(issue){
-      await this.$store.commit("setIssueToChangeCategoryFor",issue)
+    issueChangeCategory: async function (issue) {
+      await this.$store.commit("setIssueToChangeCategoryFor", issue)
       await this.$store.commit("setNewCategory", this.categoryToChangeTo)
       await this.$store.dispatch("issueChangeCategory")
     },
@@ -197,7 +213,7 @@ export default {
 
     filterIssues: function () {
       let temp = this.$store.state.issues
-
+      console.log(temp[0])
       //fritextsökning
       if (typeof temp.length === "undefined" || temp.length === 0) {
         console.log("listan var tom!")
@@ -279,6 +295,9 @@ label {
 }
 #issueBody {
   position: relative;
+}
+#issueForm {
+  margin-top:15px;
 }
 .trash-icon {
   font-size: 1.5rem;

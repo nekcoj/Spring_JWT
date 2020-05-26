@@ -113,9 +113,10 @@ export default new Vuex.Store({
         console.log("issue id", issueId)
         console.log("new Category id: ", this.state.newCategory)
         //val.categoryId = this.newCategory
-        let url = `${apiUrl}/issue/change-category`
+        let url = `${apiUrl}/issue/change-category/`
+        let newCategory = this.state.newCategory
         
-        await fetch(url + issueId + "/" + this.state.newCategory,{
+        await fetch(url + issueId + "/" + newCategory,{
         method:"POST",
         headers: await this.dispatch('getAuthenticationHeader')
       })
