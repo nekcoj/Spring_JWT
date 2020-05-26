@@ -45,7 +45,7 @@ export default {
 #nr-of-messages{
     font-size: small!important;
     color: black;
-   position: relative;
+    position: relative;
     bottom: 5px;
     font-weight: bold;
    
