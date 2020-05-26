@@ -90,6 +90,7 @@ export default {
   },
         
   async mounted() {
+    this.$store.state.fetchResponse = "";
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssuesForLawyer");
     this.issues = await this.$store.state.issuesLawyer;

@@ -76,13 +76,6 @@ const router = new VueRouter({
       children: [
         {path: '', name: 'GDPR', component: () => import ('../modules/gdpr-module.vue') }
       ],
-      // beforeEnter: (to, from, next) => {
-      //   if(store.state.authUser.length > 0){
-      //     next(store.state.authUser)
-      //   } else {
-      //     next()
-      //   }
-      // }
     },
     {
       path: '/lawyer',
@@ -90,7 +83,11 @@ const router = new VueRouter({
       children: [
         {path: '', name: 'LawyerDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
         {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')},
-        {path: 'postbox/:issueId', name: 'Safe postbox jurist', component: () => import ('../views/lawyer/Safepostbox.vue')}, 
+        {path: 'postbox/:issueId', name: 'Safe postbox jurist', 
+        children: [
+          {path: '', name: 'FetchResponse', component: () => import ('../modules/fetch-response-module.vue') }
+        ],
+        component: () => import ('../views/lawyer/Safepostbox.vue')}, 
       ],
       beforeEnter: (to, from, next) => {
         if(store.state.authUser === '/lawyer'){
@@ -104,6 +101,9 @@ const router = new VueRouter({
       path: '/safepostbox',
       name: 'Safe postbox anmälare',
       component: () => import ('../views/blower/Safepostbox.vue'),
+      children: [
+        {path: '', name: 'FetchResponse', component: () => import ('../modules/fetch-response-module.vue') }
+      ],
       beforeEnter: (to, from, next) => {
         if(store.state.authUser === '/user'){
           next()

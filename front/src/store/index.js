@@ -13,6 +13,7 @@ export default new Vuex.Store({
   state: {
     authUser: "",
     categories: [],
+    fetchResponse: "",
     formdata: {},
     gdprConsent: null,
     issues: [],
@@ -79,6 +80,9 @@ export default new Vuex.Store({
       state.issueToAssign = value
     },
 
+    setFetchResponse(state, value){
+      state.fetchResponse = value;
+    }
     // setSelectedCategory(state, value) {
     //   this.$store.state.selectedCategory = value
     // },
@@ -142,6 +146,7 @@ export default new Vuex.Store({
       response = await response.json();
       this.state.categories = Object.assign({}, response);
     },
+
     async getStatuses() {
       let url = `${apiUrl}/issue-status/get-all`;
       const response = await fetch(url, {
@@ -174,6 +179,7 @@ export default new Vuex.Store({
 
       this.state.issues = result
     },
+
     async getIssuesForLawyer() {
       let url = `${apiUrl}/issue/get-all-lawyer`;
       const response = await fetch(url, {
@@ -277,13 +283,21 @@ export default new Vuex.Store({
       this.commit("setMessages", result)       
     },
     
+
+
+    // KOLLA HÄR OM NI VILL ANVÄNDA ER AV fetch-response FÖR ATT VISA UPP ok/icke ok FÖR ANVÄNDAREN
     async sendMessageToUser() {
       let url = `${apiUrl}/post/send`;
-      fetch(url, {
+      let response = await fetch(url, {
         method: "POST",
         headers: await this.dispatch('getAuthenticationHeader'),
         body: JSON.stringify(this.state.messageToSend)
       })
+      let result = "";
+      await response.text().then( function (text) {
+        result = text;
+      });
+      this.commit("setFetchResponse", result) 
     },
   },
 

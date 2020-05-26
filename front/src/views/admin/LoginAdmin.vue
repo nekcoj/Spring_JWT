@@ -67,7 +67,6 @@ export default {
         return true;
       }
       else {
-        console.log("state gdpr:" + this.$store.state.gdprConsent);
         return false;
       }
     }

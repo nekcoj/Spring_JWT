@@ -9,7 +9,7 @@
               <b-button 
               block 
               v-b-toggle="'id'+ item.id"
-              variant="secondary">
+              :variant="checkReply(item)">
               Meddelande nr {{(parseInt(index) + 1)}}
               </b-button>
             </b-card-header>
@@ -36,6 +36,7 @@
             <b-textarea id="new-message-header" rows="1" v-model="messageToSend.message"></b-textarea>
             <b-button id="new-message-button" class="mt-3 mb-3" variant="primary" @click="sendMessage()">Skicka</b-button>
           </div>
+          <router-view v-if="this.$store.state.fetchResponse != ''"></router-view>
           <router-link to="/lawyer">
             <b-button id="safepost-back-button" class="mt-3 mb-3" variant="secondary">Tillbaka</b-button>
           </router-link>
@@ -92,9 +93,17 @@ export default {
   },
   methods:{
     sendMessage(){
+      this.$store.state.fetchResponse = "";
       this.messageToSend.tempUserId = this.issue.tempUserId;      
       this.$store.commit("setMessageBody", this.messageToSend)
       this.$store.dispatch("sendMessageToUser")
+    },
+    checkReply: function(item){      
+      if(item.reply === null){
+        return 'info';  
+      } else {
+        return 'secondary';
+      }
     }
   }
 }
