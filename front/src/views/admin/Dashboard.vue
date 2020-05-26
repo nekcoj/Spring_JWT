@@ -196,9 +196,14 @@ export default {
       }
     },
     issueChangeCategory: async function (issue) {
-      await this.$store.commit("setIssueToChangeCategoryFor", issue)
-      await this.$store.commit("setNewCategory", this.categoryToChangeTo)
-      await this.$store.dispatch("issueChangeCategory")
+      if (JSON.stringify(this.categoryToChangeTo) === "{}") {
+        console.log("ingen ny kategori vald")
+      }
+      else {
+        await this.$store.commit("setIssueToChangeCategoryFor", issue)
+        await this.$store.commit("setNewCategory", this.categoryToChangeTo)
+        await this.$store.dispatch("issueChangeCategory")
+      }
     },
     assignIssueToLawyer: async function (issue) {
       let combinedIds = {
@@ -374,10 +379,9 @@ label {
   margin-bottom: 5px;
 }
 
-#change-issue-order{
+#change-issue-order {
   display: flex;
-  justify-content:end;
+  justify-content: end;
   margin-bottom: 10px;
-
 }
 </style>
