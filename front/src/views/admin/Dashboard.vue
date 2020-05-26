@@ -20,6 +20,17 @@
           >{{ month.name }}</b-form-select-option>
         </b-form-select>
       </b-form-group>
+      
+      <b-form-group label="Filtrera på status" label-for="select-status">
+        <b-form-select id="select-status" v-model="selectedStatus">
+          <b-form-select-option
+            v-for="status in statuses"
+            :key="status.id"
+            :value="status"
+          >{{ status.status }}</b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+
       <div class="search-parent">
         <div class="search-bar">
           <b-form-input
@@ -132,6 +143,8 @@ export default {
       selectedMonth: {},
       searchfield: "",
       selectedLawyer: {},
+      selectedStatus: {},
+      statuses: [],
       lawyers: [
         //   "Joacim Norbeck",
         //   "Ralf Tjärnlund",
@@ -152,12 +165,6 @@ export default {
         { id: 10, name: "November" },
         { id: 11, name: "December" }
       ],
-      status: "UNASSIGNED",
-      text: `Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-          richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-          brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-          tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-					assumenda shoreditch et.`,
       addRemoveOption: null,
       addRemoveText: null
     }
@@ -193,6 +200,8 @@ export default {
     await this.$store.dispatch("getLawyers")
     this.lawyers = await this.$store.state.lawyers
     await this.$store.dispatch("getCategories")
+    await this.$store.dispatch("getStatuses")
+    this.statuses = await this.$store.state.statuses
     await this.$store.dispatch("getIssues")
     this.issues = await this.$store.state.issues
   },
@@ -213,7 +222,6 @@ export default {
 
     filterIssues: function () {
       let temp = this.$store.state.issues
-      console.log(temp[0])
       //fritextsökning
       if (typeof temp.length === "undefined" || temp.length === 0) {
         console.log("listan var tom!")
@@ -263,6 +271,15 @@ export default {
             let dateCreate = new Date(issue.created)
             return dateCreate.getMonth() === this.selectedMonth.id
           })
+        }
+        //status
+        if (JSON.stringify(this.selectedStatus) == "{}") {
+          //console.log("ingen status vald")
+        } else {
+          searchResult = searchResult.filter(issue => {
+            
+            return issue.issueStatus.toLowerCase() === this.selectedStatus.status.toLowerCase()
+          })
 
           // //sortera
           // searchResult = this.$store.state.sortDesc
@@ -276,7 +293,7 @@ export default {
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 .search-bar {

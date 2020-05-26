@@ -27,6 +27,7 @@ export default new Vuex.Store({
     newCategory: {},
     selectedCategory: {},
     sortDesc: Boolean,
+    statuses: [],
     temporaryUser: {},
     tokenId: null,
     user: {},
@@ -137,6 +138,15 @@ export default new Vuex.Store({
       let response = await fetch(`${apiUrl}/category/get-all`);
       response = await response.json();
       this.state.categories = Object.assign({}, response);
+    },
+    async getStatuses() {
+      let url = `${apiUrl}/issue-status/get-all`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      })
+      let result = await response.json();
+      this.state.statuses = Object.assign({}, result);
     },
 
     getAuthenticationHeader: function () {
