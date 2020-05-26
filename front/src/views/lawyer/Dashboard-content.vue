@@ -57,10 +57,10 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
-      issue: {},
       issues: [],
       selectedMonth: {},
       searchfield: "",
@@ -84,9 +84,8 @@ export default {
     postboxLink() {
       this.$router.push("/juristpostbox");
     },
-    selectIssue(value){
-      this.issue = value;
-      console.log(this.issue);
+    selectIssue(value){      
+      this.$parent.issue = value;
     }
   },
         
