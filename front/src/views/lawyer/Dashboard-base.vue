@@ -2,13 +2,13 @@
 <b-card>
     <b-card-header class="dashboard-container">
         <b-nav pills fill type="light" variant="light">
-            <b-nav-item :to="{ path: '/lawyer/'}" exact-active-class="active">
+            <b-nav-item :to="{ path: '/lawyer'}" exact-active-class="active">
                 Panel
             </b-nav-item>
-            <b-nav-item :to="{ path: '/jurist/arenden'}" exact-active-class="active">
+            <b-nav-item :to="{ path: '/lawyer/arenden'}" exact-active-class="active">
                 Nya ärenden <span id="nr-of-messages-lawyer">{{nrMessagesLawyer}}</span>
             </b-nav-item>
-            <b-nav-item to="/vissla" @click="logout" exact-active-class="active">
+            <b-nav-item to="/inloggning" @click="logout" exact-active-class="active">
                 Logga ut
             </b-nav-item>
         </b-nav>
@@ -24,6 +24,8 @@
 export default {
   data() {
     return {
+        issue:{},
+        messages: {},
         nrMessagesLawyer: 1
     }
   },

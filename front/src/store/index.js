@@ -73,12 +73,15 @@ export default new Vuex.Store({
     setTempUser(state, value) {
       this.$store.state.temporaryUser = value
     },
+
     setIssueToAssign(state, value) {
       state.issueToAssign = value
-    }
+    },
+
     // setSelectedCategory(state, value) {
     //   this.$store.state.selectedCategory = value
     // },
+
     // setSearchField(state, value){
     //   this.$store.state.searchField = value
     // },
@@ -180,7 +183,6 @@ export default new Vuex.Store({
       })
 
       const result = await response.json()
-
       this.state.lawyers = result
 
     },
@@ -201,8 +203,6 @@ export default new Vuex.Store({
       /**här ska sedan vara en filtrering för att bara visa aktiva issues */
       commit('deleteIssue', item)
     },
-
-
 
     async getIssueStatusForUser() {
       let issueStatus = "";
@@ -264,7 +264,16 @@ export default new Vuex.Store({
 
       const result = await response.json();
       this.commit("setMessages", result)       
-    }
+    },
+    
+    async sendMessageToUser() {
+      let url = `${apiUrl}/post/send`;
+      fetch(url, {
+        method: "POST",
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: JSON.stringify(this.state.messageToSend)
+      })
+    },
   },
 
   modules: {

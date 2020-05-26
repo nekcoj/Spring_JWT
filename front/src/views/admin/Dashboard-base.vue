@@ -9,7 +9,7 @@
             <b-nav-item :to="{ path: '/admin/arenden'}" exact-active-class="active">
                 Nya ärenden <span id="nr-of-messages">{{nrMessagesAdmin}}</span>
             </b-nav-item>
-            <b-nav-item to="/vissla" @click="logout" exact-active-class="active">
+            <b-nav-item to="/inloggning" @click="logout" exact-active-class="active">
                 Logga ut
             </b-nav-item>
         </b-nav>
