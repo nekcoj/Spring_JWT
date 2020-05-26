@@ -206,12 +206,17 @@ export default {
       }
     },
     assignIssueToLawyer: async function (issue) {
+      if(JSON.stringify(this.selectedLawyer) === "{}"){
+        console.log("ingen jurist vald")
+      }
+      else{
       let combinedIds = {
         lawyerId: this.selectedLawyer.id,
         issueId: issue.issueId
       }
       await this.$store.commit("setIssueToAssign", combinedIds)
       await this.$store.dispatch("assignIssue")
+      }
     },
 
     deleteIssue: function (item) {
