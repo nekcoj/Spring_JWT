@@ -53,6 +53,13 @@
         <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
       </div>
 
+      <div id="change-issue-order">
+        <b-btn variant="secondary" id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
+          <span v-if="ascSorting">Sortera fallande</span>
+          <span v-else>Sortera stigande</span>
+        </b-btn>
+      </div>
+
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle="'id'+item.issueId" variant="secondary" class="text-left">
@@ -145,6 +152,7 @@
 export default {
   data() {
     return {
+      ascSorting: true,
       categoryToChangeTo: {},
       issues: [],
       searchCounter: 0,
@@ -212,6 +220,14 @@ export default {
       this.selectedMonth = {}
       this.selectedStatus = {}
       this.searchfield = ""
+    },
+    changeIssueOrder: function () {
+      if (this.ascSorting) {
+        this.ascSorting = false
+      }
+      else {
+        this.ascSorting = true
+      }
     }
   },
   async mounted() {
@@ -298,14 +314,11 @@ export default {
 
             return issue.issueStatus.toLowerCase() === this.selectedStatus.status.toLowerCase()
           })
-
-          // //sortera
-          // searchResult = this.$store.state.sortDesc
-          //   ? searchResult
-          //   : searchResult.sort((a, b) => b.issueId - a.issueId);
-
-          // console.log("sorterat searchResult: ", searchResult);
         }
+
+        // //sortera
+        searchResult = this.ascSorting ? searchResult : searchResult.sort((a, b) => b.issueId - a.issueId)
+
         this.updateSearchCounter(searchResult.length)
         return searchResult
       }
@@ -358,6 +371,13 @@ label {
 #counter-and-filter-remover {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+}
+
+#change-issue-order{
+  display: flex;
+  justify-content:end;
+  margin-bottom: 10px;
+
 }
 </style>
