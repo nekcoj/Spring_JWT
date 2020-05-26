@@ -48,7 +48,7 @@
             <b-card-text
               id="attachmentIssue"
             >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
-             <router-link :to="{name: 'Safe postbox jurist', params:{tempUserID: item.id}}"><b-button variant="primary" class="btn-lg">Safe postbox</b-button></router-link>
+             <router-link :to="'lawyer/postbox/' + item.issueId"><b-button variant="primary" class="btn-lg" @click="selectIssue(item)">Safe postbox</b-button></router-link>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -60,12 +60,10 @@
 export default {
   data() {
     return {
-      
+      issue: {},
       issues: [],
-      selectedCategory: {},
       selectedMonth: {},
       searchfield: "",
-      lawyers: [],
       months: [
         { id: 0, name: "Januari" },
         { id: 1, name: "Februari" },
@@ -82,23 +80,29 @@ export default {
       ],
     }
   },
-      methods: {
-        postboxLink() {
-          this.$router.push("/juristpostbox");
-        },
-      },
+  methods: {
+    postboxLink() {
+      this.$router.push("/juristpostbox");
+    },
+    selectIssue(value){
+      this.issue = value;
+      console.log(this.issue);
+    }
+  },
         
-    async mounted() {
+  async mounted() {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssuesForLawyer");
     this.issues = await this.$store.state.issuesLawyer;
     console.log("mina issues: ", this.issues)
   },
+
   created() {
     this.$store.dispatch("getIssuesForLawyer");
-    this.issues = this.$store.state.issuesLawyer;
+    this.$store.dispatch("getMessagesForLawyer");
     this.filteredIssues = this.issuesLawyer;
   },
+
   computed: {
     categories: {
       get() {

@@ -9,6 +9,7 @@ public class SecurityConstants {
     public static final String ASSIGN_ISSUE = "/assign"; // (Admin)
     public static final String CHANGE_ISSUE_STATUS = "/change-status";
     public static final String INACTIVATE_ISSUE = "/active";
+    public static final String CHANGE_CATEGORY = "/change-category";
 
     //issueStatusController
     public static final String ISSUE_STATUS_URL_ROOT = "/issue-status";

@@ -1,5 +1,6 @@
 package com.whistleblower.app.service;
 
+import com.whistleblower.app.entity.Category;
 import com.whistleblower.app.entity.Issue;
 import com.whistleblower.app.entity.UserEntity;
 import com.whistleblower.app.modelDto.*;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
@@ -165,11 +167,21 @@ public class IssueService {
     }
 
     public Issue activateInactivateIssue(long issueId, boolean value) {
-    Issue issue = issueRepository.findById(issueId).orElse(null);
-    if(issue != null){
-        issue.setActive(value);
-      return issueRepository.save(issue);
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        if(issue != null){
+            issue.setActive(value);
+          return issueRepository.save(issue);
+        }
+        return null;
     }
-    return null;
+
+    public Issue changeIssueCategory(long issueId, long categoryId) {
+        Issue issue = issueRepository.findById(issueId).orElse(null);
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if(issue != null && category != null){
+            issue.setCategory(category);
+            return issueRepository.save(issue);
+        }
+        return null;
     }
 }
