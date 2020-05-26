@@ -43,7 +43,22 @@
             <font-awesome-icon icon="search"></font-awesome-icon>
           </span>
         </div>
+       
       </div>
+
+
+
+
+
+      <div id="counter-and-filter-remover"><span id="searchCounter" ><span v-if="searchCounter > 0">Antal ärenden: {{searchCounter}}</span><span v-else>Inga ärenden matchade din sökning</span></span><b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button></div>
+
+
+
+
+
+
+
+
 
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -139,6 +154,7 @@ export default {
     return {
       categoryToChangeTo: {},
       issues: [],
+      searchCounter: 0,
       selectedCategory: {},
       selectedMonth: {},
       searchfield: "",
@@ -194,6 +210,15 @@ export default {
 
     deleteIssue: function (item) {
       this.$store.dispatch("deleteItem", item)
+    },
+    updateSearchCounter(numberOfMatches){
+      this.searchCounter = numberOfMatches
+    },
+    clearFilters: function () {
+      this.selectedCategory = {}
+      this.selectedMonth = {}
+      this.selectedStatus = {}
+      this.searchfield = ""
     }
   },
   async mounted() {
@@ -288,7 +313,7 @@ export default {
 
           // console.log("sorterat searchResult: ", searchResult);
         }
-
+        this.updateSearchCounter(searchResult.length)
         return searchResult
       }
     }
@@ -301,6 +326,7 @@ export default {
 }
 .search-bar input {
   padding-left: 30px;
+  margin-bottom:10px;
 }
 .search-icon {
   position: absolute;
@@ -336,7 +362,10 @@ label {
   margin-bottom: 20px;
 }
 
-#select-month {
-  margin-bottom: 20px;
+#counter-and-filter-remover{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom:20px;
 }
+
 </style>
