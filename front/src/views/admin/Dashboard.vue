@@ -20,7 +20,7 @@
           >{{ month.name }}</b-form-select-option>
         </b-form-select>
       </b-form-group>
-      
+
       <b-form-group label="Filtrera på status" label-for="select-status">
         <b-form-select id="select-status" v-model="selectedStatus">
           <b-form-select-option
@@ -43,22 +43,15 @@
             <font-awesome-icon icon="search"></font-awesome-icon>
           </span>
         </div>
-       
       </div>
 
-
-
-
-
-      <div id="counter-and-filter-remover"><span id="searchCounter" ><span v-if="searchCounter > 0">Antal ärenden: {{searchCounter}}</span><span v-else>Inga ärenden matchade din sökning</span></span><b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button></div>
-
-
-
-
-
-
-
-
+      <div id="counter-and-filter-remover">
+        <span id="searchCounter">
+          <span v-if="searchCounter > 0">Antal ärenden: {{searchCounter}}</span>
+          <span v-else>Inga ärenden matchade din sökning</span>
+        </span>
+        <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
+      </div>
 
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -97,31 +90,31 @@
               <em>{{ item.issueStatus.toLowerCase() }}</em>
             </h6>
             <div v-if="item.issueStatus.toLowerCase() === 'unassigned'">
-            <b-form-group label="Tilldela ärendet" label-for="change-assigned">
-              <b-form-select id="change-assigned" v-model="selectedLawyer">
-                <b-form-select-option
-                  class
-                  v-for="lawyer in lawyers"
-                  :key="lawyer.id"
-                  :value="lawyer"
-                >{{ lawyer.username }}</b-form-select-option>
-              </b-form-select>
-              <b-button v-on:click="assignIssueToLawyer(item)" class="mt-1">Tilldela</b-button>
-            </b-form-group>
+              <b-form-group label="Tilldela ärendet" label-for="change-assigned">
+                <b-form-select id="change-assigned" v-model="selectedLawyer">
+                  <b-form-select-option
+                    class
+                    v-for="lawyer in lawyers"
+                    :key="lawyer.id"
+                    :value="lawyer"
+                  >{{ lawyer.username }}</b-form-select-option>
+                </b-form-select>
+                <b-button v-on:click="assignIssueToLawyer(item)" class="mt-1">Tilldela</b-button>
+              </b-form-group>
             </div>
             <div id="issueForm">
-            <label for="whenIssue">När inträffade händelsen?</label>
-            <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
-            <label for="whereIssue">Var inträffade händelsen?</label>
-            <b-card-text id="whereIssue">{{item.whereIssue}}</b-card-text>
-            <label for="detailsIssue">Detaljer om ärendet:</label>
-            <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
-            <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
-            <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
-            <label for="attachmentIssue">Bilaga</label>
-            <b-card-text
-              id="attachmentIssue"
-            >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+              <label for="whenIssue">När inträffade händelsen?</label>
+              <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
+              <label for="whereIssue">Var inträffade händelsen?</label>
+              <b-card-text id="whereIssue">{{item.whereIssue}}</b-card-text>
+              <label for="detailsIssue">Detaljer om ärendet:</label>
+              <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
+              <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
+              <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
+              <label for="attachmentIssue">Bilaga</label>
+              <b-card-text
+                id="attachmentIssue"
+              >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
             </div>
           </b-card-body>
         </b-collapse>
@@ -211,7 +204,7 @@ export default {
     deleteIssue: function (item) {
       this.$store.dispatch("deleteItem", item)
     },
-    updateSearchCounter(numberOfMatches){
+    updateSearchCounter(numberOfMatches) {
       this.searchCounter = numberOfMatches
     },
     clearFilters: function () {
@@ -302,7 +295,7 @@ export default {
           //console.log("ingen status vald")
         } else {
           searchResult = searchResult.filter(issue => {
-            
+
             return issue.issueStatus.toLowerCase() === this.selectedStatus.status.toLowerCase()
           })
 
@@ -326,7 +319,7 @@ export default {
 }
 .search-bar input {
   padding-left: 30px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 .search-icon {
   position: absolute;
@@ -340,7 +333,7 @@ label {
   position: relative;
 }
 #issueForm {
-  margin-top:15px;
+  margin-top: 15px;
 }
 .trash-icon {
   font-size: 1.5rem;
@@ -362,10 +355,9 @@ label {
   margin-bottom: 20px;
 }
 
-#counter-and-filter-remover{
+#counter-and-filter-remover {
   display: flex;
   justify-content: space-between;
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
-
 </style>
