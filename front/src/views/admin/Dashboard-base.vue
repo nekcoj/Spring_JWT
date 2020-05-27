@@ -1,6 +1,6 @@
 <template>
 <div class="dashboard container">
-<b-card>
+<b-card class="m-0 p-0">
     <b-card-header>
         <b-nav pills fill type="light" variant="light">
             <b-nav-item :to="{ path: '/admin/'}" exact-active-class="active">
@@ -9,12 +9,12 @@
             <b-nav-item :to="{ path: '/admin/arenden'}" exact-active-class="active">
                 Nya ärenden <span id="nr-of-messages">{{nrMessagesAdmin}}</span>
             </b-nav-item>
-            <b-nav-item to="/vissla" @click="logout" exact-active-class="active">
+            <b-nav-item to="/inloggning" @click="logout" exact-active-class="active">
                 Logga ut
             </b-nav-item>
         </b-nav>
     </b-card-header>    
-    <b-card-body>
+    <b-card-body class="m-0 p-0">
         <router-view>
 
         </router-view>
@@ -45,7 +45,7 @@ export default {
 #nr-of-messages{
     font-size: small!important;
     color: black;
-   position: relative;
+    position: relative;
     bottom: 5px;
     font-weight: bold;
    

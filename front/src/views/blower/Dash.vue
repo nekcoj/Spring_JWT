@@ -25,7 +25,7 @@
       return {
       }
     },
-    async created() {
+    async mounted() {
       await this.$store.dispatch("getMessages")     
       await this.$store.dispatch("getIssueStatusForUser")
     },

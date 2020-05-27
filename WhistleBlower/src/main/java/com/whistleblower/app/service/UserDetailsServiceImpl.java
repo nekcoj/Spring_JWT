@@ -15,8 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.Date;
 
-import static com.whistleblower.app.security.SecurityConstants.ROLE_ADMIN;
-import static com.whistleblower.app.security.SecurityConstants.ROLE_LAWYER;
+import static com.whistleblower.app.security.SecurityConstants.*;
 import static java.util.Collections.emptyList;
 
 @Service
@@ -49,6 +48,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             lawyerUser.setUsername("Lawyer");
             lawyerUser.setPassword(bCryptPasswordEncoder.encode("password"));
             userRepository.save(lawyerUser);
+        }
+
+        var user = userRepository.findByUsernameIgnoreCase(ROLE_USER);
+        if(user == null){
+            user = new UserEntity();
+            user.setRole(ROLE_USER);
+            user.setCreated(new Date());
+            user.setUsername("User");
+            user.setPassword(bCryptPasswordEncoder.encode("password"));
+            userRepository.save(user);
         }
     }
 

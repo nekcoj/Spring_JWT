@@ -27,7 +27,7 @@ public class PostBoxController {
         if(bindingResult.hasErrors()) return ResponseEntity.unprocessableEntity().body(new ResourceNotMappable("Error"));
          boolean sent =   postBoxService.sendMessageByLawyer(postDto , authentication.getName());
 
-         if(sent) return ResponseEntity.ok("Message sent");
+         if(sent) return ResponseEntity.ok("Meddelande skickat!");
          else  return ResponseEntity.badRequest().body("Bad request");
     }
 
@@ -41,7 +41,7 @@ public class PostBoxController {
 
         boolean replied = postBoxService.replyByTempUser(postDto, authentication.getName());
 
-        if(replied) return ResponseEntity.ok("Message received!");
+        if(replied) return ResponseEntity.ok("Meddelande skickat!");
         else return ResponseEntity.badRequest().body("Bad request");
     }
 

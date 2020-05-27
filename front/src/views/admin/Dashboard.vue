@@ -20,6 +20,17 @@
           >{{ month.name }}</b-form-select-option>
         </b-form-select>
       </b-form-group>
+
+      <b-form-group label="Filtrera på status" label-for="select-status">
+        <b-form-select id="select-status" v-model="selectedStatus">
+          <b-form-select-option
+            v-for="status in statuses"
+            :key="status.id"
+            :value="status"
+          >{{ status.status }}</b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+
       <div class="search-parent">
         <div class="search-bar">
           <b-form-input
@@ -34,6 +45,21 @@
         </div>
       </div>
 
+      <div id="counter-and-filter-remover">
+        <span id="searchCounter">
+          <span v-if="searchCounter > 0">Antal ärenden: {{searchCounter}}</span>
+          <span v-else>Inga ärenden matchade din sökning</span>
+        </span>
+        <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
+      </div>
+
+      <div id="change-issue-order">
+        <b-btn variant="secondary" id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
+          <span v-if="ascSorting">Sortera fallande</span>
+          <span v-else>Sortera stigande</span>
+        </b-btn>
+      </div>
+
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle="'id'+item.issueId" variant="secondary" class="text-left">
@@ -45,8 +71,16 @@
             <span @click="deleteIssue(item)">
               <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
             </span>
-            <!-- Status toLowerCase() -->
-            <h6>Status på ärendet: {{ status.toLowerCase() }}</h6>
+
+            <div v-for="category in categories" :key="category.id" :value="category.id">
+              <div v-if="item.categoryId === category.id">
+                <h6>
+                  Kategori:
+                  <em>{{ category.categoryName }}</em>
+                </h6>
+              </div>
+            </div>
+
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category" v-model="categoryToChangeTo">
                 <b-form-select-option
@@ -57,30 +91,38 @@
               </b-form-select>
               <b-button v-on:click="issueChangeCategory(item)" class="mt-1">Utför</b-button>
             </b-form-group>
-            <b-form-group label="Tilldela ärendet" label-for="change-assigned">
-              <b-form-select id="change-assigned" v-model="selectedLawyer">
-                <b-form-select-option
-                  class
-                  v-for="lawyer in lawyers"
-                  :key="lawyer.id"
-                  :value="lawyer"
-                >{{ lawyer.username }}</b-form-select-option>
-              </b-form-select>
-              <b-button v-on:click="assignIssueToLawyer(item)" class="mt-1">Tilldela</b-button>
-            </b-form-group>
 
-            <label for="whenIssue">När inträffade händelsen?</label>
-            <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
-            <label for="whereIssue">Var inträffade händelsen?</label>
-            <b-card-text id="whereIssue">{{item.whereIssue}}</b-card-text>
-            <label for="detailsIssue">Detaljer om ärendet:</label>
-            <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
-            <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
-            <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
-            <label for="attachmentIssue">Bilaga</label>
-            <b-card-text
-              id="attachmentIssue"
-            >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+            <h6>
+              Status:
+              <em>{{ item.issueStatus.toLowerCase() }}</em>
+            </h6>
+            <div v-if="item.issueStatus.toLowerCase() === 'unassigned'">
+              <b-form-group label="Tilldela ärendet" label-for="change-assigned">
+                <b-form-select id="change-assigned" v-model="selectedLawyer">
+                  <b-form-select-option
+                    class
+                    v-for="lawyer in lawyers"
+                    :key="lawyer.id"
+                    :value="lawyer"
+                  >{{ lawyer.username }}</b-form-select-option>
+                </b-form-select>
+                <b-button v-on:click="assignIssueToLawyer(item)" class="mt-1">Tilldela</b-button>
+              </b-form-group>
+            </div>
+            <div id="issueForm">
+              <label for="whenIssue">När inträffade händelsen?</label>
+              <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
+              <label for="whereIssue">Var inträffade händelsen?</label>
+              <b-card-text id="whereIssue">{{item.whereIssue}}</b-card-text>
+              <label for="detailsIssue">Detaljer om ärendet:</label>
+              <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
+              <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
+              <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
+              <label for="attachmentIssue">Bilaga</label>
+              <b-card-text
+                id="attachmentIssue"
+              >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+            </div>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -110,12 +152,16 @@
 export default {
   data() {
     return {
+      ascSorting: true,
       categoryToChangeTo: {},
       issues: [],
+      searchCounter: 0,
       selectedCategory: {},
       selectedMonth: {},
       searchfield: "",
       selectedLawyer: {},
+      selectedStatus: {},
+      statuses: [],
       lawyers: [
         //   "Joacim Norbeck",
         //   "Ralf Tjärnlund",
@@ -136,12 +182,6 @@ export default {
         { id: 10, name: "November" },
         { id: 11, name: "December" }
       ],
-      status: "UNASSIGNED",
-      text: `Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-          richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-          brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-          tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-					assumenda shoreditch et.`,
       addRemoveOption: null,
       addRemoveText: null
     }
@@ -155,28 +195,57 @@ export default {
         if (index !== -1) this.categories.splice(index, 1)
       }
     },
-    issueChangeCategory: async function(issue){
-      await this.$store.commit("setIssueToChangeCategoryFor",issue)
-      await this.$store.commit("setNewCategory", this.categoryToChangeTo)
-      await this.$store.dispatch("issueChangeCategory")
+    issueChangeCategory: async function (issue) {
+      if (JSON.stringify(this.categoryToChangeTo) === "{}") {
+        console.log("ingen ny kategori vald")
+      }
+      else {
+        await this.$store.commit("setIssueToChangeCategoryFor", issue)
+        await this.$store.commit("setNewCategory", this.categoryToChangeTo)
+        await this.$store.dispatch("issueChangeCategory")
+      }
     },
     assignIssueToLawyer: async function (issue) {
+      if(JSON.stringify(this.selectedLawyer) === "{}"){
+        console.log("ingen jurist vald")
+      }
+      else{
       let combinedIds = {
         lawyerId: this.selectedLawyer.id,
         issueId: issue.issueId
       }
       await this.$store.commit("setIssueToAssign", combinedIds)
       await this.$store.dispatch("assignIssue")
+      }
     },
 
     deleteIssue: function (item) {
       this.$store.dispatch("deleteItem", item)
+    },
+    updateSearchCounter(numberOfMatches) {
+      this.searchCounter = numberOfMatches
+    },
+    clearFilters: function () {
+      this.selectedCategory = {}
+      this.selectedMonth = {}
+      this.selectedStatus = {}
+      this.searchfield = ""
+    },
+    changeIssueOrder: function () {
+      if (this.ascSorting) {
+        this.ascSorting = false
+      }
+      else {
+        this.ascSorting = true
+      }
     }
   },
   async mounted() {
     await this.$store.dispatch("getLawyers")
     this.lawyers = await this.$store.state.lawyers
     await this.$store.dispatch("getCategories")
+    await this.$store.dispatch("getStatuses")
+    this.statuses = await this.$store.state.statuses
     await this.$store.dispatch("getIssues")
     this.issues = await this.$store.state.issues
   },
@@ -197,7 +266,6 @@ export default {
 
     filterIssues: function () {
       let temp = this.$store.state.issues
-
       //fritextsökning
       if (typeof temp.length === "undefined" || temp.length === 0) {
         console.log("listan var tom!")
@@ -247,20 +315,26 @@ export default {
             let dateCreate = new Date(issue.created)
             return dateCreate.getMonth() === this.selectedMonth.id
           })
+        }
+        //status
+        if (JSON.stringify(this.selectedStatus) == "{}") {
+          //console.log("ingen status vald")
+        } else {
+          searchResult = searchResult.filter(issue => {
 
-          // //sortera
-          // searchResult = this.$store.state.sortDesc
-          //   ? searchResult
-          //   : searchResult.sort((a, b) => b.issueId - a.issueId);
-
-          // console.log("sorterat searchResult: ", searchResult);
+            return issue.issueStatus.toLowerCase() === this.selectedStatus.status.toLowerCase()
+          })
         }
 
+        // //sortera
+        searchResult = this.ascSorting ? searchResult : searchResult.sort((a, b) => b.issueId - a.issueId)
+
+        this.updateSearchCounter(searchResult.length)
         return searchResult
       }
     }
   }
-};
+}
 </script>
 <style scoped>
 .search-bar {
@@ -268,6 +342,7 @@ export default {
 }
 .search-bar input {
   padding-left: 30px;
+  margin-bottom: 10px;
 }
 .search-icon {
   position: absolute;
@@ -279,6 +354,9 @@ label {
 }
 #issueBody {
   position: relative;
+}
+#issueForm {
+  margin-top: 15px;
 }
 .trash-icon {
   font-size: 1.5rem;
@@ -300,7 +378,16 @@ label {
   margin-bottom: 20px;
 }
 
-#select-month {
-  margin-bottom: 20px;
+#counter-and-filter-remover {
+  /**FLEX-END KANSKE?! */
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+#change-issue-order {
+  display: flex;
+  justify-content: end;
+  margin-bottom: 10px;
 }
 </style>

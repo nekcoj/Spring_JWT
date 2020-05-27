@@ -57,10 +57,10 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
-      issue: {},
       issues: [],
       selectedMonth: {},
       searchfield: "",
@@ -84,17 +84,16 @@ export default {
     postboxLink() {
       this.$router.push("/juristpostbox");
     },
-    selectIssue(value){
-      this.issue = value;
-      console.log(this.issue);
+    selectIssue(value){      
+      this.$parent.issue = value;
     }
   },
         
   async mounted() {
+    this.$store.state.fetchResponse = "";
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssuesForLawyer");
     this.issues = await this.$store.state.issuesLawyer;
-    console.log("mina issues: ", this.issues)
   },
 
   created() {

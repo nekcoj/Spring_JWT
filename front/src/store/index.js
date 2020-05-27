@@ -13,6 +13,7 @@ export default new Vuex.Store({
   state: {
     authUser: "",
     categories: [],
+    fetchResponse: "",
     formdata: {},
     gdprConsent: null,
     issues: [],
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     newCategory: {},
     selectedCategory: {},
     sortDesc: Boolean,
+    statuses: [],
     temporaryUser: {},
     tokenId: null,
     user: {},
@@ -73,12 +75,18 @@ export default new Vuex.Store({
     setTempUser(state, value) {
       this.$store.state.temporaryUser = value
     },
+
     setIssueToAssign(state, value) {
       state.issueToAssign = value
+    },
+
+    setFetchResponse(state, value){
+      state.fetchResponse = value;
     }
     // setSelectedCategory(state, value) {
     //   this.$store.state.selectedCategory = value
     // },
+
     // setSearchField(state, value){
     //   this.$store.state.searchField = value
     // },
@@ -113,9 +121,10 @@ export default new Vuex.Store({
         console.log("issue id", issueId)
         console.log("new Category id: ", this.state.newCategory)
         //val.categoryId = this.newCategory
-        let url = `${apiUrl}/issue/change-category`
+        let url = `${apiUrl}/issue/change-category/`
+        let newCategory = this.state.newCategory
         
-        await fetch(url + issueId + "/" + this.state.newCategory,{
+        await fetch(url + issueId + "/" + newCategory,{
         method:"POST",
         headers: await this.dispatch('getAuthenticationHeader')
       })
@@ -136,6 +145,16 @@ export default new Vuex.Store({
       let response = await fetch(`${apiUrl}/category/get-all`);
       response = await response.json();
       this.state.categories = Object.assign({}, response);
+    },
+
+    async getStatuses() {
+      let url = `${apiUrl}/issue-status/get-all`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      })
+      let result = await response.json();
+      this.state.statuses = Object.assign({}, result);
     },
 
     getAuthenticationHeader: function () {
@@ -160,6 +179,7 @@ export default new Vuex.Store({
 
       this.state.issues = result
     },
+
     async getIssuesForLawyer() {
       let url = `${apiUrl}/issue/get-all-lawyer`;
       const response = await fetch(url, {
@@ -180,7 +200,6 @@ export default new Vuex.Store({
       })
 
       const result = await response.json()
-
       this.state.lawyers = result
 
     },
@@ -201,8 +220,6 @@ export default new Vuex.Store({
       /**här ska sedan vara en filtrering för att bara visa aktiva issues */
       commit('deleteIssue', item)
     },
-
-
 
     async getIssueStatusForUser() {
       let issueStatus = "";
@@ -264,7 +281,24 @@ export default new Vuex.Store({
 
       const result = await response.json();
       this.commit("setMessages", result)       
-    }
+    },
+    
+
+
+    // KOLLA HÄR OM NI VILL ANVÄNDA ER AV fetch-response FÖR ATT VISA UPP ok/icke ok FÖR ANVÄNDAREN
+    async sendMessageToUser() {
+      let url = `${apiUrl}/post/send`;
+      let response = await fetch(url, {
+        method: "POST",
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: JSON.stringify(this.state.messageToSend)
+      })
+      let result = "";
+      await response.text().then( function (text) {
+        result = text;
+      });
+      this.commit("setFetchResponse", result) 
+    },
   },
 
   modules: {

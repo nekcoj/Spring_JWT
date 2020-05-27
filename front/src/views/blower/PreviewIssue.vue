@@ -125,12 +125,6 @@ export default {
       }, 500);
       this.$router.push({path: '/bekraftelse'})
     },
-    // showSelectedCategory: function(){
-    //   this.categoryName = this.$store.state.categories.forEach(element => 
-    //    console.log('test' + element.categoryName)
-    //   );
-    //   console.log('categoryName' + this.categoryName)
-    // }
 
   },
   computed:{
