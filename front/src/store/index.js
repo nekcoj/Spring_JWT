@@ -283,9 +283,6 @@ export default new Vuex.Store({
       this.commit("setMessages", result)       
     },
     
-
-
-    // KOLLA HÄR OM NI VILL ANVÄNDA ER AV fetch-response FÖR ATT VISA UPP ok/icke ok FÖR ANVÄNDAREN
     async sendMessageToUser() {
       let url = `${apiUrl}/post/send`;
       let response = await fetch(url, {

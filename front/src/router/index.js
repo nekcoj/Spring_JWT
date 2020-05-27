@@ -82,7 +82,6 @@ const router = new VueRouter({
       component: () => import ('../views/lawyer/Dashboard-base.vue'),
       children: [
         {path: '', name: 'LawyerDash' ,component: () => import ('../views/lawyer/Dashboard-content.vue')},
-        {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')},
         {path: 'postbox/:issueId', name: 'Safe postbox jurist', 
         children: [
           {path: '', name: 'FetchResponseLawyer', component: () => import ('../modules/fetch-response-module.vue') }

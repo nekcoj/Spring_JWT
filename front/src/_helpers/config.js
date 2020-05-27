@@ -1,1 +1,5 @@
 export const apiUrl = 'http://localhost:9090'
+export const statusUnassigned = 'UNASSIGNED'
+export const statusAssigned = 'ASSIGNED'
+export const statusOpen = 'OPEN'
+export const statusClosed = 'CLOSED'

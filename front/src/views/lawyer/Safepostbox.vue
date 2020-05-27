@@ -97,6 +97,7 @@ export default {
       this.messageToSend.tempUserId = this.issue.tempUserId;      
       this.$store.commit("setMessageBody", this.messageToSend)
       this.$store.dispatch("sendMessageToUser")
+      this.sleep(2)
     },
     checkReply: function(item){      
       if(item.reply === null){
@@ -104,6 +105,14 @@ export default {
       } else {
         return 'secondary';
       }
+    },
+    sleep(duration) {
+      return new Promise( resolve => {
+        setTimeout(()=>{
+          resolve(); 
+          this.$store.state.fetchResponse="";
+          }, duration * 1000)
+      })
     }
   }
 }

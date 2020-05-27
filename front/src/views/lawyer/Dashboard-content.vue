@@ -25,9 +25,34 @@
         </div>
       </div>
 
+      <b-form-group label="Filtrera på status" label-for="select-status">
+        <b-form-select id="select-status" v-model="selectedStatus">
+          <b-form-select-option
+            v-for="status in this.$parent.statuses"
+            :key="status.id"
+            :value="status"
+          >{{ status.status }}</b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+
+      <div id="counter-and-filter-remover">
+        <span id="searchCounter">
+          <span v-if="searchCounter > 0">Antal ärenden: {{searchCounter}}</span>
+          <span v-else>Inga ärenden matchade din sökning</span>
+        </span>
+        <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
+      </div>
+
+      <div id="change-issue-order">
+        <b-btn variant="secondary" id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
+          <span v-if="ascSorting">Sortera fallande</span>
+          <span v-else>Sortera stigande</span>
+        </b-btn>
+      </div>
+
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle="'id'+item.issueId" variant="secondary" class="text-left">
+          <b-button block v-b-toggle="'id'+item.issueId" :variant="checkStatus(item)" class="text-left">
             <span>Ärendeid: {{item.issueId}}</span>
           </b-button>
         </b-card-header>
@@ -35,7 +60,10 @@
         <b-collapse :id="'id'+item.issueId" accordion="my-accordion" role="tabpanel">
           <b-card-body id="issueBody">
             <h6>Status på ärendet: {{ item.issueStatus.toLowerCase() }}</h6>
-
+            <div>
+              <b-button v-if="showOpenButton(item.issueStatus)" id="changeIssueStatusOpen">Öppna ärendet</b-button>
+              <b-button v-if="showCloseButton(item.issueStatus)" class="ml-md-1" id="changeIssueStatusClose">Stäng ärendet</b-button>
+            </div>
             <label for="whenIssue">När inträffade händelsen?</label>
             <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
             <label for="whereIssue">Var inträffade händelsen?</label>
@@ -57,13 +85,16 @@
 </template>
 
 <script>
+import {statusAssigned, statusOpen, statusClosed} from '@/_helpers/config.js'
 
 export default {
   data() {
     return {
+      ascSorting: true,
       issues: [],
       selectedMonth: {},
       searchfield: "",
+      searchCounter: 0,
       months: [
         { id: 0, name: "Januari" },
         { id: 1, name: "Februari" },
@@ -81,12 +112,61 @@ export default {
     }
   },
   methods: {
-    postboxLink() {
-      this.$router.push("/juristpostbox");
+    changeIssueOrder: function () {
+      if (this.ascSorting) {
+        this.ascSorting = false
+      }
+      else {
+        this.ascSorting = true
+      }
     },
+
+    checkStatus: function(item){      
+      if(item.issueStatus === `${statusAssigned}`){
+        return 'info';  
+      } else {
+        return 'secondary';
+      }
+    },
+
+    checkUnassigned() {
+      let unassigned = 0;
+      let temp = this.issues;
+      for( const [, value] of Object.entries(temp)){
+        if(value.issueStatus === `${statusAssigned}`){
+          unassigned++;
+        }
+      }
+      return this.$parent.nrMessagesLawyer = unassigned;
+    },
+
+    clearFilters: function () {
+      this.selectedCategory = {}
+      this.selectedMonth = {}
+      this.$parent.selectedStatus = {}
+      this.searchfield = ""
+    },
+      
     selectIssue(value){      
       this.$parent.issue = value;
+    },
+
+    showCloseButton: function(value) {
+      if(value === `${statusOpen}` || value != `${statusClosed}`){
+        return true;
+      } else {return false;}
+    },
+
+    showOpenButton: function(value) {
+      if(value === `${statusOpen}` || value === `${statusClosed}`){
+        return false;
+      } else {return true;}
+    },
+
+    updateSearchCounter(numberOfMatches) {
+      this.searchCounter = numberOfMatches
     }
+
   },
         
   async mounted() {
@@ -94,6 +174,9 @@ export default {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssuesForLawyer");
     this.issues = await this.$store.state.issuesLawyer;
+    await this.$store.dispatch("getStatuses")
+    this.$parent.statuses = await this.$store.state.statuses
+    await this.checkUnassigned();
   },
 
   created() {
@@ -108,55 +191,74 @@ export default {
         return this.$store.state.categories;
       }
     },
-    filterIssues: function() {
-      let temp = this.issues;
 
+    selectedStatus: {
+      get() {
+        return this.$parent.selectedStatus
+      },
+      set(value) { 
+        this.$parent.selectedStatus = value
+      }
+    },
+
+    filterIssues: function() {
+      let temp = this.issues
       //fritextsökning
-      if (typeof temp.length === 'undefined' || temp.length === 0){
-        //console.log("listan var tom!");
-        return null;
+      if (typeof temp.length === "undefined" || temp.length === 0) {
+        console.log("listan var tom!")
+
+        return null
       } else {
-        let searchResult = [];
-        
+        let searchResult = []
+
         //sökfält
         temp.forEach(issue => {
-          if(
-          issue.issueId === this.searchfield ||
-            issue.details.toLowerCase().includes(this.searchfield.toLowerCase()) ||
+          if (
+            issue.issueId === this.searchfield ||
+            issue.details
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase()) ||
             issue.employeeAwareness
               .toLowerCase()
               .includes(this.searchfield.toLowerCase()) ||
             issue.issueStatus
               .toLowerCase()
               .includes(this.searchfield.toLowerCase()) ||
-            issue.whenIssue.toLowerCase().includes(this.searchfield.toLowerCase()) ||
-            issue.whereIssue.toLowerCase().includes(this.searchfield.toLowerCase())
-          ){
+            issue.whenIssue
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase()) ||
+            issue.whereIssue
+              .toLowerCase()
+              .includes(this.searchfield.toLowerCase())
+          ) {
             searchResult.push(issue)
           }
         })
 
         //månad
-        if (JSON.stringify(this.selectedMonth) == "{}"){
+        if (JSON.stringify(this.selectedMonth) == "{}") {
           //console.log("ingen månad vald")
-          }
-        else{
-        searchResult = searchResult.filter(issue => {
-          let dateCreate = new Date(issue.created)
-          return dateCreate.getMonth() === this.selectedMonth.id;
-        });
-        
-        // //sortera
-        // searchResult = this.$store.state.sortDesc
-        //   ? searchResult
-        //   : searchResult.sort((a, b) => b.issueId - a.issueId);
-
-        // console.log("sorterat searchResult: ", searchResult);
+        } else {
+          searchResult = searchResult.filter(issue => {
+            let dateCreate = new Date(issue.created)
+            return dateCreate.getMonth() === this.selectedMonth.id
+          })
         }
-        
-        return searchResult;
+        //status
+        if (JSON.stringify(this.$parent.selectedStatus) == "{}") {
+          //console.log("ingen status vald")
+        } else {
+          searchResult = searchResult.filter(issue => {
+            return issue.issueStatus.toLowerCase() === this.$parent.selectedStatus.status.toLowerCase()
+          })
+        }
+
+        // //sortera
+        searchResult = this.ascSorting ? searchResult : searchResult.sort((a, b) => b.issueId - a.issueId)
+
+        this.updateSearchCounter(searchResult.length)
+        return searchResult
       }
-      
     }
   }
 }
@@ -191,4 +293,24 @@ label {
   font-weight: normal;
   text-align: left;
 }
+
+#counter-and-filter-remover {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+#change-issue-order {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+#changeIssueStatusOpen, #changeIssueStatusClose {
+  width: 10rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
 </style>

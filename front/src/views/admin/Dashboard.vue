@@ -379,7 +379,6 @@ label {
 }
 
 #counter-and-filter-remover {
-  /**FLEX-END KANSKE?! */
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
@@ -387,7 +386,7 @@ label {
 
 #change-issue-order {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-bottom: 10px;
 }
 </style>
