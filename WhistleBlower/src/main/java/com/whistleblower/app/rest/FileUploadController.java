@@ -48,43 +48,20 @@ public class FileUploadController {
                     "attachment; filename=\"" + file.getFilename()
                             + "\"");
 
+            FileInputStream in = null;
             OutputStream out = null;
             try {
                 out = response.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            FileInputStream in = null;
-            try {
                 in = new FileInputStream(file.getFile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // copy from in to out
-            try {
-                assert in != null;
                 IOUtils.copy(in,out);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                assert out != null;
                 out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
                 file.getFile().delete();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
         }else {
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND,"File not found");
@@ -93,32 +70,7 @@ public class FileUploadController {
             }
         }
     }
-
-
-//    @GetMapping("/files/{filename:.+}")
-//    @ResponseBody
-//    public ResponseEntity<Resource> serveFile(@PathVariable String filename){
-//
-//        Resource file = storageService
-//.loadAsResource(filename);
-//        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-//                "attachment; filename=\"" + file.getFilename()
-//        + "\"").body(file);
-//    }
-
-//    @PostMapping("/upload")
-//    public ResponseEntity<?> handleFileUpload(@RequestParam("file")MultipartFile file){
-//
-//        storageService.store(file,"test");
-//
-//        String filename = file.getOriginalFilename();
-//        if(filename != null){
-//            return ResponseEntity.ok( filename + " was successfully uploaded");
-//        }else {
-//            return ResponseEntity.badRequest().body("File not uploaded");
-//        }
-//    }
-
+    
 
 
 }
