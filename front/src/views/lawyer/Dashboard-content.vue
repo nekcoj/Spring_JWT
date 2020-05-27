@@ -186,9 +186,10 @@ export default {
     },
 
     getFile(item){
-      console.log("in getFile: ", item.issueId);
-      
-      this.$store.commit("setFileToDownload", item.issueId)
+      let file = {}
+      file.issueId = item.issueId;
+      file.filename = item.attachmentFileName;
+      this.$store.commit("setFileToDownload", file)
       this.$store.dispatch("getFileForIssue")
     },
 

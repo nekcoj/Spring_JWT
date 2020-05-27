@@ -15,7 +15,7 @@ export default new Vuex.Store({
     categories: [],
     changeStatus: {},
     fetchResponse: "",
-    fileToDownload: 0,
+    fileToDownload: {},
     formdata: {},
     gdprConsent: null,
     issues: [],
@@ -91,7 +91,6 @@ export default new Vuex.Store({
     },
 
     setFileToDownload(state, value){
-      console.log("in setFileToDownload: ", value);
       state.fileToDownload = value;
     }
 
@@ -319,11 +318,22 @@ export default new Vuex.Store({
     },
 
     async getFileForIssue(){      
-      let url = `${apiUrl}/download/`+ this.state.fileToDownload;
+      let url = `${apiUrl}/download/`+ this.state.fileToDownload.issueId;
       await fetch(url, {
         method: "GET",
         headers: await this.dispatch('getAuthenticationHeader')
+      }).then(response => response.blob())
+      .then(blob => {
+          var url = window.URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = this.state.fileToDownload.filename;
+          document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+          a.click();    
+          a.remove();  //afterwards we remove the element again         
       });
+
+    
     }
 
   },
