@@ -11,7 +11,7 @@
           <b-input :type="form.passwordFieldType" id="text-password" v-model="loginCredentials.password"></b-input>
           <b-form-checkbox id="showPassword" name="check-button" @change="showPassword()">Visa lösenord</b-form-checkbox>
         </div>
-        <em>(*) Obligatoriska fält</em>
+        <span id="mandatory"><em>* obligatoriska fält</em></span>
         <p id="text-capslock" style="display:none"> Caps lock är aktiverat</p>
       </b-form>
     </div>
@@ -93,5 +93,19 @@ p#text-capslock{
     color: red;
     margin-bottom: 0;
 }
+
+ #mandatory{
+  margin-top: -10px;
+  font-size:80%;
+  
+}
+
+ #text-username{
+  border: 1px solid black;
+}
+ #text-password{
+  border: 1px solid black;
+}
+
 
 </style>

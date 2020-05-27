@@ -41,6 +41,9 @@ public class SecurityConstants {
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys
     public static final String JWT_SECRET = "n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf";
 
+
+    public static final String CRYPTO_KEY = "-JaNdRgUkXn2r5u8";
+
     //Roles
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_LAWYER = "LAWYER";

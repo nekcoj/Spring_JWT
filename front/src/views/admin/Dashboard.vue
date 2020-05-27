@@ -44,21 +44,27 @@
           </span>
         </div>
       </div>
-
+ 
+    
       <div id="counter-and-filter-remover">
         <span id="searchCounter">
-          <span v-if="searchCounter > 0">Antal ärenden: {{searchCounter}}</span>
+          <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}}</strong></span>
           <span v-else>Inga ärenden matchade din sökning</span>
         </span>
-        <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
       </div>
-
-      <div id="change-issue-order">
+      <div class="change-issue-order">
         <b-btn variant="secondary" id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
           <span v-if="ascSorting">Sortera fallande</span>
           <span v-else>Sortera stigande</span>
         </b-btn>
       </div>
+          <div class="change-issue-order">
+            <b-btn id="btn-sort-asc-desc" v-on:click="clearFilters">
+              <span>Rensa filter</span>
+            </b-btn>
+        </div>
+  
+
 
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
@@ -121,7 +127,7 @@
               <label for="attachmentIssue">Bilaga</label>
               <b-card-text
                 id="attachmentIssue"
-              >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
+              >{{ item.Attachment }}</b-card-text>
             </div>
           </b-card-body>
         </b-collapse>
@@ -248,6 +254,7 @@ export default {
     this.statuses = await this.$store.state.statuses
     await this.$store.dispatch("getIssues")
     this.issues = await this.$store.state.issues
+   
   },
   created() {
     this.$store.dispatch("getIssues")
@@ -384,9 +391,13 @@ label {
   margin-bottom: 5px;
 }
 
-#change-issue-order {
+.change-issue-order {
   display: flex;
-  justify-content: flex-end;
   margin-bottom: 10px;
+
+ 
+}
+#btn-sort-asc-desc{
+    width: 132px;
 }
 </style>
