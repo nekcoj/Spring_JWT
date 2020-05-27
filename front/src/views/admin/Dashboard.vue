@@ -127,7 +127,7 @@
               <label for="attachmentIssue">Bilaga</label>
               <b-card-text
                 id="attachmentIssue"
-              >{{ item.Attachment }}</b-card-text>
+              >{{item.attachment === null ? "ingen bilaga" : item.attachmentFileName}}</b-card-text>
             </div>
           </b-card-body>
         </b-collapse>

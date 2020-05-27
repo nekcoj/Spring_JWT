@@ -29,7 +29,7 @@
             <label class="lbl" for="datePicker-when">När inträffade händelsen?(*)</label>
           </b-col>
           <b-col sm="12">
-            <b-form-datepicker v-model="whenIssue" id="datePicker-when" required></b-form-datepicker>
+            <b-form-datepicker v-model="whenIssue" id="datePicker-when" required placeholder="Ange datum"></b-form-datepicker>
           </b-col>
         </b-row>
 
@@ -67,7 +67,7 @@
 
         <b-row class="d-flex" id="row-attachment">
           <b-col sm="12">
-            <b-form-group  label-for="file-default" label-cols-sm="2">
+            <b-form-group>
           <b-form-file id="file-default"
               v-model="attachment"
               :state="Boolean(attachment)"
@@ -95,7 +95,10 @@
 </template>
 
 <script>
+
+import "bootstrap-vue/dist/bootstrap-vue.css";
 export default {
+  
   data() {
     return {
       formdata: {}
@@ -200,6 +203,10 @@ export default {
 .lbl {
   padding-top: 6px;
   margin-bottom: 0px;
+}
+
+.datePicker-when{
+width: fit-content;
 }
 
 

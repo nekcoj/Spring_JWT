@@ -66,6 +66,12 @@ public class FileUploadController {
             }
 
 
+            try {
+                file.getFile().delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }else {
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND,"File not found");
@@ -74,7 +80,7 @@ public class FileUploadController {
             }
         }
     }
-    
+
 
 
 }
