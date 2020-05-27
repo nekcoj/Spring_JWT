@@ -13,7 +13,9 @@ export default new Vuex.Store({
   state: {
     authUser: "",
     categories: [],
+    changeStatus: {},
     fetchResponse: "",
+    fileToDownload: 0,
     formdata: {},
     gdprConsent: null,
     issues: [],
@@ -82,7 +84,17 @@ export default new Vuex.Store({
 
     setFetchResponse(state, value){
       state.fetchResponse = value;
+    },
+
+    setChangeStatusBody(state, value){
+      state.changeStatus = value;
+    },
+
+    setFileToDownload(state, value){
+      console.log("in setFileToDownload: ", value);
+      state.fileToDownload = value;
     }
+
     // setSelectedCategory(state, value) {
     //   this.$store.state.selectedCategory = value
     // },
@@ -296,6 +308,24 @@ export default new Vuex.Store({
       });
       this.commit("setFetchResponse", result) 
     },
+
+    async changeStatus(){
+      let url = `${apiUrl}/issue/change-status`;
+      await fetch(url, {
+        method: "POST",
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: JSON.stringify(this.state.changeStatus)
+      })
+    },
+
+    async getFileForIssue(){      
+      let url = `${apiUrl}/download/`+ this.state.fileToDownload;
+      await fetch(url, {
+        method: "GET",
+        headers: await this.dispatch('getAuthenticationHeader')
+      });
+    }
+
   },
 
   modules: {

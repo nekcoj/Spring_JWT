@@ -61,8 +61,8 @@
           <b-card-body id="issueBody">
             <h6>Status på ärendet: {{ item.issueStatus.toLowerCase() }}</h6>
             <div>
-              <b-button v-if="showOpenButton(item.issueStatus)" id="changeIssueStatusOpen">Öppna ärendet</b-button>
-              <b-button v-if="showCloseButton(item.issueStatus)" class="ml-md-1" id="changeIssueStatusClose">Stäng ärendet</b-button>
+              <b-button v-if="showOpenButton(item.issueStatus)" id="changeIssueStatusOpen" @click="openIssue(item)">Öppna ärendet</b-button>
+              <b-button v-if="showCloseButton(item.issueStatus)" class="ml-md-1" id="changeIssueStatusClose" @click="closeIssue(item)">Stäng ärendet</b-button>
             </div>
             <label for="whenIssue">När inträffade händelsen?</label>
             <b-card-text id="whenIssue">{{item.whenIssue}}</b-card-text>
@@ -73,10 +73,15 @@
             <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
             <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
             <label for="attachmentIssue">Bilaga</label>
-            <b-card-text
-              id="attachmentIssue"
-            >{{item.attachment === null ? "ingen bilaga" : item.attachment}}</b-card-text>
-             <router-link :to="'lawyer/postbox/' + item.issueId"><b-button variant="primary" class="btn-lg" @click="selectIssue(item)">Safe postbox</b-button></router-link>
+            <div>
+              <b-card-text
+                id="attachmentIssue"
+                v-if="item.attachmentFileName != null"
+              >{{item.attachmentFileName}}</b-card-text><b-button class="btn-sm" @click="getFile(item)">Ladda ner</b-button>
+            </div>
+            <router-link :to="'lawyer/postbox/' + item.issueId">
+              <b-button variant="primary" class="btn-lg mt-2" @click="selectIssue(item)">Safe postbox</b-button>
+            </router-link>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -85,7 +90,7 @@
 </template>
 
 <script>
-import {statusAssigned, statusOpen, statusClosed} from '@/_helpers/config.js'
+import {statusAssigned, statusOpen, statusClosed, variationIssueAssigned, variationIssueOpen, variationIssueClosed} from '@/_helpers/config.js'
 
 export default {
   data() {
@@ -123,9 +128,11 @@ export default {
 
     checkStatus: function(item){      
       if(item.issueStatus === `${statusAssigned}`){
-        return 'info';  
-      } else {
-        return 'secondary';
+        return `${variationIssueAssigned}`;  
+      } else if(item.issueStatus === `${statusClosed}`){
+        return `${variationIssueClosed}`
+      }else {
+        return `${variationIssueOpen}`;
       }
     },
 
@@ -146,13 +153,51 @@ export default {
       this.$parent.selectedStatus = {}
       this.searchfield = ""
     },
+    
+    async openIssue(item){
+      let statuses = this.$parent.statuses
+      let changeStatus = {}
+      changeStatus.issueId = item.issueId;
+      changeStatus.statusId = 0;
+      for(const [, value] of Object.entries(statuses)){
+        if(value.status === `${statusOpen}`){
+          changeStatus.statusId = value.id;
+          item.issueStatus = value.status
+        }
+      }
+      this.$store.commit("setChangeStatusBody", changeStatus)
+      this.$store.dispatch("changeStatus")
+      this.checkUnassigned();
+    },
+
+    async closeIssue(item){
+      let statuses = this.$parent.statuses
+      let changeStatus = {}
+      changeStatus.issueId = item.issueId;
+      changeStatus.statusId = 0;
+      for(const [, value] of Object.entries(statuses)){
+        if(value.status === `${statusClosed}`){
+          changeStatus.statusId = value.id;
+          item.issueStatus = value.status
+        }
+      }
+      this.$store.commit("setChangeStatusBody", changeStatus)
+      this.$store.dispatch("changeStatus")
+    },
+
+    getFile(item){
+      console.log("in getFile: ", item.issueId);
       
+      this.$store.commit("setFileToDownload", item.issueId)
+      this.$store.dispatch("getFileForIssue")
+    },
+
     selectIssue(value){      
       this.$parent.issue = value;
     },
 
     showCloseButton: function(value) {
-      if(value === `${statusOpen}` || value != `${statusClosed}`){
+      if(value === `${statusOpen}`){
         return true;
       } else {return false;}
     },
