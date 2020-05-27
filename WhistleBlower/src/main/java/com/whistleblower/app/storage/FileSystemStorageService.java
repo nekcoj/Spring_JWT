@@ -13,9 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -35,6 +33,9 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public void store(MultipartFile file, String tempUserId) {
+		File tempFile = null;
+		File encryptedFile = null;
+
 		try {
 			if (file.isEmpty()) {
 				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
@@ -42,21 +43,22 @@ public class FileSystemStorageService implements StorageService {
             Path newLocation = this.rootLocation.resolve(tempUserId);
 			Files.createDirectory(newLocation);
 
-		    File tempFile = File.createTempFile("saveFile",null);
+		    tempFile = File.createTempFile("saveFile",null);
 			tempFile.deleteOnExit();
 			file.transferTo(tempFile);
-			File encryptedFile = new File(file.getOriginalFilename() + FILE_EXTENSION);
-
+			encryptedFile = new File(file.getOriginalFilename() + FILE_EXTENSION);
 			 CryptoUtil.encrypt(CRYPTO_KEY,tempFile,encryptedFile);
 
 
-			Files.copy(new FileInputStream(encryptedFile), newLocation.resolve(Objects.requireNonNull(encryptedFile.getName())));
-			tempFile.delete();
+			Files.move(encryptedFile.toPath(), newLocation.resolve(Objects.requireNonNull(encryptedFile.getName())));
 		} catch (IOException e) {
 			System.out.println(Arrays.toString(e.getStackTrace()));
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
 		} catch (CryptoException e) {
 			e.printStackTrace();
+		}finally {
+			tempFile.delete();
+
 		}
 
 	}

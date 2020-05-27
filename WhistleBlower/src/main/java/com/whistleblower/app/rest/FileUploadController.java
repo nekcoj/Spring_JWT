@@ -56,11 +56,16 @@ public class FileUploadController {
                 IOUtils.copy(in,out);
                 out.close();
                 in.close();
-                file.getFile().delete();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+
+            try {
+                file.getFile().delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }else {
             try {
@@ -70,7 +75,7 @@ public class FileUploadController {
             }
         }
     }
-    
+
 
 
 }
