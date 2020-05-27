@@ -67,16 +67,20 @@
 
         <b-row class="d-flex" id="row-attachment">
           <b-col sm="12">
-            <b-form-file
+            <b-form-group  label-for="file-default" label-cols-sm="2">
+          <b-form-file id="file-default"
               v-model="attachment"
               :state="Boolean(attachment)"
-              placeholder="Välj eller släpp bilaga här.. ()"
+              placeholder="Välj eller släpp bilaga här"
               drop-placeholder="Släpp bilaga här"
             ></b-form-file>
+         </b-form-group>
+         
           </b-col>
         </b-row>
         <b-row>
           <b-col>
+            
             <b-button
               to="./forhandsgranska"
               variant="primary"
@@ -197,4 +201,7 @@ export default {
   padding-top: 6px;
   margin-bottom: 0px;
 }
+
+
+
 </style>
