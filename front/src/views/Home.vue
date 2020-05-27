@@ -16,7 +16,7 @@ export default {
   ,
   methods: {
     openwindow: function(){
-      window.open("https://localhost:8080/vissla", "Safe window", "height=600,width=420")
+      window.open("http://localhost:8080/vissla", "Safe window", "height=600,width=420")
     }
   }
 }

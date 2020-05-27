@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+import static com.whistleblower.app.security.SecurityConstants.ROLE_USER;
+
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -71,13 +73,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         var signingKey = SecurityConstants.JWT_SECRET.getBytes();
 
+       final int TEN_DAYS = 864000000;
+       final int FIFTEEN_MINUTES = 900000;
+       var timeInMillis = TEN_DAYS;
+
+       if(entityUser.getRole().equals(ROLE_USER)) timeInMillis = FIFTEEN_MINUTES;
+
         var token = Jwts.builder()
                 .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
                 .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
                 .setIssuer(SecurityConstants.TOKEN_ISSUER)
                 .setAudience(SecurityConstants.TOKEN_AUDIENCE)
                 .setSubject(user.getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + 864000000))
+                .setExpiration(new Date(System.currentTimeMillis() + timeInMillis))
                 .claim("rol", roles)
                 .compact();
 
