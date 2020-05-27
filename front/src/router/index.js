@@ -85,7 +85,7 @@ const router = new VueRouter({
         {path: 'arenden', component: () => import ('../views/lawyer/NewPosts.vue')},
         {path: 'postbox/:issueId', name: 'Safe postbox jurist', 
         children: [
-          {path: '', name: 'FetchResponse', component: () => import ('../modules/fetch-response-module.vue') }
+          {path: '', name: 'FetchResponseLawyer', component: () => import ('../modules/fetch-response-module.vue') }
         ],
         component: () => import ('../views/lawyer/Safepostbox.vue')}, 
       ],
@@ -102,7 +102,7 @@ const router = new VueRouter({
       name: 'Safe postbox anmälare',
       component: () => import ('../views/blower/Safepostbox.vue'),
       children: [
-        {path: '', name: 'FetchResponse', component: () => import ('../modules/fetch-response-module.vue') }
+        {path: '', name: 'FetchResponseUser', component: () => import ('../modules/fetch-response-module.vue') }
       ],
       beforeEnter: (to, from, next) => {
         if(store.state.authUser === '/user'){

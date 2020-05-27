@@ -379,6 +379,7 @@ label {
 }
 
 #counter-and-filter-remover {
+  /**FLEX-END KANSKE?! */
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;

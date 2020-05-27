@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-card>  
-      <b-card-body>
+    <b-card class="m-0 p-0">  
+      <b-card-body class="m-0 p-0">
         <p class="h2">Ärendenr: {{issue.issueId}}</p>
         <div role="tablist">
           <b-card no-body class="mb-1 text-left" v-for="(item, index) in filteredMessages" :key="item.id">
@@ -19,14 +19,14 @@
               role="tab" >
               <b-card-body>
                 <b-card-text>
-                  <p class="h4">Du skrev: </p>
-                  <p class="p-small">{{ item.message }}</p>
+                  <p class="h5">Fråga: </p>
+                  <p>{{ item.message }}</p>
                 </b-card-text>
                 <div>
-                  <p class="h4"> Svar från anmälaren: </p>
-                  <b-form-text>
-                    <p class="p-small">{{item.reply}}</p>
-                  </b-form-text>
+                  <p class="h5"> Svar: </p>
+                  <b-card-text>
+                    <p>{{item.reply}}</p>
+                  </b-card-text>
                 </div>
               </b-card-body>
             </b-collapse>

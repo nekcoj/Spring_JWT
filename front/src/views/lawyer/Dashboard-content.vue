@@ -94,7 +94,6 @@ export default {
     await this.$store.dispatch("getCategories");
     await this.$store.dispatch("getIssuesForLawyer");
     this.issues = await this.$store.state.issuesLawyer;
-    console.log("mina issues: ", this.issues)
   },
 
   created() {
