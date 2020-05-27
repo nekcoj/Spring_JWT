@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import {apiUrl} from '@/_helpers/config.js'
 export default {
   data() {
     return {
@@ -111,7 +112,7 @@ export default {
       dataDto.append('employeeAwareness', this.employeeAwareness)
       dataDto.append('attachment',  this.attachment, this.attachment.name)
     
-      let url = "https://localhost:9090/issue/create";
+      let url = `${apiUrl}/issue/create`;
       const response = await fetch(url, {
         method: "POST",
       
