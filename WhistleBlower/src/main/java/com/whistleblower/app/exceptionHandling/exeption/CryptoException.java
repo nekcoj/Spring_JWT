@@ -1,0 +1,11 @@
+package com.whistleblower.app.exceptionHandling.exeption;
+
+public class CryptoException extends Exception{
+
+    public CryptoException() {
+    }
+
+    public CryptoException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+}
