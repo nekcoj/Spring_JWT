@@ -1,7 +1,7 @@
 <template>
-<div class="dashboard container">
-<b-card class="m-0 p-0">
-    <b-card-header>
+<div class="dashboard container" id="dashboard-container">
+<b-card id="dashboard-content">
+    <b-card-header id="dashboard-header">
         <b-nav pills fill type="light" variant="light">
             <b-nav-item :to="{ path: '/admin/'}" exact-active-class="active">
                 Panel
@@ -14,13 +14,13 @@
             </b-nav-item>
         </b-nav>
     </b-card-header>    
-    <b-card-body class="m-0 p-0">
+    <b-card-body id="dashboard-body">
         <router-view>
 
-        </router-view>
-    </b-card-body>
-</b-card>
-</div>
+                </router-view>
+            </b-card-body>
+        </b-card>
+    </div>
 </template>
 <script>
 import {statusAssigned} from '@/_helpers/config.js'
@@ -54,6 +54,18 @@ export default {
 
 
 <style scoped>
+#dashboard-container, #dashboard-content {
+    border: none;
+}
+
+#dashboard-header{
+    border: 1px solid black;
+    border-bottom: none;
+}
+
+#dashboard-body{
+    border: 1px solid black;
+}
 
 #nr-of-messages{
     font-size: small!important;
@@ -62,6 +74,7 @@ export default {
     bottom: 5px;
     font-weight: bold;
 }
+
 
 @media (min-width: 576px) {  
   
