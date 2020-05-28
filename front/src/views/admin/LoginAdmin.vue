@@ -80,10 +80,6 @@ export default {
 #showPassword{
   text-align: left;
 }
-#login-admin{
-  margin-top: 7%;
-}
-
 
 #login-button{
     margin-top: 40px;  
@@ -106,6 +102,31 @@ p#text-capslock{
  #text-password{
   border: 1px solid black;
 }
+@media (min-width: 576px) {  
+  #login-admin{
+    margin-top:15%;
+    width: 100%;
+  }
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
 
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  #login-admin{
+    margin-top: 7%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+    
+}
 
 </style>
