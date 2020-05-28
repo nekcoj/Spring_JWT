@@ -1,21 +1,21 @@
 <template>
-    <div class="dashboard container" id="dashboard-container">
-        <b-card id="dashboard-content">
-            <b-card-header id="dashboard-header">
-                <b-nav pills fill type="light" variant="light">
-                    <b-nav-item :to="{ path: '/admin/'}" exact-active-class="active">
-                        Panel
-                    </b-nav-item>
-                    <b-nav-item :to="{ path: '/admin/arenden'}" exact-active-class="active">
-                        Nya ärenden <span id="nr-of-messages">{{nrMessagesAdmin}}</span>
-                    </b-nav-item>
-                    <b-nav-item to="/inloggning" @click="logout" exact-active-class="active">
-                        Logga ut
-                    </b-nav-item>
-                </b-nav>
-            </b-card-header>    
-            <b-card-body id="dashboard-body">
-                <router-view>
+<div class="dashboard container" id="dashboard-container">
+<b-card id="dashboard-content">
+    <b-card-header id="dashboard-header">
+        <b-nav pills fill type="light" variant="light">
+            <b-nav-item :to="{ path: '/admin/'}" exact-active-class="active">
+                Panel
+            </b-nav-item>
+             <b-nav-item  exact-active-class="active" @click="setStatusAdmin()">
+                Nya ärenden <span id="nr-of-messages">{{nrMessagesAdmin}}</span>
+            </b-nav-item>
+            <b-nav-item to="/inloggning" @click="logout" exact-active-class="active">
+                Logga ut
+            </b-nav-item>
+        </b-nav>
+    </b-card-header>    
+    <b-card-body id="dashboard-body">
+        <router-view>
 
                 </router-view>
             </b-card-body>
@@ -23,19 +23,32 @@
     </div>
 </template>
 <script>
+import {statusAssigned} from '@/_helpers/config.js'
 export default {
   data() {
     return {
-        nrMessagesAdmin: 1
+        issue:{},
+        messages: {},
+        nrMessagesAdmin: 0,
+        selectedStatus: {},
+        statuses: [],
     }
   },
-  methods: {
+   methods: {
     logout(){
-        const { dispatch } = this.$store;
-        dispatch('account/logout');
+         const { dispatch } = this.$store;
+         dispatch('account/logout');
     },
 
-  }
+    setStatusAdmin() {
+        for(const [, value] of Object.entries(this.statuses)){
+            if(value.status.toLowerCase() === `${statusAssigned}`){
+                this.selectedStatus = value;
+            }
+        }
+    }
+  },
+  
 }
 </script>
 

@@ -24,7 +24,7 @@
       <b-form-group label="Filtrera på status" label-for="select-status">
         <b-form-select id="select-status" v-model="selectedStatus">
           <b-form-select-option
-            v-for="status in statuses"
+            v-for="status in this.$parent.statuses"
             :key="status.id"
             :value="status"
           >{{ status.status }}</b-form-select-option>
@@ -64,11 +64,9 @@
             </b-btn>
         </div>
   
-
-
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button block v-b-toggle="'id'+item.issueId" variant="secondary" class="text-left">
+          <b-button block v-b-toggle="'id'+item.issueId" :variant="checkStatus(item)" class="text-left">
             <span>Ärendeid: {{item.issueId}}</span>
           </b-button>
         </b-card-header>
@@ -155,6 +153,8 @@
 </template>
 
 <script>
+import {statusAssigned, statusOpen, statusClosed,  variationIssueAssigned, statusUnassigned, variationIssueOpen, variationIssueClosed, variationIssueUnassigned} from '@/_helpers/config.js'
+
 export default {
   data() {
     return {
@@ -168,12 +168,7 @@ export default {
       selectedLawyer: {},
       selectedStatus: {},
       statuses: [],
-      lawyers: [
-        //   "Joacim Norbeck",
-        //   "Ralf Tjärnlund",
-        //   "Sofia Fredman",
-        //   "Magnus Pettersson",
-      ],
+      lawyers: [],
       months: [
         { id: 0, name: "Januari" },
         { id: 1, name: "Februari" },
@@ -244,7 +239,45 @@ export default {
       else {
         this.ascSorting = true
       }
-    }
+    },
+      checkUnassigned() {
+        let unassigned = 0;
+        let temp = this.issues;
+        for( const [, value] of Object.entries(temp)){
+          if(value.issueStatus === `${statusUnassigned}`){
+            unassigned++;
+          }
+        }
+        return this.$parent.nrMessagesAdmin = unassigned;
+      },
+
+      checkStatus: function(item){      
+      if(item.issueStatus === `${statusAssigned}`){
+        return `${variationIssueAssigned}`;  
+      } else if(item.issueStatus === `${statusClosed}`){
+        return `${variationIssueClosed}`;
+       } else if(item.issueStatus === `${statusUnassigned}`){
+        return `${variationIssueUnassigned}`;
+      }else {
+        return `${variationIssueOpen}`;
+      }
+    },
+
+     async openIssue(item){
+      let statuses = this.$parent.statuses
+      let changeStatus = {}
+      changeStatus.issueId = item.issueId;
+      changeStatus.statusId = 0;
+      for(const [, value] of Object.entries(statuses)){
+        if(value.status === `${statusOpen}`){
+          changeStatus.statusId = value.id;
+          item.issueStatus = value.status
+        }
+      }
+      this.$store.commit("setChangeStatusBody", changeStatus)
+      this.$store.dispatch("changeStatus")
+      this.checkUnassigned();
+    },
   },
   async mounted() {
     await this.$store.dispatch("getLawyers")
@@ -254,6 +287,7 @@ export default {
     this.statuses = await this.$store.state.statuses
     await this.$store.dispatch("getIssues")
     this.issues = await this.$store.state.issues
+    await this.checkUnassigned();
    
   },
   created() {
@@ -261,6 +295,8 @@ export default {
     this.issues = this.$store.state.issues
     this.filteredIssues = this.issues
   },
+
+
   computed: {
     categories: {
       get() {
