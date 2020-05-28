@@ -48,9 +48,29 @@ export default {
     position: relative;
     bottom: 5px;
     font-weight: bold;
-   
+}
 
+@media (min-width: 576px) {  
+  
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
 
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .dashboard{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+    
 }
 
 </style>

@@ -15,7 +15,7 @@
         <p id="text-capslock" style="display:none"> Caps lock är aktiverat</p>
       </b-form>
     </div>
-     <b-button variant="primary" id="login-button" @click="login">Logga in</b-button> 
+    <b-button variant="primary" id="login-button" @click="login">Logga in</b-button> 
     <div>
       <router-view v-if="checkLocalStorage()"></router-view>
     </div>
@@ -82,31 +82,34 @@ export default {
 }
 
 #login-button{
-    margin-top: 40px;  
+  margin-top: 40px;  
 }
 
 p#text-capslock{
-    color: red;
-    margin-bottom: 0;
+  color: red;
+  margin-bottom: 0;
 }
 
- #mandatory{
+#mandatory{
   margin-top: -10px;
-  font-size:80%;
-  
+  font-size:80%;  
 }
 
- #text-username{
+#text-username{
   border: 1px solid black;
 }
- #text-password{
+
+#text-password{
   border: 1px solid black;
 }
+
+#login-admin{
+  margin-top: 15%;
+  width: 100%;
+}
+
 @media (min-width: 576px) {  
-  #login-admin{
-    margin-top:15%;
-    width: 100%;
-  }
+  
 }
  
 /* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */

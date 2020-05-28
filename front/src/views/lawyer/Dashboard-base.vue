@@ -1,5 +1,5 @@
 <template>
-<b-card>
+<b-card id="dashboard">
     <b-card-header class="dashboard-container">
         <b-nav pills fill type="light" variant="light">
             <b-nav-item :to="{ path: '/lawyer'}" exact-active-class="active">
@@ -13,7 +13,7 @@
             </b-nav-item>
         </b-nav>
     </b-card-header>    
-    <b-card-body>
+    <b-card-body class="dashboard-body">
         <router-view>
 
         </router-view>
@@ -21,6 +21,8 @@
 </b-card>
 </template>
 <script>
+
+import {statusAssigned} from '@/_helpers/config.js'
 export default {
   data() {
     return {
@@ -39,7 +41,7 @@ export default {
 
     setStatus() {
         for(const [, value] of Object.entries(this.statuses)){
-            if(value.status.toLowerCase() === 'assigned'){
+            if(value.status === `${statusAssigned}`){
                 this.selectedStatus = value;
             }
         }
@@ -58,6 +60,42 @@ export default {
     position: relative;
     bottom: 5px;
     font-weight: bold;
+}
+
+#dashboard {
+    border: none;
+}
+
+.dashboard-container{
+    border: 1px solid black;
+    border-bottom: none;
+}
+
+.dashboard-body{
+    border: 1px solid black
+}
+
+@media (min-width: 576px) {  
+  
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  .dashboard-container, .dashboard-body{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+    
 }
 
 

@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
     <div id="vissla-login">
       <b-form id="vissla-form">
         <div class="form-group">
@@ -27,6 +28,7 @@
         </div>
       </b-form>
     </div>
+  </div>
 </template>
 
 <script>
@@ -53,30 +55,7 @@ export default {
 </script>
 
 <style scoped>
-
-
-
-#vissla-login{
-  display:flex;
-  flex-direction:column;
-  padding-top: 8%;
  
-}
-#vissla-login *{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-   width:80vw; 
-  align-self:center;
-}
-
-@media (min-width: 800px) and (max-width: 1980px) {
-  #vissla-login *{
-   width:40vw; 
-}
-
-  
-}
 #vissla-login #vissla-ID{
   border: 1px solid black;
 }
@@ -85,11 +64,38 @@ export default {
 }
  #vissla-login #btn-vissla-login{
   width:120px;
-  
-  
 } 
 span.liten-text{
   margin-top: -10px;
   font-size:80%;
+}
+
+#vissla-login{
+    margin-top: 15%;
+    width: 100%;
+}
+
+@media (min-width: 576px) {  
+  
+}
+ 
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+
+}
+ 
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+  #vissla-login{
+    margin-top: 7%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+    
 }
 </style>
