@@ -17,7 +17,7 @@ const actions = {
                     store.state.authUser = user.path;
                     store.state.gdprConsent = user.consent;
                     if(!user.consent && !(user.path === '/user')){
-                      console.log("GDPR CHECK!");
+                      router.push('/inloggning')
                     } else {
                       router.push(user.path)
                     }
