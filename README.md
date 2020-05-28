@@ -1,5 +1,7 @@
 # whistle
 
+* Postman collection : https://www.getpostman.com/collections/36b059172a4b06ff4705
+
 
 ####IssueController
 * ISSUE_URL_ROOT = "/issue";
