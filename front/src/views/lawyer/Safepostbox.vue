@@ -48,6 +48,8 @@
 
 <script>
 
+import {variationMessageReply, variationMessageNoReply} from '@/_helpers/config.js'
+
 export default {
 
   data(){
@@ -102,9 +104,9 @@ export default {
     },
     checkReply: function(item){      
       if(item.reply === null){
-        return 'info';  
+        return `${variationMessageNoReply}`;  
       } else {
-        return 'secondary';
+        return `${variationMessageReply}`;
       }
     },
     sleep(duration) {
