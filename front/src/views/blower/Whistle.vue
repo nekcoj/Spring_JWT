@@ -10,6 +10,12 @@
         <b-button variant="primary" class="btn-selection btn-lg" id="btn-followup">Följ upp ärende</b-button>
       </router-link>
     </div>
+     <!-- TEMPORARY BUTTON, FOR DEMONSTRATION ONLY -->
+    <div>
+      <router-link to="./inloggning">
+        <b-button variant="primary" class="btn-selection btn-lg" id="btn-followup">Inloggning Admin/Jurist</b-button>
+      </router-link>
+    </div>
   </div>
 </template>
 
