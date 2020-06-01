@@ -455,6 +455,7 @@ label {
 .change-issue-order {
   display: flex;
   margin-bottom: 10px;
+  justify-content: flex-end;
 
  
 }
