@@ -37,7 +37,7 @@
 
       <div id="counter-and-filter-remover">
         <span id="searchCounter">
-          <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}}</strong></span>
+          <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}} </strong></span>
           <span v-else>Inga ärenden matchade din sökning</span>
         </span>
         <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
