@@ -37,9 +37,6 @@ public class FileSystemStorageService implements StorageService {
 		File encryptedFile = null;
 
 		try {
-			if (file.isEmpty()) {
-				throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
-			}
             Path newLocation = this.rootLocation.resolve(tempUserId);
 			Files.createDirectory(newLocation);
 

@@ -110,8 +110,11 @@ export default {
       dataDto.append('whereIssue', this.whereIssue)
       dataDto.append('details', this.details)
       dataDto.append('employeeAwareness', this.employeeAwareness)
-      dataDto.append('attachment',  this.attachment, this.attachment.name)
-    
+      if(this.attachment === undefined){
+        dataDto.append('attachment',  new Blob(), "")
+      }
+      else{dataDto.append('attachment',  this.attachment, this.attachment.name)
+      }
       let url = `${apiUrl}/issue/create`;
       const response = await fetch(url, {
         method: "POST",
@@ -157,6 +160,9 @@ export default {
     attachment:{
       get(){
         return this.$store.state.formdata.attachment;
+      },
+      set(value) {
+        this.$store.state.formdata.attachment = value;
       }
     },
   },
