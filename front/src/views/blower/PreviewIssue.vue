@@ -58,7 +58,7 @@
         </b-row>
 
         <b-row class="d-inline-flex"  id="row-attachment">
-          
+
           <b-col  ><span id="col-attachment-text">Bilaga:</span>
           </b-col>
           <b-col  id="col-attachment-filename"><label id="lbl-attachment">{{attachment ? attachment.name : ''}}</label>

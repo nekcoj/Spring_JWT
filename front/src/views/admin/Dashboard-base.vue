@@ -1,5 +1,5 @@
 <template>
-<div class="dashboard container" id="dashboard-container">
+
 <b-card id="dashboard-content">
     <b-card-header id="dashboard-header">
         <b-nav pills fill type="light" variant="light">
@@ -20,7 +20,6 @@
                 </router-view>
             </b-card-body>
         </b-card>
-    </div>
 </template>
 <script>
 import {statusUnassigned} from '@/_helpers/config.js'

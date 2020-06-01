@@ -27,10 +27,12 @@ import BootstrapVue from 'bootstrap-vue'
     faUserSecret,
     faSearch,
     faTrashAlt,
+    faSquare
+
   } from "@fortawesome/free-solid-svg-icons";
   import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
   
-  library.add(faUserSecret, faSearch, faTrashAlt);
+  library.add(faUserSecret, faSearch, faTrashAlt, faSquare);
   
   Vue.component("font-awesome-icon", FontAwesomeIcon);
 
