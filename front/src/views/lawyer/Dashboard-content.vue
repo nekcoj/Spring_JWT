@@ -171,6 +171,8 @@ export default {
       }
       this.$store.commit("setChangeStatusBody", changeStatus)
       this.$store.dispatch("changeStatus")
+      this.$store.dispatch("getIssuesForLawyer");
+      this.filteredIssues = this.issuesLawyer;
       this.checkUnassigned();
     },
 
@@ -187,6 +189,8 @@ export default {
       }
       this.$store.commit("setChangeStatusBody", changeStatus)
       this.$store.dispatch("changeStatus")
+      this.$store.dispatch("getIssuesForLawyer");
+      this.filteredIssues = this.issuesLawyer;
     },
 
     getFile(item){
