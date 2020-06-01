@@ -72,12 +72,12 @@
             <b-card-text id="detailsIssue">{{item.details}}</b-card-text>
             <label for="awarenessIssue">Är andra anställda medvetna om detta?</label>
             <b-card-text id="awarenessIssue">{{item.employeeAwareness}}</b-card-text>
-            <label for="attachmentIssue">Bilaga</label>
+            <label v-if="item.attachmentFileName != ''" for="attachmentIssue">Bilaga</label>
             <div>
               <b-card-text
                 id="attachmentIssue"
-                v-if="item.attachmentFileName != null"
-              >{{item.attachmentFileName}}</b-card-text><b-button class="btn-sm" @click="getFile(item)">Ladda ner</b-button>
+                v-if="item.attachmentFileName != ''"
+              >{{item.attachmentFileName}}</b-card-text><b-button v-if="item.attachmentFileName != ''" class="btn-sm" @click="getFile(item)">Ladda ner</b-button>
             </div>
             <router-link :to="'lawyer/postbox/' + item.issueId">
               <b-button variant="primary" class="btn-lg mt-2" @click="selectIssue(item)">Safe postbox</b-button>
