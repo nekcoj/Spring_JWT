@@ -49,10 +49,9 @@
           <span v-else>Sortera stigande</span>
         </b-btn>
       </div>
-    <font-awesome-icon icon="square" class="squareUnassigned"></font-awesome-icon><span class="text-square"> Unassigned</span> 
-    <font-awesome-icon icon="square" class="squareOpen"></font-awesome-icon><span class="text-square"> Open</span>
-    <font-awesome-icon icon="square" class="squareAssigned"></font-awesome-icon><span class="text-square"> Assigned</span>
-    <font-awesome-icon icon="square" class="squareClose"></font-awesome-icon><span class="text-square"> Closed</span>
+    <font-awesome-icon icon="square" class="squareAssigned text-info"></font-awesome-icon><span class="text-square"> Assigned </span>
+    <font-awesome-icon icon="square" class="squareOpen text-secondary"></font-awesome-icon><span class="text-square"> Open </span>
+    <font-awesome-icon icon="square" class="squareClose text-dark"></font-awesome-icon><span class="text-square"> Closed </span>
 
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">

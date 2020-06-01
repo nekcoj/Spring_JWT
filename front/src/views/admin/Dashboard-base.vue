@@ -1,5 +1,4 @@
 <template>
-
 <b-card id="dashboard-content">
     <b-card-header id="dashboard-header">
         <b-nav pills fill type="light" variant="light">
@@ -86,7 +85,7 @@ export default {
  
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) { 
-  .dashboard{
+  #dashboard-content{
     width: 50%;
     margin-left: auto;
     margin-right: auto;

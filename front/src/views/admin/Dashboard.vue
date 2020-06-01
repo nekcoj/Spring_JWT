@@ -58,15 +58,15 @@
           <span v-else>Sortera stigande</span>
         </b-btn>
       </div>
-          <div class="change-issue-order">
-            <b-btn id="btn-sort-asc-desc" v-on:click="clearFilters">
-              <span>Rensa filter</span>
-            </b-btn>
+        <div class="change-issue-order">
+          <b-btn id="btn-sort-asc-desc" v-on:click="clearFilters">
+            <span>Rensa filter</span>
+          </b-btn>
         </div>
-    <font-awesome-icon icon="square" class="squareUnassigned"></font-awesome-icon><span class="text-square"> Unassigned</span> 
-    <font-awesome-icon icon="square" class="squareOpen"></font-awesome-icon><span class="text-square"> Open</span>
-    <font-awesome-icon icon="square" class="squareAssigned"></font-awesome-icon><span class="text-square"> Assigned</span>
-    <font-awesome-icon icon="square" class="squareClose"></font-awesome-icon><span class="text-square"> Closed</span>
+        <font-awesome-icon icon="square" class="squareUnassigned text-primary"></font-awesome-icon><span class="text-square"> Unassigned </span> 
+        <font-awesome-icon icon="square" class="squareAssigned text-info"></font-awesome-icon><span class="text-square"> Assigned </span>
+        <font-awesome-icon icon="square" class="squareOpen text-secondary"></font-awesome-icon><span class="text-square"> Open </span>
+        <font-awesome-icon icon="square" class="squareClose text-dark"></font-awesome-icon><span class="text-square"> Closed </span>
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle="'id'+item.issueId" :variant="checkStatus(item)" class="text-left">
@@ -87,7 +87,6 @@
                 </h6>
               </div>
             </div>
-                            <!-- HÄR ÄR DET-->
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category" v-model="categoryToChangeTo">
                 <b-form-select-option
@@ -222,6 +221,8 @@ export default {
       }
       await this.$store.commit("setIssueToAssign", combinedIds)
       await this.$store.dispatch("assignIssue")
+      await this.$store.dispatch("getIssues")
+      this.issues = await this.$store.state.issues
       }
     },
 
