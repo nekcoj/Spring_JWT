@@ -123,14 +123,13 @@ export default new Vuex.Store({
         body: val
       })
 
-      console.log("assignat issue till en lawyer ")
+    
     },
     
     async issueChangeCategory(){
         
         let issueId = this.state.issueToChangeCategoryFor.issueId
-        console.log("issue id", issueId)
-        console.log("new Category id: ", this.state.newCategory)
+      
         //val.categoryId = this.newCategory
         let url = `${apiUrl}/issue/change-category/`
         let newCategory = this.state.newCategory
@@ -279,8 +278,8 @@ export default new Vuex.Store({
 
       fetch(url, requestOptions)
         .then(response => response.text())
-        .then(result => console.log(result))
-        .catch(error => console.log('error', error));
+        // .then(result => console.log(result))
+        // .catch(error => console.log('error', error));
     },
 
     async getMessagesForLawyer() {
