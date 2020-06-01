@@ -166,7 +166,6 @@ export default {
       selectedMonth: {},
       searchfield: "",
       selectedLawyer: {},
-      selectedStatus: {},
       statuses: [],
       lawyers: [],
       months: [
@@ -232,7 +231,7 @@ export default {
     clearFilters: function () {
       this.selectedCategory = {}
       this.selectedMonth = {}
-      this.selectedStatus = {}
+      this.$parent.selectedStatus = {}
       this.searchfield = ""
     },
     changeIssueOrder: function () {
@@ -321,6 +320,15 @@ export default {
       }
     },
 
+    selectedStatus: {
+      get() {
+        return this.$parent.selectedStatus
+      },
+      set(value) { 
+        this.$parent.selectedStatus = value
+      }
+    },
+
     filterIssues: function () {
       let temp = this.$store.state.issues
       //fritextsökning
@@ -374,12 +382,12 @@ export default {
           })
         }
         //status
-        if (JSON.stringify(this.selectedStatus) == "{}") {
+        if (JSON.stringify(this.$parent.selectedStatus) == "{}") {
           //console.log("ingen status vald")
         } else {
           searchResult = searchResult.filter(issue => {
 
-            return issue.issueStatus.toLowerCase() === this.selectedStatus.status.toLowerCase()
+            return issue.issueStatus.toLowerCase() === this.$parent.selectedStatus.status.toLowerCase()
           })
         }
 

@@ -23,7 +23,7 @@
     </div>
 </template>
 <script>
-import {statusAssigned} from '@/_helpers/config.js'
+import {statusUnassigned} from '@/_helpers/config.js'
 export default {
   data() {
     return {
@@ -42,7 +42,7 @@ export default {
 
     setStatusAdmin() {
         for(const [, value] of Object.entries(this.statuses)){
-            if(value.status.toUpperCase() === `${statusAssigned}`.toUpperCase()){
+            if(value.status.toUpperCase() === `${statusUnassigned}`.toUpperCase()){
                 this.selectedStatus = value;
             }
         }
