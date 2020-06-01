@@ -63,11 +63,14 @@
               <span>Rensa filter</span>
             </b-btn>
         </div>
-  
+    <font-awesome-icon icon="square" class="squareUnassigned"></font-awesome-icon><span class="text-square"> Unassigned</span> 
+    <font-awesome-icon icon="square" class="squareOpen"></font-awesome-icon><span class="text-square"> Open</span>
+    <font-awesome-icon icon="square" class="squareAssigned"></font-awesome-icon><span class="text-square"> Assigned</span>
+    <font-awesome-icon icon="square" class="squareClose"></font-awesome-icon><span class="text-square"> Closed</span>
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle="'id'+item.issueId" :variant="checkStatus(item)" class="text-left">
-            <span>Ärendeid: {{item.issueId}}</span>
+            <span>Ärendeid: {{item.issueId}}</span> 
           </b-button>
         </b-card-header>
         <b-collapse :id="'id'+item.issueId" accordion="my-accordion" role="tabpanel">
@@ -457,5 +460,22 @@ label {
 }
 #btn-sort-asc-desc{
     width: 132px;
+}
+
+.squareUnassigned{
+  color: blue;
+}
+
+.squareAssigned{
+    color: rgba(104,199,212);
+}
+
+.squareOpen{
+  color: grey;
+
+}
+
+.text-square{
+  font-size: small;
 }
 </style>
