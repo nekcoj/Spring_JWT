@@ -42,7 +42,7 @@ export default {
 
     setStatusAdmin() {
         for(const [, value] of Object.entries(this.statuses)){
-            if(value.status === `${statusAssigned}`){
+            if(value.status.toUpperCase() === `${statusAssigned}`.toUpperCase()){
                 this.selectedStatus = value;
             }
         }

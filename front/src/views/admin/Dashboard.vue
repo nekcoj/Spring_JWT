@@ -77,20 +77,20 @@
             </span>
 
             <div v-for="category in categories" :key="category.id" :value="category.id">
-              <div v-if="item.categoryId === category.id">
+              <div v-if="checkCategory(item, category)">
                 <h6>
                   Kategori:
-                  <em>{{ category.categoryName }}</em>
+                  <em>{{ item.categoryName }}</em>
                 </h6>
               </div>
             </div>
-
+                            <!-- HÄR ÄR DET-->
             <b-form-group label="Ändra kategori" label-for="change-category">
               <b-form-select id="change-category" v-model="categoryToChangeTo">
                 <b-form-select-option
                   v-for="category in categories"
                   :key="category.id"
-                  :value="category.id"
+                  :value="category"
                 >{{category.categoryName}}</b-form-select-option>>
               </b-form-select>
               <b-button v-on:click="issueChangeCategory(item)" class="mt-1">Utför</b-button>
@@ -184,7 +184,7 @@ export default {
         { id: 11, name: "December" }
       ],
       addRemoveOption: null,
-      addRemoveText: null
+      addRemoveText: null,
     }
   },
   methods: {
@@ -202,9 +202,12 @@ export default {
       }
       else {
         await this.$store.commit("setIssueToChangeCategoryFor", issue)
-        await this.$store.commit("setNewCategory", this.categoryToChangeTo)
+        await this.$store.commit("setNewCategory", this.categoryToChangeTo.id)
         await this.$store.dispatch("issueChangeCategory")
-      }
+        await this.$store.dispatch("getIssues")
+        this.issues = await this.$store.state.issues
+        await this.checkUnassigned();
+      } 
     },
     assignIssueToLawyer: async function (issue) {
       if(JSON.stringify(this.selectedLawyer) === "{}"){
@@ -240,30 +243,31 @@ export default {
         this.ascSorting = true
       }
     },
-      checkUnassigned() {
-        let unassigned = 0;
-        let temp = this.issues;
-        for( const [, value] of Object.entries(temp)){
-          if(value.issueStatus === `${statusUnassigned}`){
-            unassigned++;
-          }
-        }
-        return this.$parent.nrMessagesAdmin = unassigned;
-      },
 
-      checkStatus: function(item){      
+    checkUnassigned() {
+      let unassigned = 0;
+      let temp = this.issues;
+      for( const [, value] of Object.entries(temp)){
+        if(value.issueStatus === `${statusUnassigned}`){
+          unassigned++;
+        }
+      }
+      return this.$parent.nrMessagesAdmin = unassigned;
+    },
+
+    checkStatus: function(item){      
       if(item.issueStatus === `${statusAssigned}`){
         return `${variationIssueAssigned}`;  
       } else if(item.issueStatus === `${statusClosed}`){
         return `${variationIssueClosed}`;
-       } else if(item.issueStatus === `${statusUnassigned}`){
+        } else if(item.issueStatus === `${statusUnassigned}`){
         return `${variationIssueUnassigned}`;
       }else {
         return `${variationIssueOpen}`;
       }
     },
 
-     async openIssue(item){
+    async openIssue(item){
       let statuses = this.$parent.statuses
       let changeStatus = {}
       changeStatus.issueId = item.issueId;
@@ -278,13 +282,23 @@ export default {
       this.$store.dispatch("changeStatus")
       this.checkUnassigned();
     },
+
+    checkCategory(item, category){
+      if(item.categoryId === category.id){
+        item.categoryName = category.categoryName
+        return true;
+      } else{
+        return false;
+      }
+    },
   },
+
   async mounted() {
     await this.$store.dispatch("getLawyers")
     this.lawyers = await this.$store.state.lawyers
     await this.$store.dispatch("getCategories")
     await this.$store.dispatch("getStatuses")
-    this.statuses = await this.$store.state.statuses
+    this.$parent.statuses = await this.$store.state.statuses
     await this.$store.dispatch("getIssues")
     this.issues = await this.$store.state.issues
     await this.checkUnassigned();

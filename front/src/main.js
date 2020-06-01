@@ -20,6 +20,7 @@ import BootstrapVue from 'bootstrap-vue'
   Vue.use(CalendarPlugin)
   Vue.use(FormTextareaPlugin)
   Vue.use(BootstrapVue)
+  
 
   import { library } from "@fortawesome/fontawesome-svg-core";
   import {
