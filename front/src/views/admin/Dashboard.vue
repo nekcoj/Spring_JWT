@@ -198,7 +198,7 @@ export default {
     },
     issueChangeCategory: async function (issue) {
       if (JSON.stringify(this.categoryToChangeTo) === "{}") {
-        console.log("ingen ny kategori vald")
+        // console.log("ingen ny kategori vald")
       }
       else {
         await this.$store.commit("setIssueToChangeCategoryFor", issue)
@@ -211,7 +211,7 @@ export default {
     },
     assignIssueToLawyer: async function (issue) {
       if(JSON.stringify(this.selectedLawyer) === "{}"){
-        console.log("ingen jurist vald")
+        // console.log("ingen jurist vald")
       }
       else{
       let combinedIds = {
@@ -325,7 +325,7 @@ export default {
       let temp = this.$store.state.issues
       //fritextsökning
       if (typeof temp.length === "undefined" || temp.length === 0) {
-        console.log("listan var tom!")
+       
 
         return null
       } else {
