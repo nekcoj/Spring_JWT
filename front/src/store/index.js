@@ -24,6 +24,7 @@ export default new Vuex.Store({
     issueStatusUser: "",
     issueToAssign: {},
     issueToChangeCategoryFor: {},
+    item: {},
     lawyers: [],
     postboxPost: {},
     messages: {},
@@ -39,6 +40,9 @@ export default new Vuex.Store({
   },
 
   mutations: {
+    setItem(state, value){
+      this.state.item = value
+    },
     setCategories(state, value) {
       this.state.categories = value
     },
@@ -219,21 +223,20 @@ export default new Vuex.Store({
 
     },
 
-     async deleteItem({commit}, item){
-      let id = item.issueId;
-      let active = !item.active;
+     async deleteItem(){
+      let id = this.state.item.issueId;
+      console.log("id i deleteItem: ",id)
       let tokenId = null;
       if(this.state.tokenId == null){
         let user = await JSON.parse(localStorage.getItem('user'));
         tokenId = user.token;
       } else
        {tokenId = this.state.tokenId}
-         await fetch(`${apiUrl}/issue/active/`+id+"/"+active,  {
+         await fetch(`${apiUrl}/issue/active/`+id+"/"+false,  {
         method: "POST",
         headers: { 'Authorization': 'Bearer ' + tokenId, 'Accept': 'application/json', 'Content-Type': 'application/json' }
       })
-      /**här ska sedan vara en filtrering för att bara visa aktiva issues */
-      commit('deleteIssue', item)
+    
     },
 
     async getIssueStatusForUser() {

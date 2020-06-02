@@ -11,6 +11,16 @@
         </b-form-select>
       </b-form-group>
 
+      <b-form-group label="Filtrera på status" label-for="select-status">
+        <b-form-select id="select-status" v-model="selectedStatus">
+          <b-form-select-option
+            v-for="status in this.$parent.statuses"
+            :key="status.id"
+            :value="status"
+          >{{ status.status }}</b-form-select-option>
+        </b-form-select>
+      </b-form-group>
+
       <div class="search-parent">
         <div class="search-bar">
           <b-form-input
@@ -24,31 +34,25 @@
           </span>
         </div>
       </div>
-
-      <b-form-group label="Filtrera på status" label-for="select-status">
-        <b-form-select id="select-status" v-model="selectedStatus">
-          <b-form-select-option
-            v-for="status in this.$parent.statuses"
-            :key="status.id"
-            :value="status"
-          >{{ status.status }}</b-form-select-option>
-        </b-form-select>
-      </b-form-group>
-
       <div id="counter-and-filter-remover">
         <span id="searchCounter">
-          <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}} </strong></span>
+          <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}}</strong></span>
           <span v-else>Inga ärenden matchade din sökning</span>
         </span>
-        <b-button id="btn-clear-filters" v-on:click="clearFilters">Rensa sökfälten</b-button>
+        <span id="show-closed"><span for="checkbox-show-closed">Visa stängda ärenden </span><b-checkbox @change="{changeShowClosed}" v-model="showClosed" id="checkbox-show-closed"></b-checkbox></span>
       </div>
-
-      <div id="change-issue-order">
-        <b-btn variant="secondary" id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
+      <div class="btns-to-the-right" >
+        <b-btn variant="secondary"  id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
           <span v-if="ascSorting">Sortera fallande</span>
           <span v-else>Sortera stigande</span>
         </b-btn>
       </div>
+      <div class="btns-to-the-right">
+        <b-btn v-on:click="clearFilters">
+          <span>Rensa filter</span>
+        </b-btn>
+      </div>
+
     <font-awesome-icon icon="square" class="squareAssigned text-info"></font-awesome-icon><span class="text-square"> Assigned </span>
     <font-awesome-icon icon="square" class="squareOpen text-secondary"></font-awesome-icon><span class="text-square"> Open </span>
     <font-awesome-icon icon="square" class="squareClose text-dark"></font-awesome-icon><span class="text-square"> Closed </span>
@@ -103,6 +107,7 @@ export default {
       selectedMonth: {},
       searchfield: "",
       searchCounter: 0,
+      showClosed: false,
       months: [
         { id: 0, name: "Januari" },
         { id: 1, name: "Februari" },
@@ -297,6 +302,12 @@ export default {
             return dateCreate.getMonth() === this.selectedMonth.id
           })
         }
+        //visa inaktiva?
+        if(!this.showClosed){
+          searchResult = searchResult.filter(issue => {
+            return issue.issueStatus.toLowerCase() !== "closed"
+          })
+        }
         //status
         if (JSON.stringify(this.$parent.selectedStatus) == "{}") {
           //console.log("ingen status vald")
@@ -353,7 +364,7 @@ label {
   margin-bottom: 5px;
 }
 
-#change-issue-order {
+.btns-to-the-right {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
@@ -380,6 +391,15 @@ label {
 
 .text-square{
   font-size: small;
+}
+
+#show-closed{
+  display:flex;
+  justify-content: space-between;
+}
+#closed-issue-text{
+  display:flex;
+  justify-content: right;
 }
 
 

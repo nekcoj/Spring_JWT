@@ -51,22 +51,24 @@
           <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}}</strong></span>
           <span v-else>Inga ärenden matchade din sökning</span>
         </span>
+        <span id="show-inactive"><span for="checkbox-show-inactive">Visa inaktiva ärenden </span><b-checkbox @change="{changeShowInactive}" v-model="showInactive" id="checkbox-show-inactive"></b-checkbox></span>
       </div>
-      <div class="change-issue-order">
-        <b-btn variant="secondary" id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
+      <div class="btns-to-the-right" >
+        <b-btn variant="secondary"  id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
           <span v-if="ascSorting">Sortera fallande</span>
           <span v-else>Sortera stigande</span>
         </b-btn>
       </div>
-        <div class="change-issue-order">
-          <b-btn id="btn-sort-asc-desc" v-on:click="clearFilters">
-            <span>Rensa filter</span>
-          </b-btn>
-        </div>
-        <font-awesome-icon icon="square" class="squareUnassigned text-primary"></font-awesome-icon><span class="text-square"> Unassigned </span> 
-        <font-awesome-icon icon="square" class="squareAssigned text-info"></font-awesome-icon><span class="text-square"> Assigned </span>
-        <font-awesome-icon icon="square" class="squareOpen text-secondary"></font-awesome-icon><span class="text-square"> Open </span>
-        <font-awesome-icon icon="square" class="squareClose text-dark"></font-awesome-icon><span class="text-square"> Closed </span>
+      <div class="btns-to-the-right">
+        <b-btn v-on:click="clearFilters">
+          <span>Rensa filter</span>
+        </b-btn>
+      </div>
+      
+      <font-awesome-icon icon="square" class="squareUnassigned text-primary"></font-awesome-icon><span class="text-square"> Unassigned </span> 
+      <font-awesome-icon icon="square" class="squareAssigned text-info"></font-awesome-icon><span class="text-square"> Assigned </span>
+      <font-awesome-icon icon="square" class="squareOpen text-secondary"></font-awesome-icon><span class="text-square"> Open </span>
+      <font-awesome-icon icon="square" class="squareClose text-dark"></font-awesome-icon><span class="text-square"> Closed </span>
       <b-card no-body class="mb-1 text-left" v-for="item in filterIssues" :key="item.issueId">
         <b-card-header header-tag="header" class="p-1" role="tab">
           <b-button block v-b-toggle="'id'+item.issueId" :variant="checkStatus(item)" class="text-left">
@@ -75,9 +77,10 @@
         </b-card-header>
         <b-collapse :id="'id'+item.issueId" accordion="my-accordion" role="tabpanel">
           <b-card-body id="issueBody">
-            <span @click="deleteIssue(item)">
-              <font-awesome-icon icon="trash-alt" class="trash-icon"></font-awesome-icon>
+            <span v-if="item.active" @click="deleteIssue(item)">
+              <font-awesome-icon icon="trash-alt" title="Inaktivera ärende" class="trash-icon"></font-awesome-icon>
             </span>
+            <div v-else id="inactive-issue-text" class="text-danger">Inaktiverat ärende</div>
 
             <div v-for="category in categories" :key="category.id" :value="category.id">
               <div v-if="checkCategory(item, category)">
@@ -170,6 +173,7 @@ export default {
       selectedMonth: {},
       searchfield: "",
       selectedLawyer: {},
+      showInactive: false,
       statuses: [],
       lawyers: [],
       months: [
@@ -191,6 +195,10 @@ export default {
     }
   },
   methods: {
+    changeShowInactive: function (){
+      this.showInactive = !this.showInactive
+
+    },
     addRemoveCategory: async function () {
      
       if (this.addRemoveOption === "1") {
@@ -241,8 +249,13 @@ export default {
       }
     },
 
-    deleteIssue: function (item) {
-      this.$store.dispatch("deleteItem", item)
+    deleteIssue: async function (item) {
+      console.log("item i deleteIssue: ",item)
+      await this.$store.commit("setItem",item)
+      await this.$store.dispatch("deleteItem")
+      await this.$store.dispatch("getIssues")
+      this.issues = await this.$store.state.issues
+      
     },
     updateSearchCounter(numberOfMatches) {
       this.searchCounter = numberOfMatches
@@ -334,7 +347,6 @@ export default {
   created() {
     this.$store.dispatch("getIssues")
     this.issues = this.$store.state.issues
-    this.filteredIssues = this.issues
   },
 
 
@@ -358,6 +370,7 @@ export default {
     },
 
     filterIssues: function () {
+
       let temp = this.$store.state.issues
       //fritextsökning
       if (typeof temp.length === "undefined" || temp.length === 0) {
@@ -416,6 +429,12 @@ export default {
           searchResult = searchResult.filter(issue => {
 
             return issue.issueStatus.toLowerCase() === this.$parent.selectedStatus.status.toLowerCase()
+          })
+        }
+        //visa inaktiva?
+        if(!this.showInactive){
+          searchResult = searchResult.filter(issue => {
+            return issue.active
           })
         }
 
@@ -477,7 +496,7 @@ label {
   margin-bottom: 5px;
 }
 
-.change-issue-order {
+.btns-to-the-right {
   display: flex;
   margin-bottom: 10px;
   justify-content: flex-end;
@@ -503,5 +522,13 @@ label {
 
 .text-square{
   font-size: small;
+}
+#show-inactive{
+  display:flex;
+  justify-content: space-between;
+}
+#inactive-issue-text{
+  display:flex;
+  justify-content: right;
 }
 </style>
