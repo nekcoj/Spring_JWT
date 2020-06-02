@@ -33,9 +33,9 @@ export default {
     }
   },
    methods: {
-    logout(){
+    async logout(){
          const { dispatch } = this.$store;
-         dispatch('account/logout');
+         await dispatch('account/logout');
     },
 
     setStatusAdmin() {

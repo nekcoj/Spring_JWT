@@ -143,6 +143,7 @@
           </b-form-select>
         </b-form-group>
       </div>
+      
       <div class="col-7 p-0 mx-auto">
         <b-form-input placeholder="Lägg till/Ta bort kategori" v-model="addRemoveText"></b-form-input>
       </div>
@@ -150,6 +151,7 @@
       <div class="col-12">
         <b-button v-on:click="addRemoveCategory">Utför</b-button>
       </div>
+      <router-view v-if="this.$store.state.fetchResponse != ''"></router-view>
     </div>
   </div>
 </template>
@@ -185,18 +187,31 @@ export default {
         { id: 11, name: "December" }
       ],
       addRemoveOption: null,
-      addRemoveText: null,
+      addRemoveText: null
     }
   },
   methods: {
-    addRemoveCategory: function () {
+    addRemoveCategory: async function () {
+     
       if (this.addRemoveOption === "1") {
-        this.categories.push(this.addRemoveText)
+        //Add category
+        await this.$store.commit("setCategoryToAddRemove", this.addRemoveText);
+        await this.$store.dispatch("addCategory");
+
       } else if (this.addRemoveOption === "2") {
-        var index = this.categories.indexOf(this.addRemoveText)
-        if (index !== -1) this.categories.splice(index, 1)
+        //Remove category
+        await this.$store.commit("setCategoryToAddRemove", this.addRemoveText);
+        await this.$store.dispatch("removeCategory");
       }
+
+      await this.forceUpdateCategories();
+      this.sleep(2) //In seconds
     },
+
+    async forceUpdateCategories(){
+      await this.$store.dispatch("getCategories")
+    },
+
     issueChangeCategory: async function (issue) {
       if (JSON.stringify(this.categoryToChangeTo) === "{}") {
         // console.log("ingen ny kategori vald")
@@ -294,6 +309,15 @@ export default {
         return false;
       }
     },
+
+    sleep(duration) {
+      return new Promise( resolve => {
+        setTimeout(()=>{
+          resolve(); 
+          this.$store.state.fetchResponse="";
+          }, duration * 1000)
+      })
+    }
   },
 
   async mounted() {

@@ -58,8 +58,11 @@ const router = new VueRouter({
       path: '/admin',
       component: () => import ('../views/admin/Dashboard-base.vue'),
       children: [
-        {path: '', name: 'AdminDash' ,component: () => import ('../views/admin/Dashboard.vue')},
-        {path: 'arenden', component: () => import ('../views/admin/NewPosts.vue')}
+        {path: '', name: 'AdminDash' ,component: () => import ('../views/admin/Dashboard.vue'),
+        children:[
+          {path: '', name: 'FetchResponseUser', component: () => import ('../modules/fetch-response-module.vue') }
+        ]},
+        
       ],
       beforeEnter: (to, from, next) => {
         if(store.state.authUser === '/admin'){

@@ -11,6 +11,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
   state: {
+    addRemoveCategory: null,
     authUser: "",
     categories: [],
     changeStatus: {},
@@ -39,7 +40,7 @@ export default new Vuex.Store({
 
   mutations: {
     setCategories(state, value) {
-      this.$store.state.categories = value
+      this.state.categories = value
     },
     // setSelectedMonth(state,value){
     //   this.$store.state.selectedMonth = value
@@ -92,6 +93,10 @@ export default new Vuex.Store({
 
     setFileToDownload(state, value){
       state.fileToDownload = value;
+    },
+
+    setCategoryToAddRemove(state, value){
+      state.addRemoveCategory = value;
     }
 
     // setSelectedCategory(state, value) {
@@ -331,8 +336,34 @@ export default new Vuex.Store({
           a.click();    
           a.remove();  //afterwards we remove the element again         
       });
+    },
 
-    
+    async removeCategory() {
+      let url = `${apiUrl}/category/remove`;
+      let response = await fetch(url, {
+        method: "POST",
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: JSON.stringify(this.state.addRemoveCategory)
+      })
+      let result = "";
+      await response.text().then( function (text) {
+        result = text;
+      });
+      this.commit("setFetchResponse", result) 
+    },
+
+    async addCategory () {      
+      let url = `${apiUrl}/category/add`;
+      let response = await fetch(url, {
+        method: "POST",
+        headers: await this.dispatch('getAuthenticationHeader'),
+        body: JSON.stringify(this.state.addRemoveCategory)
+      })
+      let result = "";
+      await response.text().then( function (text) {
+        result = text;
+      });
+      this.commit("setFetchResponse", result) 
     }
 
   },

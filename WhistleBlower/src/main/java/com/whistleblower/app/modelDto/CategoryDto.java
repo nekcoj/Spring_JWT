@@ -1,8 +1,15 @@
 package com.whistleblower.app.modelDto;
 
-import org.springframework.validation.BindingResult;
+
 
 public class CategoryDto {
+
+    public CategoryDto(){}
+
+    public CategoryDto(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     private String categoryName;
 
 
