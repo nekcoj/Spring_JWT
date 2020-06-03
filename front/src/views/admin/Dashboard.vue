@@ -46,12 +46,13 @@
       </div>
  
     
-      <div id="counter-and-filter-remover">
-        <span id="searchCounter">
+      <div id="counter-and-filter-remover" class="row">
+        <span id="searchCounter" class="col-12 col-md-6">
           <span v-if="searchCounter > 0">Antal ärenden:<strong> {{searchCounter}}</strong></span>
           <span v-else>Inga ärenden matchade din sökning</span>
         </span>
-        <span id="show-inactive"><span for="checkbox-show-inactive">Visa inaktiva ärenden </span><b-checkbox @change="{changeShowInactive}" v-model="showInactive" id="checkbox-show-inactive"></b-checkbox></span>
+        <span id="show-inactive" class="col-12 col-md-6"><span for="checkbox-show-inactive" id="show-inactive-label">Visa inaktiva ärenden </span><b-checkbox @change="{changeShowInactive}" v-model="showInactive" id="checkbox-show-inactive"></b-checkbox></span>
+        <span id="show-closed" class="col-12 col-md-6 offset-md-6"><span for="checkbox-show-closed" id="show-closed-label">Visa stängda ärenden </span><b-checkbox @change="{changeShowClosed}" v-model="showClosed" id="checkbox-show-closed"></b-checkbox></span>
       </div>
       <div class="btns-to-the-right" >
         <b-btn variant="secondary"  id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
@@ -173,6 +174,7 @@ export default {
       selectedMonth: {},
       searchfield: "",
       selectedLawyer: {},
+      showClosed: false,
       showInactive: false,
       statuses: [],
       lawyers: [],
@@ -438,6 +440,13 @@ export default {
           })
         }
 
+        //visa stängda
+        if(!this.showClosed){
+          searchResult = searchResult.filter(issue => {
+            return issue.issueStatus.toLowerCase() !== "closed"
+          })
+        }
+
         // //sortera
         searchResult = this.ascSorting ? searchResult : searchResult.sort((a, b) => b.issueId - a.issueId)
 
@@ -525,10 +534,25 @@ label {
 }
 #show-inactive{
   display:flex;
-  justify-content: space-between;
+  justify-content: right;
 }
 #inactive-issue-text{
   display:flex;
   justify-content: right;
 }
+
+#show-closed{
+  display:flex;
+  justify-content: right;
+}
+
+#closed-issue-text{
+  display:flex;
+  justify-content: right;
+}
+
+#show-closed-label, #show-inactive-label{
+  margin-right: 0.5rem;
+}
+
 </style>

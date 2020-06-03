@@ -302,7 +302,7 @@ export default {
             return dateCreate.getMonth() === this.selectedMonth.id
           })
         }
-        //visa inaktiva?
+        //visa stängda
         if(!this.showClosed){
           searchResult = searchResult.filter(issue => {
             return issue.issueStatus.toLowerCase() !== "closed"
