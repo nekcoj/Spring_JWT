@@ -2,21 +2,19 @@ package com.whistleblower.app.storage;
 
 import com.whistleblower.app.exceptionHandling.exeption.CryptoException;
 import com.whistleblower.app.util.CryptoUtil;
+import com.whistleblower.app.util.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import static com.whistleblower.app.security.SecurityConstants.CRYPTO_KEY;
 
@@ -34,7 +32,7 @@ public class FileSystemStorageService implements StorageService {
 	@Override
 	public void store(MultipartFile file, String tempUserId) {
 		File tempFile = null;
-		File encryptedFile = null;
+		File encrypted = null;
 
 		try {
             Path newLocation = this.rootLocation.resolve(tempUserId);
@@ -43,11 +41,17 @@ public class FileSystemStorageService implements StorageService {
 		    tempFile = File.createTempFile("saveFile",null);
 			tempFile.deleteOnExit();
 			file.transferTo(tempFile);
-			encryptedFile = new File(file.getOriginalFilename() + FILE_EXTENSION);
-			 CryptoUtil.encrypt(CRYPTO_KEY,tempFile,encryptedFile);
+			encrypted = new File(file.getOriginalFilename() + FILE_EXTENSION);
+			try {
+				Utility.removeEXIF(tempFile, file.getOriginalFilename());
+			}catch (Exception e){
+				System.out.println("Not an image");
+			}
 
+			System.out.println("tempFILE: " + tempFile.toString());
+			 CryptoUtil.encrypt(CRYPTO_KEY,tempFile,encrypted);
 
-			Files.move(encryptedFile.toPath(), newLocation.resolve(Objects.requireNonNull(encryptedFile.getName())));
+			Files.move(encrypted.toPath(), newLocation.resolve(Objects.requireNonNull(encrypted.getName())));
 		} catch (IOException e) {
 			System.out.println(Arrays.toString(e.getStackTrace()));
 			throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
@@ -55,7 +59,6 @@ public class FileSystemStorageService implements StorageService {
 			e.printStackTrace();
 		}finally {
 			tempFile.delete();
-
 		}
 
 	}
