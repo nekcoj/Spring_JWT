@@ -166,7 +166,7 @@ import {statusAssigned, statusOpen, statusClosed,  variationIssueAssigned, statu
 export default {
   data() {
     return {
-      ascSorting: true,
+      ascSorting: false,
       categoryToChangeTo: {},
       issues: [],
       searchCounter: 0,
