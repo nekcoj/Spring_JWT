@@ -102,7 +102,7 @@ import {statusAssigned, statusOpen, statusClosed, variationIssueAssigned, variat
 export default {
   data() {
     return {
-      ascSorting: true,
+      ascSorting: false,
       issues: [],
       selectedMonth: {},
       searchfield: "",
