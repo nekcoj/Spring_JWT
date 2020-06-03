@@ -42,13 +42,13 @@
         <span id="show-closed"><span for="checkbox-show-closed">Visa stängda ärenden </span><b-checkbox @change="{changeShowClosed}" v-model="showClosed" id="checkbox-show-closed"></b-checkbox></span>
       </div>
       <div class="btns-to-the-right" >
-        <b-btn variant="secondary"  id="btn-sort-asc-desc" v-on:click="changeIssueOrder">
+        <b-btn variant="secondary"  class="btn-filter" v-on:click="changeIssueOrder">
           <span v-if="ascSorting">Sortera fallande</span>
           <span v-else>Sortera stigande</span>
         </b-btn>
       </div>
       <div class="btns-to-the-right">
-        <b-btn v-on:click="clearFilters">
+        <b-btn class="btn-filter" v-on:click="clearFilters">
           <span>Rensa filter</span>
         </b-btn>
       </div>
@@ -402,5 +402,12 @@ label {
   justify-content: right;
 }
 
+.btn-filter{
+    width: 132px;
+    text-align: center;
+    padding: 0;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
 
 </style>
