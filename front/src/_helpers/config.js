@@ -1,4 +1,4 @@
-export const apiUrl = 'http://localhost:9090'
+export const apiUrl = 'https://81.170.153.188:9090'
 export const statusUnassigned = 'UNASSIGNED'
 export const statusAssigned = 'ASSIGNED'
 export const statusOpen = 'OPEN'

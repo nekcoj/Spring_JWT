@@ -75,7 +75,7 @@
               drop-placeholder="Släpp bilaga här"
             ></b-form-file>
          </b-form-group>
-         
+         <em><span class="liten-text">* obligatoriska fält</span></em>
           </b-col>
         </b-row>
         <b-row>
