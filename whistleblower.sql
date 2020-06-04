@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 20 maj 2020 kl 17:12
+-- Tid vid skapande: 04 jun 2020 kl 10:43
 -- Serverversion: 10.4.11-MariaDB
 -- PHP-version: 7.4.5
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Databas: `whistleblower`
 --
+CREATE DATABASE IF NOT EXISTS `whistleblower` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `whistleblower`;
 
 -- --------------------------------------------------------
 
@@ -68,16 +70,6 @@ CREATE TABLE `issue` (
   `active` bit(1) NOT NULL DEFAULT b'1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
---
--- Dumpning av Data i tabell `issue`
---
-
-INSERT INTO `issue` (`id`, `category_id`, `when_issue`, `where_issue`, `details`, `employee_awareness`, `attachment`, `temp_user_id`, `lawyer_id`, `created`, `assigned`, `issue_status_id`, `active`) VALUES
-(16, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 46, 45, '2020-05-15 08:20:02', '2020-05-15 08:26:42', 2, b'1'),
-(17, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 47, 45, '2020-05-18 06:50:48', '2020-05-18 07:39:13', 2, b'1'),
-(18, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 48, NULL, '2020-05-18 08:36:28', NULL, 1, b'1'),
-(19, 1, 'idag', 'utomhus', 'tagen på bar gärning', 'absolut', 'postman.com', 49, NULL, '2020-05-18 08:43:49', NULL, 1, b'1');
-
 -- --------------------------------------------------------
 
 --
@@ -112,17 +104,8 @@ CREATE TABLE `postbox_post` (
   `lawyer_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `message` varchar(2048) NOT NULL,
   `replied_date` datetime DEFAULT NULL,
-  `reply` text DEFAULT NULL,
-  `replied` bit(1) NOT NULL DEFAULT b'0',
-  `sent` datetime DEFAULT NULL
+  `reply` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumpning av Data i tabell `postbox_post`
---
-
-INSERT INTO `postbox_post` (`id`, `sent_date`, `temp_user_id`, `lawyer_id`, `message`, `replied_date`, `reply`, `replied`, `sent`) VALUES
-(1, '2020-05-18 08:17:42', 46, 45, 'Meddelande från jurist till visslare', NULL, NULL, b'0', NULL);
 
 -- --------------------------------------------------------
 
@@ -148,12 +131,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `username`, `password`, `role`, `last_login`, `created`, `first_name`, `last_name`, `enabled`, `consent`) VALUES
-(44, 'Admin', '$2a$10$nvVOs2DFIaHFoHXxuVU4bedqHPWuK8qWoU3Aqp.pTvom/EESftnES', 'ADMIN', '2020-05-18 08:20:26', '2020-05-15 08:09:24', NULL, NULL, b'0', b'0'),
-(45, 'Lawyer', '$2a$10$ua7Y3SAJfquUXbs/aNqEqOyRWFVhHb4fw38fwnlCbmsF9cs7S1dVq', 'LAWYER', '2020-05-18 08:24:37', '2020-05-15 08:09:24', NULL, NULL, b'0', b'0'),
-(46, '21316156', '$2a$10$XdE5t92lTFbtdqwtOx9Aw.4PKnEZd/8po4kmJh.9IkthDdJZSqIEa', 'USER', '2020-05-15 08:20:40', '2020-05-15 08:20:02', NULL, NULL, b'1', b'0'),
-(47, '34302446', '$2a$10$Yx3.SHhwhkmpAmIAP8hx7uboQ1x5aazckQ.nD.mtD9lVj.3BoYPuS', 'USER', '2020-05-18 06:52:42', '2020-05-18 06:50:48', NULL, NULL, b'1', b'0'),
-(48, '05626407', '$2a$10$lRCfo6ipBsCilQcVyhezDecd9NaJ44lFyStLNJujL/O7t85FwMtc.', 'USER', NULL, '2020-05-18 08:36:28', NULL, NULL, b'1', b'0'),
-(49, '95615564', '$2a$10$lou6xoGQ13x464Vj3Zo4yesOlepg1pR3gDVXgCw5QcW/PVV4ZLdd.', 'USER', '2020-05-18 08:44:19', '2020-05-18 08:43:49', NULL, NULL, b'1', b'0');
+(44, 'Admin', '$2a$10$nvVOs2DFIaHFoHXxuVU4bedqHPWuK8qWoU3Aqp.pTvom/EESftnES', 'ADMIN', '2020-06-04 08:07:25', '2020-05-15 08:09:24', NULL, NULL, b'0', b'1'),
+(45, 'Lawyer', '$2a$10$ua7Y3SAJfquUXbs/aNqEqOyRWFVhHb4fw38fwnlCbmsF9cs7S1dVq', 'LAWYER', '2020-06-04 08:12:14', '2020-05-15 08:09:24', NULL, NULL, b'0', b'1'),
+(50, 'User', '$2a$10$Sk/7Q6N94brumbNhGFYP1.630WXxMaXLG1EayBd8sWS8/W.XhjYAe', 'USER', '2020-06-04 07:45:03', '2020-05-26 09:57:13', NULL, NULL, b'0', b'0');
 
 --
 -- Index för dumpade tabeller
@@ -206,13 +186,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT för tabell `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT för tabell `issue`
 --
 ALTER TABLE `issue`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT för tabell `issue_status`
@@ -224,13 +204,13 @@ ALTER TABLE `issue_status`
 -- AUTO_INCREMENT för tabell `postbox_post`
 --
 ALTER TABLE `postbox_post`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT för tabell `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- Restriktioner för dumpade tabeller
@@ -256,7 +236,9 @@ DELIMITER $$
 --
 -- Händelser
 --
-CREATE DEFINER=`root`@`localhost` EVENT `clear_records_older_than_6_month` ON SCHEDULE EVERY 1 DAY STARTS '2020-05-07 01:00:00' ON COMPLETION PRESERVE ENABLE DO DELETE FROM admin  WHERE latest_login < DATE_SUB(NOW(), INTERVAL 6 MONTH)$$
+CREATE DEFINER=`root`@`localhost` EVENT `disable_user_after_6_months` ON SCHEDULE EVERY 2 WEEK STARTS '2020-06-03 11:50:00' ON COMPLETION PRESERVE ENABLE DO UPDATE user
+SET enabled = false
+WHERE enabled = TRUE AND (last_login < (DATE_SUB(NOW(), INTERVAL 6 MONTH)) OR (last_login IS NULL AND created < (DATE_SUB(NOW(), INTERVAL 6 MONTH))))$$
 
 DELIMITER ;
 COMMIT;
